@@ -1,7 +1,7 @@
-"use client"
+
 import React, {useState} from "react";
 
-const Login = () => {
+function Login(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
