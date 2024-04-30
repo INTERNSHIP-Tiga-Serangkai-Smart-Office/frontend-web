@@ -1,13 +1,28 @@
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LoginAuth, reset } from "../features/authSlice.js"
 
 function LoginUser(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {user, isError, isSuccess, isLoading, message} = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if(user || isSuccess){
+            navigate("/dashboard");
+        }
+        dispatch(reset());
+    }, [user, isSuccess, dispatch, navigate]);
+
+    const Auth = (e) => {
+        e.preventDefault();
+        dispatch(LoginAuth({email, password}));
+    };
 
     return(
         <main className="flex flex-1 h-screen w-full mx-0 flex-row bg-gradient-to-b from-purple-500 to-yellow-300">
@@ -51,7 +66,8 @@ function LoginUser(){
                 />
                 <div className="w-[80%] h-[500px] absolute inset-0 mx-auto my-auto object-cover bg-white border-2 border-gray-200 rounded-md shadow-lg">
                     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 p-8 md:mb-0 gap-4">
-                        <form className="w-full">
+                        <form onSubmit={Auth} className="w-full">
+                            {isError && <p className="center">{message}</p>}
                             <h1 className="bold-32 my-3">
                                 Log In
                             </h1>
@@ -64,7 +80,8 @@ function LoginUser(){
                                     <input
                                         type="text"
                                         className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
-                                        value={email} onChange={(e) => setEmail(e.target.value)}
+                                        value={email} 
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder='Email' />
                                 </div>
                             </div>
@@ -74,13 +91,14 @@ function LoginUser(){
                                     <input
                                         type="password"
                                         className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
-                                        value={password} onChange={(e) => setPassword(e.target.value)}
+                                        value={password} 
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder='Password' />
                                 </div>
                             </div>
                             <a href="" className="italic">Forget password?</a>
                             <div className="field mt-5">
-                                <button type="submit" className="bold-32 bg-yellow-300 p-3 w-full rounded-xl shadow-lg hover:bg-yellow-400" onClick={() => navigate("/dashboard")}>Login</button>
+                                <button type="submit" className="bold-32 bg-yellow-300 p-3 w-full rounded-xl shadow-lg hover:bg-yellow-400">{isLoading ? 'Loading...': 'Login'}</button>
                             </div>
                         </form>
                     </div>
