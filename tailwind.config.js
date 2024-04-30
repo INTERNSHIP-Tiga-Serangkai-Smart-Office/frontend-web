@@ -4,7 +4,19 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        "clr-bg-sd" : "#7054C2",
+        "clr-text-click": "#C238E4",
+        "clr-icon-click":"#BCB4D7",
+        "cl-white":"#FFFFFF",
+        "bg-amber":"#F9BD47",
+        "light-white":'rgba(255,255,255,0.18)'
+      },
+      fontFamily:{
+        'montserrat' :["'Montserrat'",'semi-bold']
+      }
+    },
   },
   plugins: [],
 }
