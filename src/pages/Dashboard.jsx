@@ -9,7 +9,7 @@ import { FaFolder } from "react-icons/fa";
 import { LuFolderInput } from "react-icons/lu";
 import { LuFolderOutput } from "react-icons/lu";
 import { TbReportAnalytics } from "react-icons/tb";
-import SideBar from '../components/SideBar'
+import SideBar from '../components/SideBar';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(true);
@@ -21,7 +21,7 @@ const Dashboard = () => {
         <div className='inline-flex'>
           <AiFillEnvironment className={`bg-amber-300 text-4xl
           rounded cursor-pointer block float-left mr-2 duration-500 ${!open && "rotate-[350deg]"}`}/>
-          <h1 className={`text-white origin-left font-medium text-2xl duration-300 ${!open && 'scale-0'}`}>
+          <h1 className={`text-white origin-left font-medium text-2xl duration-350 ${!open && 'scale-0'}`}>
             Dashboard</h1>
             <div>
             </div> 
@@ -30,7 +30,7 @@ const Dashboard = () => {
         <ul className='pt-5'>
                   <li className='text-sm flex flex-row items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 text-white font-montserrat font-semibold'>
                     <RiDashboardFill className='w-6 h-6'/> 
-                    {open && <NavLink>Dashboard</NavLink>}
+                    {open && <NavLink >Dashboard</NavLink>}
                   </li>
                   <li className='text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white  rounded-md mt-2 text-white font-montserrat font-semibold'>
                     <FaFolder className='w-6 h-6'/>
@@ -46,7 +46,7 @@ const Dashboard = () => {
                   </li>
                   <li className='text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 text-white font-montserrat font-semibold'>
                     <LuFolderOutput className='w-6 h-6'/>
-                    {open && <NavLink>Asset Keluar</NavLink>}
+                    {open && <NavLink >Asset Keluar</NavLink>}
                   </li>
                   <li className='text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 text-white font-montserrat font-semibold'>
                     <TbReportAnalytics className='w-6 h-6'/>
