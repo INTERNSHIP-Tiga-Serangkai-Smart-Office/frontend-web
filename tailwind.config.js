@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        "clr-bg-sd" : "#7054C2",
+        "clr-bg-sd" : "#6EA2F1",
         "clr-text-click": "#C238E4",
         "clr-icon-click":"#BCB4D7",
         "cl-white":"#FFFFFF",
