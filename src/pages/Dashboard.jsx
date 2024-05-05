@@ -24,7 +24,7 @@ const Dashboard = () => {
           <h1 className={`text-white origin-left font-medium text-2xl duration-300 ${!open && 'scale-0'}`}>
             Dashboard</h1>
             <div>
-            </div> 
+            </div>
         </div>
         
         <ul className='pt-5'>
