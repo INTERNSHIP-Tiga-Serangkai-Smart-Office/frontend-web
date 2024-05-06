@@ -28,9 +28,16 @@ const Dashboard = () => {
   ]
   
   const [open, setOpen] = useState(true);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleItemClick = (index) => {
+    setActiveIndex(index);
+  };
+
   return (
     <div className='flex'>
-      <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${open? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius: "0px 20px 20px 0px"  }}>
+      <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${open? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius:  "0px 20px 20px 0px"  }}>
         <BsArrowLeftShort className={`bg-white text-purple-950 text-3xl rounded-full absolute -right-3 top-9 border border-black 
         cursor-pointer ${!open && "rotate-180"}`} onClick={()=>setOpen(!open)}/>
         <div className='inline-flex'>
@@ -43,7 +50,10 @@ const Dashboard = () => {
           {
             menus?.map((menu,i)=>(
                 <Link to={menu?.link} key={i} 
-                className={`${menu?.margin && 'mt-5'} flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-light-white rounded-md`}>
+                className={`${menu?.margin && 'mt-5'} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md transition-colors duration-300 hover:bg-gray-200 hover:text-gray-800 ${activeIndex === i ? 'bg-gray-200 text-gray-800' : ''}`}
+                onClick={() => handleItemClick(i)}
+                style={{ paddingRight: '30px', marginRight: '-20px', width: 'calc(100% + 20px)', borderRadius: '20px 0px 0px 20px' }}
+                >
                   <div>{React.createElement(menu?.icon,{size:"20"})}</div>
                   <h2 style={{transitionDelay:`${i+3}00ms`}} className={`whitespace-pre duration-500 ${!open && 'opacity-0 translate-x-28 overflow-hidden'}`}>
                     {menu?.name}
