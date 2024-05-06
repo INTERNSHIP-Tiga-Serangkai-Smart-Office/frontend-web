@@ -12,6 +12,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 // import { HiMenuAlt3} from "react-icons/hi";
 import { TbReportAnalytics } from "react-icons/tb";
+import Card from '../components/Card';
 // import SideBar from '../components/SideBar';
 
 const Dashboard = () => {
@@ -29,7 +30,7 @@ const Dashboard = () => {
   const [open, setOpen] = useState(true);
   return (
     <div className='flex'>
-      <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${open? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius: open ? "20px 20px 20px 20px" : "20px" }}>
+      <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${open? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius: "0px 20px 20px 0px"  }}>
         <BsArrowLeftShort className={`bg-white text-purple-950 text-3xl rounded-full absolute -right-3 top-9 border border-black 
         cursor-pointer ${!open && "rotate-180"}`} onClick={()=>setOpen(!open)}/>
         <div className='inline-flex'>
@@ -53,10 +54,22 @@ const Dashboard = () => {
         </div>
         
                 
-        </div>
+      </div>
       <div className='p-7'>
         <h1 className='text-2xl font-semibold'>Home Page</h1>
+        <Card 
+          imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+          title={'Asset Master'}
+          number={580}
+          bgColor={'#8196CE'}
+        />
 
+        <Card 
+          imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+          title={'Asset TSPM'}
+          number={444}
+          bgColor={'#2A4876'}
+        />
         
       </div>
     </div>
