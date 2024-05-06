@@ -57,19 +57,29 @@ const Dashboard = () => {
       </div>
       <div className='p-7'>
         <h1 className='text-2xl font-semibold'>Home Page</h1>
-        <Card 
-          imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
-          title={'Asset Master'}
-          number={580}
-          bgColor={'#8196CE'}
-        />
+        
+        <div className='flex flex-row'>
+          <Card 
+            imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+            title={'Asset Master'}
+            number={580}
+            bgColor={'#8196CE'}
+          />
 
-        <Card 
-          imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
-          title={'Asset TSPM'}
-          number={444}
-          bgColor={'#2A4876'}
-        />
+          <Card 
+            imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+            title={'Asset TSPM'}
+            number={444}
+            bgColor={'#2A4876'}
+          />
+
+          <Card 
+            imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+            title={'Asset TSPM'}
+            number={444}
+            bgColor={'#2A4876'}
+          />
+        </div>
         
       </div>
     </div>
