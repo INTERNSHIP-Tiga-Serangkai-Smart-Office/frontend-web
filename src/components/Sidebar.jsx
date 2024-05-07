@@ -47,7 +47,7 @@ const SideBar = () => {
             className='w-[50px] h-[50px] block float-left mr-2 bg-black rounded-md p-2' />
           {/* <AiFillEnvironment className={`bg-amber-300 text-4xl
           rounded cursor-pointer block float-left mr-2 duration-500 ${!open && "rotate-[350deg]"}`}/> */}
-          <h1 className={`flex items-center justify-center font-bold text-white origin-left text-2xl duration-350 mb-7 truncate ${!open && 'scale-0'}`}>
+          <h1 className={`absolute items-center justify-center font-bold text-white origin-left text-2xl duration-350 mb-7 truncate ${!open && 'scale-0'}`}>
             A M S
           </h1>
         </div>
