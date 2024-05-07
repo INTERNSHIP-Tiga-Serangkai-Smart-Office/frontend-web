@@ -14,7 +14,7 @@ function LoginUser(){
 
     useEffect(() => {
         if(user || isSuccess){
-            navigate("/dashboard");
+            navigate("/dataaset");
         }
         dispatch(reset());
     }, [user, isSuccess, dispatch, navigate]);
