@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, NavLink } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
 import {AiFillEnvironment} from "react-icons/ai";
@@ -13,6 +14,7 @@ import { MdLogout } from "react-icons/md";
 // import { HiMenuAlt3} from "react-icons/hi";
 import { TbReportAnalytics } from "react-icons/tb";
 import Card from '../components/Card';
+import { getMe } from '../features/authSlice';
 // import SideBar from '../components/SideBar';
 
 const SideBar = () => {
@@ -34,6 +36,21 @@ const SideBar = () => {
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
+
+
+  //get data user
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+
+  useEffect (() => {
+    axios.get('http://localhost:5000/me').then(res => {
+      setUsername(res.data.name)
+      setRole(res.data.role)
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [])
+
 
   return (
     <div className='flex'>
@@ -59,8 +76,8 @@ const SideBar = () => {
             className='w-[60px] h-[60px]'
           />
           <div className={`flex flex-col mx-3 items-center justify-center ${!open && `invisible`}`}>
-            <h3 className='inline-flex items-center text-white px-3 bg-[#2C449B] rounded-2xl truncate'>super admin</h3>
-            <h2 className='text-xl font-bold'>Username</h2>
+            {role && <h3 className='inline-flex items-center text-white px-3 bg-[#2C449B] rounded-2xl truncate'>{role}</h3>}
+            {username && <h2 className='text-xl font-bold'>{username}</h2>}
           </div>
         </div>
 

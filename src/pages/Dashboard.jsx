@@ -30,6 +30,14 @@ const Dashboard = () => {
               number={444}
               bgColor={'#2A4876'}
             />
+
+            
+          {/* <Card 
+              imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
+              title={'Asset TSPM'}
+              number={444}
+              bgColor={'#2A4876'}
+            /> */}
           </div>
           
         </div>
