@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, NavLink } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
 import {AiFillEnvironment} from "react-icons/ai";
@@ -34,6 +35,21 @@ const SideBar = () => {
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
+
+
+  //get data user
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+
+  useEffect (() => {
+    axios.get('http://localhost:5000/me').then(res => {
+      setUsername(res.data.name)
+      setRole(res.data.role)
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [])
+
 
   return (
     <div className='flex'>
