@@ -47,6 +47,7 @@ const SideBar = () => {
       setRole(res.data.role)
     }).catch(err => {
       console.log(err)
+      
     })
   }, [])
 
