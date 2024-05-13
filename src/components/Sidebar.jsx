@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
 import {AiFillEnvironment} from "react-icons/ai";
@@ -14,7 +13,6 @@ import { MdLogout } from "react-icons/md";
 // import { HiMenuAlt3} from "react-icons/hi";
 import { TbReportAnalytics } from "react-icons/tb";
 import Card from '../components/Card';
-import { getMe } from '../features/authSlice';
 // import SideBar from '../components/SideBar';
 
 const SideBar = () => {
@@ -36,21 +34,6 @@ const SideBar = () => {
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
-
-
-  //get data user
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
-
-  useEffect (() => {
-    axios.get('http://localhost:5000/me').then(res => {
-      setUsername(res.data.name)
-      setRole(res.data.role)
-    }).catch(err => {
-      console.log(err)
-    })
-  }, [])
-
 
   return (
     <div className='flex'>
