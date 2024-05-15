@@ -1,5 +1,5 @@
 import React from 'react'
-import SideBar from './SideBar'
+import SideBar from './Sidebar'
 
 const Layout = ({children}) => {
   return (
