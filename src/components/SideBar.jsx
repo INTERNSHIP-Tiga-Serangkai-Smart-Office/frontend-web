@@ -6,7 +6,7 @@ import {BsArrowLeftShort,} from "react-icons/bs";
 import {AiFillEnvironment} from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
 import { BiSolidEditLocation } from "react-icons/bi";
-import { FaFolder } from "react-icons/fa";
+import { FaFolder,FaUserAlt } from "react-icons/fa";
 import { LuFolderInput } from "react-icons/lu";
 import { LuFolderOutput } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -19,6 +19,7 @@ import Card from '../components/Card';
 const SideBar = () => {
   const menus =[
     {name: "Dashboard", link:"/dashboard", icon:RiDashboardFill},
+    {name: "User", link:"/users", icon:FaUserAlt},
     {name: "Data Asset", link:"/dataaset", icon:FaFolder},
     {name: "Relokasi", link:"#", icon:BiSolidEditLocation},
     {name: "Asset Masuk", link:"#", icon:LuFolderInput},
