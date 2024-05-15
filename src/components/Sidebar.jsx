@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
 import {AiFillEnvironment} from "react-icons/ai";
@@ -36,22 +35,6 @@ const SideBar = () => {
     setActiveIndex(index);
   };
 
-
-  //get data user
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
-
-  useEffect (() => {
-    axios.get('http://localhost:5000/me').then(res => {
-      setUsername(res.data.name)
-      setRole(res.data.role)
-    }).catch(err => {
-      console.log(err)
-      
-    })
-  }, [])
-
-
   return (
     <div className='flex'>
       <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${open? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius:  "0px 20px 20px 0px"  }}>
@@ -76,8 +59,8 @@ const SideBar = () => {
             className='w-[60px] h-[60px]'
           />
           <div className={`flex flex-col mx-3 items-center justify-center ${!open && `invisible`}`}>
-            {role && <h3 className='inline-flex items-center text-white px-3 bg-[#2C449B] rounded-2xl truncate'>{role}</h3>}
-            {username && <h2 className='text-xl font-bold'>{username}</h2>}
+            <h3 className='inline-flex items-center text-white px-3 bg-[#2C449B] rounded-2xl truncate'>super admin</h3>
+            <h2 className='text-xl font-bold'>Username</h2>
           </div>
         </div>
 
