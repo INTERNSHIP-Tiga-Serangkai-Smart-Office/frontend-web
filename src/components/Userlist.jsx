@@ -44,7 +44,6 @@ function Userlist() {
                         <td class=" ">{d.id}</td>
                         <td class=" ">{d.name}</td>
                         <td class=" ">{d.email}</td>
-                        <td class=" ">{d.role}</td>
                         <td class=" ">
                             <button className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
