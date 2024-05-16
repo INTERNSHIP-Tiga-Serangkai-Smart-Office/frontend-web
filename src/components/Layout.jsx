@@ -4,7 +4,7 @@ import SideBar from './SideBar'
 const Layout = ({children}) => {
   return (
     <React.Fragment>
-        <div className='flex flex-row'>
+        <div className='w-full h-full flex flex-row'>
             <SideBar/>
             <div className='p-10'>
                 <main>{children}</main>
