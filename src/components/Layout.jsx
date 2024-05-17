@@ -7,9 +7,11 @@ const Layout = ({children}) => {
   return (
     <React.Fragment>
         <div className='flex'>
+          <div>
             <SideBar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle}/>
+          </div>
             <div >
-                <div className={` ${sidebarToggle ? 'ml-72' : 'ml-20'} w-full p-10`}>{children}</div>
+                <div className={` ${sidebarToggle ? 'ml-72' : 'ml-20'}  p-10`}>{children}</div>
             </div>
 
         </div>

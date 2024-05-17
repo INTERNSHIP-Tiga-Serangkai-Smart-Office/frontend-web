@@ -86,7 +86,7 @@ const FormAddAsset = () => {
 
         if(fieldName === "Entity"){
             return (
-                <div key={fieldName}>
+                <div key={fieldName} className='mx-3 w-[45%]'>
                   <label htmlFor={fieldName}>{fieldName}</label>
                   <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange}>
                     <option value="">Select Entity</option>
@@ -100,7 +100,7 @@ const FormAddAsset = () => {
               );
         }else{
             return (
-                <div key={fieldName}>
+                <div key={fieldName} className='mx-3 w-[45%]'>
                     <label htmlFor={fieldName} className='label' >{fieldName}</label>
                     {isOptional ? (
                     <input
@@ -109,7 +109,7 @@ const FormAddAsset = () => {
                         name={fieldName}
                         value={asset[fieldName]}
                         onChange={handleChange}
-                        className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
+                        className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2 "
                     />
                     ) : (
                     <input
@@ -153,13 +153,19 @@ const FormAddAsset = () => {
             </form> */}
 
         <form onSubmit={handleSubmit}>
-            <h2>Asset Information</h2>
-            {Object.keys(asset)
-                .filter((field) => field !== 'UserID') // Exclude UserID
-                .map(renderField)}
+            <h2 className='bold-32 my-5'>Asset Information</h2>
+            <div className='flex flex-wrap justify-center'>
+                {Object.keys(asset)
+                    .filter((field) => field !== 'UserID') // Exclude UserID
+                    .map(renderField)}
+            </div>
+            
 
             {/* Add your logic for Submit Button and Dropdown Menus */}
-            <button type="submit" className="bold-32 bg-green-300 p-3 w-full rounded-xl shadow-lg hover:bg-green-400">Submit</button>
+            <div className='flex justify-end'>
+                <button type="submit" className="bold-20 bg-green-300 p-3 w-[30%] m-10 rounded-xl shadow-lg hover:bg-green-400">Add</button>
+            </div>
+            
         </form>
         </div>
     )
