@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
-import {AiFillEnvironment} from "react-icons/ai";
+// import {AiFillEnvironment} from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
 import { BiSolidEditLocation } from "react-icons/bi";
 import { FaFolder,FaUserAlt } from "react-icons/fa";
@@ -13,7 +13,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 // import { HiMenuAlt3} from "react-icons/hi";
 import { TbReportAnalytics } from "react-icons/tb";
-import Card from '../components/Card';
+// import Card from '../components/Card';
 // import SideBar from '../components/SideBar';
 
 const SideBar = () => {
