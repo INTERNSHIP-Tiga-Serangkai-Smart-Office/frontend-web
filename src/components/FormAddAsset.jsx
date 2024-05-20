@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +17,8 @@ const FormAddAsset = () => {
         CostCenterNo: '',
         ProfitCenterNo: '',
         LocId: '',
+        IDNoEN:'',
+        IDNoEB:'',
         IDNoPO: '',
         IDNoPR: '',
         IDNoGR: '',
@@ -79,18 +81,57 @@ const FormAddAsset = () => {
         { value: 'entity3', label: 'Entity 3' },
     ];
 
+    //fixed group dropdown
+    const [group, setGroup] = useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:5000/fixed-group")
+        .then(res => setGroup(res.data))
+        .catch(err => console.log(err));
+    },[]);
+    const GroupOptions = [
+        group.map(() => (
+            {value: group.IDNo, label: group.Name}
+        ))
+    ];
+
+    //entitas bisnis dropdown
+    const [entitasBisnis, setEntitasBisnis] = useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:5000/entitas-bisnis")
+        .then(res => setEntitasBisnis(res.data))
+        .catch(err => console.log(err));
+    },[]);
+    const EBOptions = [
+        entitasBisnis.map(() => (
+            {value: entitasBisnis.IDNo, label: entitasBisnis.EBName}
+        ))
+    ];
+
     // Form component logic for each field (replace with your actual components)
     const renderField = (fieldName) => {
         const inputType = typeof asset[fieldName] === 'number' ? 'number' : 'text';
-        const isOptional = fieldName.includes('Pick') || fieldName.includes('SalVageValueORG') || fieldName.includes('AccDep') || fieldName.includes('SUnit') || fieldName.includes('SQM') || fieldName.includes('Weight') || fieldName.includes('HolderName') || fieldName.includes('Classification') || fieldName.includes('Brand') || fieldName.includes('ChassisNo') || fieldName.includes('EngineNo') || fieldName.includes('RegNo') || fieldName.includes('RegDate') || fieldName.includes('GuaranteeDate') || fieldName.includes('EmpID');
+        // const isOptional = fieldName.includes('AccNo');
 
-        if(fieldName === "Entity"){
+        const options = (() => {
+            switch (fieldName) {
+                case 'Entity':
+                  return EntityOptions;
+                case 'IDNoGR':
+                  return GroupOptions;
+                case 'IDNoEB':
+                  return EBOptions;
+                default:
+                    return null;
+              }
+        })();
+
+        if(options){
             return (
-                <div key={fieldName} className='mx-3 w-[45%]'>
+                <div key={fieldName} className='flex flex-col mx-3 w-[45%]'>
                   <label htmlFor={fieldName}>{fieldName}</label>
-                  <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange}>
+                  <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='p-3 shadow border rounded my-2'>
                     <option value="">Select Entity</option>
-                    {EntityOptions.map((option) => (
+                    {options.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
@@ -102,7 +143,7 @@ const FormAddAsset = () => {
             return (
                 <div key={fieldName} className='mx-3 w-[45%]'>
                     <label htmlFor={fieldName} className='label' >{fieldName}</label>
-                    {isOptional ? (
+                    {/* {isOptional ? (
                     <input
                         type={inputType}
                         id={fieldName}
@@ -111,7 +152,7 @@ const FormAddAsset = () => {
                         onChange={handleChange}
                         className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2 "
                     />
-                    ) : (
+                    ) : ( */}
                     <input
                         type={inputType}
                         id={fieldName}
@@ -121,7 +162,7 @@ const FormAddAsset = () => {
                         onChange={handleChange}
                         className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
                     />
-                    )}
+                    {/* )} */}
                 </div>
             );
         }
@@ -129,44 +170,22 @@ const FormAddAsset = () => {
     };
 
     return (
-        <div>
-            {/* <h1 className='title'>FormAddAsset</h1>
-            <form>
-                <div className='field'>
-                    <label className='label'>Asset Name</label>
-                    <div className='control'>
-                        <input type="text" className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2" placeholder='Asset Name' />
-                    </div>
+        <div className='flex place-content-center'>
+            <form onSubmit={handleSubmit}>
+                <h2 className='bold-32 my-5'>Asset Information</h2>
+                <div className='flex flex-wrap justify-center'>
+                    {Object.keys(asset)
+                        .filter((field) => field !== 'UserID') // Exclude UserID
+                        .map(renderField)}
                 </div>
-                <div className='field'>
-                    <label className='label'>Asset Number</label>
-                    <div className='control'>
-                        <input type="text" className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2" placeholder='Asset Number' />
-                    </div>
-                </div>
-                <div className='field'>
-                    <label className='label'>Asset Name</label>
-                    <div className='control'>
-                        <input type="text" className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2" placeholder='Name' />
-                    </div>
-                </div>
-            </form> */}
+                
 
-        <form onSubmit={handleSubmit}>
-            <h2 className='bold-32 my-5'>Asset Information</h2>
-            <div className='flex flex-wrap justify-center'>
-                {Object.keys(asset)
-                    .filter((field) => field !== 'UserID') // Exclude UserID
-                    .map(renderField)}
-            </div>
-            
-
-            {/* Add your logic for Submit Button and Dropdown Menus */}
-            <div className='flex justify-end'>
-                <button type="submit" className="bold-20 bg-green-300 p-3 w-[30%] m-10 rounded-xl shadow-lg hover:bg-green-400">Add</button>
-            </div>
-            
-        </form>
+                {/* Add your logic for Submit Button and Dropdown Menus */}
+                <div className='flex justify-end'>
+                    <button type="submit" className="bold-20 bg-green-300 p-3 w-[30%] m-10 rounded-xl shadow-lg hover:bg-green-400">Add</button>
+                </div>
+                
+            </form>
         </div>
     )
 }

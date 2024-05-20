@@ -48,7 +48,7 @@ const SideBar = ({sidebarToggle, setSidebarToggle}) => {
 
 
   return (
-    <aside className='flex fixed'>
+    <aside className='flex fixed overflow-auto'>
       <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${sidebarToggle? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius:  "0px 20px 20px 0px"  }}>
         <BsArrowLeftShort className={`bg-white text-purple-950 text-3xl rounded-full absolute -right-3 top-9 border border-black 
         cursor-pointer ${!sidebarToggle && "rotate-180"}`} onClick={()=>setSidebarToggle(!sidebarToggle)}/>
