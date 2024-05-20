@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import { Button } from 'bootstrap';
 import React, { useState } from 'react';
@@ -14,23 +15,27 @@ function Userlist() {
         .catch(err => console.log(err));
     }, [])
     return (
-        <div class="flex w-full  shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-center  text-gray-500 dark:text-gray-400">
+        <div className='text-start mb-3'>
+                <Link to='' className='buton bg-btn-primary'>Add +</Link>
+            
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
+            
+            <table class="flex-row  w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr >
                         <th >
                             No
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th >
                             Name
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th >
                             Email
                         </th>
-                        <th scope="col" class="px-7 py-5">
+                        <th >
                             Roles
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th >
                             Action
                         </th>
                     </tr>
@@ -57,6 +62,7 @@ function Userlist() {
                     
                 </tbody>
             </table>
+        </div>
         </div>
 
     )

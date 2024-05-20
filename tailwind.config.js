@@ -11,7 +11,8 @@ module.exports = {
         "clr-icon-click":"#BCB4D7",
         "cl-white":"#FFFFFF",
         "bg-amber":"#F9BD47",
-        "light-white":'rgba(255,255,255,0.18)'
+        "light-white":'rgba(255,255,255,0.18)',
+        "btn-primary":'#80c92c'
       },
       fontFamily:{
         'montserrat' :["'Montserrat'",'semi-bold']
