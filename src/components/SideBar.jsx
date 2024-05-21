@@ -11,12 +11,14 @@ import { LuFolderOutput } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
+import { FaUsers } from "react-icons/fa";
 
 const SideBar = ({sidebarToggle, setSidebarToggle}) => {
   const menus =[
     {name: "Dashboard", link:"/dashboard", icon:RiDashboardFill},
     {name: "User", link:"/users", icon:FaUserAlt},
     {name: "Data Asset", link:"/dataaset", icon:FaFolder},
+    {name: "Role", link:"/role", icon:FaUsers},
     {name: "Relokasi", link:"#", icon:BiSolidEditLocation},
     {name: "Asset Masuk", link:"#", icon:LuFolderInput},
     {name: "Asset Keluar", link:"#", icon:LuFolderOutput},

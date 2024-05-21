@@ -83,29 +83,29 @@ const FormAddAsset = () => {
 
     //fixed group dropdown
     const [group, setGroup] = useState([]);
-    useEffect(() => {
-        axios.get("http://localhost:5000/fixed-group")
-        .then(res => setGroup(res.data))
-        .catch(err => console.log(err));
-    },[]);
-    const GroupOptions = [
-        group.map(() => (
-            {value: group.IDNo, label: group.Name}
-        ))
-    ];
-
-    //entitas bisnis dropdown
     const [entitasBisnis, setEntitasBisnis] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:5000/entitas-bisnis")
-        .then(res => setEntitasBisnis(res.data))
-        .catch(err => console.log(err));
-    },[]);
-    const EBOptions = [
-        entitasBisnis.map(() => (
-            {value: entitasBisnis.IDNo, label: entitasBisnis.EBName}
-        ))
-    ];
+        const fetchGroup = async () => {
+            const res = await axios.get("http://localhost:5000/fixed-group");
+            setGroup(res.data);
+        };
+        const fetchEB = async () => {
+            const res = await axios.get("http://localhost:5000/entitas-bisnis");
+            setEntitasBisnis(res.data);
+        };
+        fetchEB();
+        fetchGroup();
+    },[setGroup, setEntitasBisnis]);
+    // const GroupOptions = [
+    //     group.map(() => (
+    //         {value: group.IDNo, label: group.Name}
+    //     ))
+    // ];
+    // const EBOptions = [
+    //     entitasBisnis.map((entitasBisnis) => (
+    //         {value: entitasBisnis.IDNo, label: entitasBisnis.EBName}
+    //     ))
+    // ];
 
     // Form component logic for each field (replace with your actual components)
     const renderField = (fieldName) => {
@@ -117,9 +117,9 @@ const FormAddAsset = () => {
                 case 'Entity':
                   return EntityOptions;
                 case 'IDNoGR':
-                  return GroupOptions;
+                  return group;
                 case 'IDNoEB':
-                  return EBOptions;
+                  return entitasBisnis;
                 default:
                     return null;
               }
@@ -130,10 +130,10 @@ const FormAddAsset = () => {
                 <div key={fieldName} className='flex flex-col mx-3 w-[45%]'>
                   <label htmlFor={fieldName}>{fieldName}</label>
                   <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='p-3 shadow border rounded my-2'>
-                    <option value="">Select Entity</option>
+                    <option value="">Select {fieldName}</option>
                     {options.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
+                      <option key={option.IDNo} value={option.IDNo || option.IDNo}>
+                        {option.EBName || option.Name}
                       </option>
                     ))}
                   </select>
