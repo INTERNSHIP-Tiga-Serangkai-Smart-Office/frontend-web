@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import SideBar from './SideBar'
 
 const Layout = ({children}) => {
-  const [sidebarToggle, setSidebarToggle] = useState(true);
+  const [sidebarToggle, setSidebarToggle] = useState(false);
 
   return (
     <React.Fragment>

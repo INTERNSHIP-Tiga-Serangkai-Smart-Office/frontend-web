@@ -9,7 +9,7 @@ const Dashboard = () => {
         <div>
           <h1 className='text-2xl font-semibold'>Home Page</h1>
           
-          <div className='flex flex-row'>
+          <div className='flex flex-row flex-wrap'>
             <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset Master'}
@@ -32,12 +32,12 @@ const Dashboard = () => {
             />
 
             
-          {/* <Card 
+          <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset TSPM'}
               number={444}
               bgColor={'#2A4876'}
-            /> */}
+            />
           </div>
           
         </div>
