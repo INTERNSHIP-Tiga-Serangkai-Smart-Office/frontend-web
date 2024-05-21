@@ -5,7 +5,7 @@ const initialState = {
     user: null,
     isError: false,
     isSuccess: false,
-    isLoading: false,
+    isLoading: false, 
     message: ""
 }
 
@@ -18,7 +18,7 @@ export const LoginAuth = createAsyncThunk("user/LoginUser", async (user, thunkAP
         return response.data;
     } catch (error) {
         if (error.response) {
-            const message = error.response.data.msg;
+            const message = error.response.data.error;
             return thunkAPI.rejectWithValue(message);
         }
     }

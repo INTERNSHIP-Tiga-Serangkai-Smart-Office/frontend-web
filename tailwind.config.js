@@ -12,7 +12,8 @@ module.exports = {
         "cl-white":"#FFFFFF",
         "bg-amber":"#F9BD47",
         "light-white":'rgba(255,255,255,0.18)',
-        "btn-primary":'#80c92c'
+        "btn-primary":'#80c92c',
+        "Bg-alert":'#E7CECE'
       },
       fontFamily:{
         'montserrat' :["'Montserrat'",'semi-bold']
