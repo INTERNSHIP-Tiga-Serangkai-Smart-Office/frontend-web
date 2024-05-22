@@ -122,7 +122,7 @@ function LoginUser() {
       draggable
       pauseOnHover
       theme="light"
-      style={{backgroundColor:'#E7CECE'}}
+      // style={{backgroundColor:'#E7CECE'}}
       />
     </main>
   );

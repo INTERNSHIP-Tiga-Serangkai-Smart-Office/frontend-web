@@ -157,7 +157,7 @@ const FormAddAsset = () => {
                         type={inputType}
                         id={fieldName}
                         name={fieldName}
-                        required
+                        // required
                         value={asset[fieldName]}
                         onChange={handleChange}
                         className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
