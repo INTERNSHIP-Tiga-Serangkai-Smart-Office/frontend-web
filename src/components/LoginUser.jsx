@@ -102,7 +102,7 @@ function LoginUser() {
                   />
                 </div>
               </div>
-              <a href="" className="italic">Forget password?</a>
+              <a href="#" className="italic">Forget password?</a>
               <div className="field mt-5">
                 <button type="submit" className="bold-32 bg-yellow-300 p-3 w-full rounded-xl shadow-lg hover:bg-yellow-400">
                   {isLoading ? "Loading..." : "Login"}
@@ -122,7 +122,7 @@ function LoginUser() {
       draggable
       pauseOnHover
       theme="light"
-      // style={{backgroundColor:'#E7CECE'}}
+      style={{backgroundColor:'#E7CECE'}}
       />
     </main>
   );
