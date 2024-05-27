@@ -66,25 +66,72 @@ const FormAddAsset = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/fixed', {asset});
-            navigate('/dataaset')
+            await axios.post('http://localhost:5000/fixed', {
+                FixedNo: asset.FixedNo,
+                FixedAssetName: asset.FixedAssetName,
+                Entity: asset.Entity,
+                AccNo: asset.AccNo,
+                Currency: asset.Currency,
+                DateAq: asset.DateAq,
+                DateDisp: asset.DateDisp,
+                CostCenterNo: asset.CostCenterNo,
+                ProfitCenterNo: asset.ProfitCenterNo,
+                LocId: asset.LocId,
+                IDNoEN: asset.IDNoEN,
+                IDNoEB: asset.IDNoEB,
+                IDNoPO: asset.IDNoPO,
+                IDNoPR: asset.IDNoPR,
+                IDNoGR: asset.IDNoGR,
+                IDNoPC: asset.IDNoPC,
+                LineNoBD: asset.LineNoBD,
+                OrderNo: asset.OrderNo,
+                InvNo: asset.InvNo,
+                PickBill: asset.PickBill,
+                SupplierId: asset.SupplierId,
+                Qty: asset.Qty,
+                Pick: asset.Pick,
+                PickGR: asset.PickGR,
+                Unit: asset.Unit,
+                SUnit: asset.SUnit,
+                Cost: asset.Cost,
+                SalVageValue: asset.SalVageValue,
+                SalVageValueORG: asset.SalVageValueORG,
+                AccDep: asset.AccDep,
+                Pict: asset.Pict,
+                Remark: asset.Remark,
+                Status: asset.Status,
+                IDNo: asset.IDNo,
+                SQM: asset.SQM,
+                Weight: asset.Weight,
+                HolderName: asset.HolderName,
+                Classification: asset.Classification,
+                Brand: asset.Brand,
+                ChassisNo: asset.ChassisNo,
+                EngineNo: asset.EngineNo,
+                RegNo: asset.RegNo,
+                RegDate: asset.RegDate,
+                GuaranteeDate: asset.GuaranteeDate,
+                EmpID: asset.EmpID,
+                UserID: asset.UserID,
+            });
+            navigate('/dataaset');
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
+                console.log(msg);
             }
         }
     }
 
-    const EntityOptions = [ // Replace with your actual entity options
-        { value: 'entity1', label: 'Entity 1' },
-        { value: 'entity2', label: 'Entity 2' },
-        { value: 'entity3', label: 'Entity 3' },
-    ];
-
     //fixed group dropdown
+    const [entity, setEntity] = useState([]);
     const [group, setGroup] = useState([]);
     const [entitasBisnis, setEntitasBisnis] = useState([]);
     useEffect(() => {
+        const fetchEntity = async () => {
+            const res = await axios.get("http://localhost:5000/entity");
+            setEntity(res.data);
+        }
         const fetchGroup = async () => {
             const res = await axios.get("http://localhost:5000/fixed-group");
             setGroup(res.data);
@@ -93,9 +140,10 @@ const FormAddAsset = () => {
             const res = await axios.get("http://localhost:5000/entitas-bisnis");
             setEntitasBisnis(res.data);
         };
+        fetchEntity();
         fetchEB();
         fetchGroup();
-    },[setGroup, setEntitasBisnis]);
+    },[setEntity, setGroup, setEntitasBisnis]);
     // const GroupOptions = [
     //     group.map(() => (
     //         {value: group.IDNo, label: group.Name}
@@ -115,7 +163,7 @@ const FormAddAsset = () => {
         const options = (() => {
             switch (fieldName) {
                 case 'Entity':
-                  return EntityOptions;
+                  return entity;
                 case 'IDNoGR':
                   return group;
                 case 'IDNoEB':
@@ -132,8 +180,8 @@ const FormAddAsset = () => {
                   <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='p-3 shadow border rounded my-2'>
                     <option value="">Select {fieldName}</option>
                     {options.map((option) => (
-                      <option key={option.IDNo} value={option.IDNo || option.IDNo}>
-                        {option.EBName || option.Name}
+                      <option key={option.IDNo || option.Entity} value={option.Entity || option.IDNo || option.IDNo}>
+                        {option.EntityName || option.EBName || option.Name}
                       </option>
                     ))}
                   </select>

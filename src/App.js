@@ -6,6 +6,7 @@ import DataAset from './pages/DataAset';
 import Users from './pages/Users';
 import AddAssets from './pages/AddAssets';
 import Roles from './pages/Roles';
+import AddRole from './pages/AddRole';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/dataaset' element={<DataAset/>}/>
         <Route path='/users' element={<Users/>}/>
         <Route path='/role' element={<Roles/>}/>
+        <Route path='/role/add/' element={<AddRole/>}/>
         <Route path='/dataaset/add' element={<AddAssets/>}/>
       </Routes>
     </BrowserRouter>

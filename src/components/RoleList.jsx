@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MdEdit } from 'react-icons/md';
 import { FaTrashAlt } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 
 const RoleList = () => {
@@ -170,7 +171,8 @@ const RoleList = () => {
 
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
-                
+                <h2 className='bold-32 my-5'>Asset Information</h2>
+                <Link to={`/role/add/`}>Add</Link>
                 <table class="flex-row  w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr >
@@ -198,8 +200,8 @@ const RoleList = () => {
                                         <td class=" ">{role.name}</td>
                                         <td><button onClick={selectedRole? () => setSelectedRole('') : () => setSelectedRole(role.id)}>{(selectedRole === role.id)? 'Hide' : 'Show'}</button></td>
                                         <td class=" ">
-                                            <button className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button>
-                                            <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
+                                            <Link to='/role/add'><MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/></Link>
+                                            <button className='items-center'><FaTrashAlt className='text-red-600 items-center' style={{  fontSize: '1.4rem' }}/></button>
                                         </td>
                                     </tr>
                                     {(selectedRole === role.id) && (
