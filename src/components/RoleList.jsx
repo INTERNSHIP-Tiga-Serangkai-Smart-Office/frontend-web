@@ -6,10 +6,10 @@ import { FaTrashAlt } from "react-icons/fa";
 
 const RoleList = () => {
     const [roles, setRoles] = useState([]);
-    const [permissions, setPermissions] = useState({});
+    // const [permissions, setPermissions] = useState({});
     const [selectedRole, setSelectedRole] = useState("");
-    const [selectedPermissions, setSelectedPermissions] = useState({});
-    const [originalPermissions, setOriginalPermissions] = useState({});
+    // const [selectedPermissions, setSelectedPermissions] = useState({});
+    // const [originalPermissions, setOriginalPermissions] = useState({});
 
     useEffect(() => {
         // Fetch roles
