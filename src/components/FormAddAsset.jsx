@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const FormAddAsset = () => {
     const [msg, setMsg] = useState("");
@@ -62,6 +64,10 @@ const FormAddAsset = () => {
         });
         console.log(e.target);
     };
+
+    const handleDateChange = (date, fieldName) => {
+        setAsset({...asset, [fieldName]: date});
+    }
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -144,16 +150,6 @@ const FormAddAsset = () => {
         fetchEB();
         fetchGroup();
     },[setEntity, setGroup, setEntitasBisnis]);
-    // const GroupOptions = [
-    //     group.map(() => (
-    //         {value: group.IDNo, label: group.Name}
-    //     ))
-    // ];
-    // const EBOptions = [
-    //     entitasBisnis.map((entitasBisnis) => (
-    //         {value: entitasBisnis.IDNo, label: entitasBisnis.EBName}
-    //     ))
-    // ];
 
     // Form component logic for each field (replace with your actual components)
     const renderField = (fieldName) => {
@@ -172,8 +168,18 @@ const FormAddAsset = () => {
                     return null;
               }
         })();
-
-        if(options){
+        
+        if(fieldName === 'DateAq' || fieldName === 'DateDisp' || fieldName === 'RegDate' || fieldName ==='GuaranteeDate'){
+            return (
+                <div key={fieldName}>
+                    <label htmlFor={fieldName}>{fieldName}</label>
+                    <DatePicker
+                        selected={asset[fieldName]}
+                        onChange={(date) => handleDateChange(date, fieldName)}
+                    />
+                </div>
+            );
+        }else if(options){
             return (
                 <div key={fieldName} className='flex flex-col mx-3 w-[45%]'>
                   <label htmlFor={fieldName}>{fieldName}</label>
