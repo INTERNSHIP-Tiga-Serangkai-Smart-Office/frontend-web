@@ -20,7 +20,7 @@ const SideBar = ({sidebarToggle, setSidebarToggle}) => {
     {name: "Data Asset", link:"/dataaset", icon:FaFolder},
     {name: "Role", link:"/role", icon:FaUsers},
     {name: "Relokasi", link:"#", icon:BiSolidEditLocation},
-    {name: "Asset Masuk", link:"#", icon:LuFolderInput},
+    {name: "Asset Masuk", link:"/master", icon:LuFolderInput},
     {name: "Asset Keluar", link:"#", icon:LuFolderOutput},
     {name: "Laporan", link:"#", icon:TbReportAnalytics},
     {name : "Settings", link:"#", icon:IoSettingsOutline,margin:true},
