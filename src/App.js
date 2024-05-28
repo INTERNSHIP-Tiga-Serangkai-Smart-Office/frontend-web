@@ -7,6 +7,7 @@ import Users from './pages/Users';
 import AddAssets from './pages/AddAssets';
 import Roles from './pages/Roles';
 import AddRole from './pages/AddRole';
+import Master from './pages/Master';
 import EditRole from './pages/EditRole';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path='/role/add/' element={<AddRole/>}/>
         <Route path='/role/edit/:id' element={<EditRole/>}/>
         <Route path='/dataaset/add' element={<AddAssets/>}/>
+        <Route path='/master' element={<Master />}/>
       </Routes>
     </BrowserRouter>
     // <div>
