@@ -14,8 +14,8 @@ const FormAddAsset = () => {
         Entity: '',
         AccNo: '',
         Currency: '',
-        DateAq: '',
-        DateDisp: '',
+        DateAq: null,
+        DateDisp: null,
         CostCenterNo: '',
         ProfitCenterNo: '',
         LocId: '',
@@ -51,8 +51,8 @@ const FormAddAsset = () => {
         ChassisNo: '',
         EngineNo: '',
         RegNo: '',
-        RegDate: '',
-        GuaranteeDate: '',
+        RegDate: null,
+        GuaranteeDate: null,
         EmpID: '',
         UserID: '',
     });
@@ -187,8 +187,13 @@ const FormAddAsset = () => {
                   <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='p-3 shadow border rounded my-2'>
                     <option value="">Select {fieldName}</option>
                     {options.map((option) => (
-                      <option key={option.IDNo || option.Entity} value={option.Entity || option.IDNo || option.IDNo}>
-                        {option.EntityName || option.EBName || option.Name}
+                      <option key={option.IDNo || option.Entity} value={option.Entity || option.IDNo || option.IDNo} style={{display: 'flex'}}>
+                        <span style={{width: '50px'}}>
+                            {option.Entity || option.IDNo || option.IDNo}
+                        </span>
+                        <span style={{marginLeft: '20px'}}>
+                            {option.EntityName || option.EBName || option.Name}
+                        </span>
                       </option>
                     ))}
                   </select>
