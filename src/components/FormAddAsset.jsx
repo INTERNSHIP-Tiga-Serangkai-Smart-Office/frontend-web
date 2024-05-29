@@ -171,11 +171,12 @@ const FormAddAsset = () => {
         
         if(fieldName === 'DateAq' || fieldName === 'DateDisp' || fieldName === 'RegDate' || fieldName ==='GuaranteeDate'){
             return (
-                <div key={fieldName}>
+                <div key={fieldName} className='flex flex-col mx-2 w-[22%]'>
                     <label htmlFor={fieldName}>{fieldName}</label>
                     <DatePicker
                         selected={asset[fieldName]}
                         onChange={(date) => handleDateChange(date, fieldName)}
+                        className='p-3 shadow border rounded my-2'
                     />
                 </div>
             );
@@ -224,9 +225,9 @@ const FormAddAsset = () => {
     };
 
     return (
-        <div className='flex place-content-center'>
+        <div className='flex flex-col place-content-center'>
+            <h2 className='bold-32 my-5'>Asset Information</h2>
             <form onSubmit={handleSubmit}>
-                <h2 className='bold-32 my-5'>Asset Information</h2>
                 <div className='flex flex-wrap justify-center'>
                     {Object.keys(asset)
                         .filter((field) => field !== 'UserID') // Exclude UserID

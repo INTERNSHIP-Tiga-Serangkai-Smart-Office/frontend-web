@@ -2,32 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const FormAddRole = () => {
+const FormEditRole = () => {
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
-    const saveRole = async (e) => {
-      e.preventDefault();
-      try {
-        await axios.post('http://localhost:5000/role', {
-          name: name,
-          slug: slug,
-        });
-        navigate('/role');
-      } catch (error) {
-        if(error.response){
-          setMsg(error.response.data.msg);
-        }
-      }
+    const {id} = useParams();
+
+    useEffect(() => {
+    if(id){
+        
+        const getRoleById = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/role/${id}`);
+                setName(response.data.name);
+                setSlug(response.data.slug);
+            } catch (error) {
+                if(error.response){
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getRoleById();
     }
+  }, [id]);
 
   return (
     <div className='w-full place-content-center mx-0'>
-        <h1 className='bold-32 my-5'>Add New Role</h1>
+        <h1 className='bold-32 my-5'>Edit Role</h1>
         <div >
-          <form onSubmit={saveRole}>
+          <form >
             <div className='mx-auto w-[80%]'>
               <label className='label'>Name</label>
               <div>
@@ -59,4 +64,4 @@ const FormAddRole = () => {
   )
 }
 
-export default FormAddRole
+export default FormEditRole

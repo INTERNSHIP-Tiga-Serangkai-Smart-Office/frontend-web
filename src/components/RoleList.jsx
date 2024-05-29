@@ -171,7 +171,7 @@ const RoleList = () => {
 
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
-                <h2 className='bold-32 my-5'>Asset Information</h2>
+                <h2 className='bold-32 my-5'>Roles</h2>
                 <Link to={`/role/add/`}>Add</Link>
                 <table class="flex-row  w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -200,7 +200,7 @@ const RoleList = () => {
                                         <td class=" ">{role.name}</td>
                                         <td><button onClick={selectedRole? () => setSelectedRole('') : () => setSelectedRole(role.id)}>{(selectedRole === role.id)? 'Hide' : 'Show'}</button></td>
                                         <td class=" ">
-                                            <Link to='/role/add'><MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/></Link>
+                                            <Link to={`/role/edit/${role.id}`}><MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/></Link>
                                             <button className='items-center'><FaTrashAlt className='text-red-600 items-center' style={{  fontSize: '1.4rem' }}/></button>
                                         </td>
                                     </tr>
