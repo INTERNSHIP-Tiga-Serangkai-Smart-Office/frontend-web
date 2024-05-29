@@ -73,9 +73,9 @@ const DataAsset = () => {
                         <td class=" ">{i + 1}</td>
                         <td class=" ">{d.Entity}</td>
                         <td class=" ">{d.AccNo}</td>
-                        <td class=" ">{d.Currency}</td>
                         <td class=" ">{d.FixedNo}</td>
-                        <td class=" ">{d.Qty}</td>
+                        <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
+                        <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
                         <td class=" ">
                             <button className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
