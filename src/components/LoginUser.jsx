@@ -122,6 +122,7 @@ function LoginUser() {
       draggable
       pauseOnHover
       theme="light"
+
       />
     </main>
   );

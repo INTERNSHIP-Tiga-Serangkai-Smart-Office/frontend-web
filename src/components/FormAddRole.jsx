@@ -43,10 +43,10 @@ const FormAddRole = () => {
   // }, [id]);
 
   return (
-    <div>
+    <div className=''>
         <h1>Add New Role</h1>
         <div>
-          <form onSubmit={saveRole}>
+          <form className='' onSubmit={saveRole}>
             <div>
               <label className='label'>Name</label>
               <div>
