@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {BsArrowLeftShort,} from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { BiSolidEditLocation } from "react-icons/bi";
@@ -12,8 +12,13 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { FaUsers } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import { LogOut, reset } from "../features/authSlice";
 
-const SideBar = ({children}) => {
+const SideBar = ({children, isHidden}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const menus =[
     {name: "Dashboard", link:"/dashboard", icon:RiDashboardFill},
     {name: "User", link:"/users", icon:FaUserAlt},
@@ -49,11 +54,17 @@ const SideBar = ({children}) => {
     })
   }, [])
 
+  //logout
+  const logout = () => {
+    dispatch(LogOut());
+    dispatch(reset());
+    navigate("/");
+  };
 
   return (
-    <div className='flex flex-row'>
-      <aside className='flex  '>
-        <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${sidebarToggle? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius:  "0px 20px 20px 0px"  }}>
+    <div className={`flex flex-row ${isHidden ? 'hidden' : ``}`}>
+      <aside className='flex h-screen overflow-y-auto overflow-x-hidden bg-clr-bg-sd ' style={{ borderRadius:  "0px 20px 20px 0px"  }}>
+        <div className={`p-5 pt-8 ${sidebarToggle? "w-72":"w-20"} duration-300 relative`} >
           <BsArrowLeftShort className={`bg-white text-purple-950 text-3xl rounded-full absolute -right-3 top-9 border border-black 
           cursor-pointer ${!sidebarToggle && "rotate-180"}`} onClick={()=>setSidebarToggle(!sidebarToggle)}/>
           <div className='inline-flex'>
@@ -95,12 +106,13 @@ const SideBar = ({children}) => {
                   </Link>
               ))
             }
+            <button onClick={logout}>Log out</button>
           </div>
           
                   
         </div>
       </aside>
-      <main>{children}</main>
+      <main className='p-7 w-full h-screen overflow-auto'>{children}</main>
     </div>
   )
 }
