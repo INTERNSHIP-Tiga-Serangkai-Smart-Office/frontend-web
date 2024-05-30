@@ -52,8 +52,8 @@ const SideBar = ({children}) => {
 
   return (
     <div className='flex flex-row'>
-      <aside className='flex  '>
-        <div className={`bg-clr-bg-sd h-screen p-5 pt-8 ${sidebarToggle? "w-72":"w-20"} duration-300 relative`} style={{ borderRadius:  "0px 20px 20px 0px"  }}>
+      <aside className='flex h-screen overflow-y-auto overflow-x-hidden bg-clr-bg-sd ' style={{ borderRadius:  "0px 20px 20px 0px"  }}>
+        <div className={`p-5 pt-8 ${sidebarToggle? "w-72":"w-20"} duration-300 relative`} >
           <BsArrowLeftShort className={`bg-white text-purple-950 text-3xl rounded-full absolute -right-3 top-9 border border-black 
           cursor-pointer ${!sidebarToggle && "rotate-180"}`} onClick={()=>setSidebarToggle(!sidebarToggle)}/>
           <div className='inline-flex'>
@@ -100,7 +100,7 @@ const SideBar = ({children}) => {
                   
         </div>
       </aside>
-      <main>{children}</main>
+      <main className='p-7'>{children}</main>
     </div>
   )
 }
