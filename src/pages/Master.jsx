@@ -4,9 +4,7 @@ import MasterList from '../components/MasterList'
 
 const Master = () => {
   return (
-    <Layout>
-        <MasterList/>
-    </Layout>
+    <MasterList/>
   )
 }
 

@@ -9,12 +9,16 @@ import Roles from './pages/Roles';
 import AddRole from './pages/AddRole';
 import Master from './pages/Master';
 import EditRole from './pages/EditRole';
+import SideBar from './components/SideBar';
 
 function App() {
   return (
     <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Login />}/>
+    </Routes>
+    <SideBar>
       <Routes>
-        <Route path='/' element={<Login />}/>
         <Route path='/dashboard' element={<Dashboard />}/>
         <Route path='/dataaset' element={<DataAset/>}/>
         <Route path='/users' element={<Users/>}/>
@@ -24,6 +28,8 @@ function App() {
         <Route path='/dataaset/add' element={<AddAssets/>}/>
         <Route path='/master' element={<Master />}/>
       </Routes>
+    </SideBar>
+      
     </BrowserRouter>
     // <div>
     //   <Login/>

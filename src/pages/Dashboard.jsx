@@ -5,7 +5,6 @@ import Layout from '../components/Layout';
 const Dashboard = () => {
 
   return (
-      <Layout>
         <div>
           <h1 className='text-2xl font-semibold'>Home Page</h1>
           
@@ -41,7 +40,6 @@ const Dashboard = () => {
           </div>
           
         </div>
-      </Layout>
   )
 }
 

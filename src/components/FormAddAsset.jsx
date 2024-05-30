@@ -184,7 +184,7 @@ const FormAddAsset = () => {
             return (
                 <div key={fieldName} className='flex flex-col mx-3 w-[45%]'>
                   <label htmlFor={fieldName}>{fieldName}</label>
-                  <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='p-3 shadow border rounded my-2'>
+                  <select id={fieldName} name={fieldName} value={asset[fieldName]} onChange={handleChange} className='flex p-3 shadow border rounded my-2'>
                     <option value="">Select {fieldName}</option>
                     {options.map((option) => (
                       <option key={option.IDNo || option.Entity} value={option.Entity || option.IDNo || option.IDNo} style={{display: 'flex'}}>

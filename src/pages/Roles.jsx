@@ -4,9 +4,7 @@ import React from 'react'
 
 const Roles = () => {
   return (
-    <Layout>
-        <RoleList/>
-    </Layout>
+    <RoleList/>
   )
 }
 

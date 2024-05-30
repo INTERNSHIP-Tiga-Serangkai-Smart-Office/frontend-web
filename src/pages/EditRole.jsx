@@ -4,9 +4,7 @@ import React from 'react'
 
 const EditRole = () => {
   return (
-    <Layout>
-        <FormEditRole/>
-    </Layout>
+    <FormEditRole/>
   )
 }
 

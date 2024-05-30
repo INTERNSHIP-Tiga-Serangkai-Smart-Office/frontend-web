@@ -5,9 +5,7 @@ import React from 'react'
 
 const DataAset = () => {
   return (
-    <Layout>
-        <DataAsset/>
-    </Layout>
+    <DataAsset/>
   )
 }
 
