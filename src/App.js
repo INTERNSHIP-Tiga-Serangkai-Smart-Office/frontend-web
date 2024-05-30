@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DataAset from './pages/DataAset';
@@ -10,30 +10,48 @@ import AddRole from './pages/AddRole';
 import Master from './pages/Master';
 import EditRole from './pages/EditRole';
 import SideBar from './components/SideBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMe } from './features/authSlice';
 
 function App() {
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  const [hideSidebar, setHideSidebar] = useState(true);
+  const {Error} = useSelector((state => state.auth));
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (Error) {
+        setHideSidebar(true);
+    }else{
+      setHideSidebar(false);
+    }
+}, [Error, setHideSidebar]);
+
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<Login />}/>
-    </Routes>
-    <SideBar>
       <Routes>
-        <Route path='/dashboard' element={<Dashboard />}/>
-        <Route path='/dataaset' element={<DataAset/>}/>
-        <Route path='/users' element={<Users/>}/>
-        <Route path='/role' element={<Roles/>}/>
-        <Route path='/role/add/' element={<AddRole/>}/>
-        <Route path='/role/edit/:id' element={<EditRole/>}/>
-        <Route path='/dataaset/add' element={<AddAssets/>}/>
-        <Route path='/master' element={<Master />}/>
+        <Route path='/' element={<Login />}/>
+        <Route path='*' element={
+          <SideBar isHidden={hideSidebar}>
+            <Routes>
+              <Route path='/dashboard' element={<Dashboard />}/>
+              <Route path='/dataaset' element={<DataAset/>}/>
+              <Route path='/users' element={<Users/>}/>
+              <Route path='/role' element={<Roles/>}/>
+              <Route path='/role/add/' element={<AddRole/>}/>
+              <Route path='/role/edit/:id' element={<EditRole/>}/>
+              <Route path='/dataaset/add' element={<AddAssets/>}/>
+              <Route path='/master' element={<Master />}/>
+            </Routes>
+          </SideBar>
+        }/>
       </Routes>
-    </SideBar>
       
     </BrowserRouter>
-    // <div>
-    //   <Login/>
-    // </div>
   );
 }
 
