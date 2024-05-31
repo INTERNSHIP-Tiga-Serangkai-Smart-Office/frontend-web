@@ -28,12 +28,27 @@ const FormEditRole = () => {
     }
   }, [id]);
 
+  const saveRole = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:5000/role/${id}`, {
+        name: name,
+        slug: slug,
+      });
+      navigate('/role');
+    } catch (error) {
+      if(error.response){
+        setMsg(error.response.data.msg);
+      }
+    }
+  }
+
   return (
-    <div className='w-full place-content-center mx-0'>
+    <div className='mx-10'>
         <h1 className='bold-32 my-5'>Edit Role</h1>
         <div >
-          <form >
-            <div className='mx-auto w-[80%]'>
+          <form onSubmit={saveRole}>
+            <div>
               <label className='label'>Name</label>
               <div>
                 <input 
@@ -43,7 +58,7 @@ const FormEditRole = () => {
                   onChange={(e) => setName(e.target.value)}/>
               </div>
             </div>
-            <div className='mx-auto w-[80%]'>
+            <div className='mx-auto'>
               <label className='label'>Slug</label>
               <div>
                 <input 

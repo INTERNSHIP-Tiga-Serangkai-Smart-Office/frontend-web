@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const FormAddRole = () => {
@@ -24,11 +24,11 @@ const FormAddRole = () => {
     }
 
   return (
-    <div className='w-full place-content-center mx-0'>
+    <div className='mx-10'>
         <h1 className='bold-32 my-5'>Add New Role</h1>
         <div >
           <form onSubmit={saveRole}>
-            <div className='mx-auto w-[80%]'>
+            <div>
               <label className='label'>Name</label>
               <div>
                 <input 
@@ -38,7 +38,7 @@ const FormAddRole = () => {
                   onChange={(e) => setName(e.target.value)}/>
               </div>
             </div>
-            <div className='mx-auto w-[80%]'>
+            <div>
               <label className='label'>Slug</label>
               <div>
                 <input 
