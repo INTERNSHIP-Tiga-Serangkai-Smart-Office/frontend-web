@@ -12,6 +12,7 @@ import EditRole from './pages/EditRole';
 import SideBar from './components/SideBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './features/authSlice';
+import EditAssets from './pages/EditAssets';
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
               <Route path='/role/add/' element={<AddRole/>}/>
               <Route path='/role/edit/:id' element={<EditRole/>}/>
               <Route path='/dataaset/add' element={<AddAssets/>}/>
+              <Route path='/dataaset/edit/:id' element={<EditAssets/>}/>
               <Route path='/master' element={<Master />}/>
             </Routes>
           </SideBar>

@@ -200,7 +200,11 @@ const RoleList = () => {
                                         <td class=" ">{role.name}</td>
                                         <td><button onClick={selectedRole? () => setSelectedRole('') : () => setSelectedRole(role.id)}>{(selectedRole === role.id)? 'Hide' : 'Show'}</button></td>
                                         <td class=" ">
-                                            <Link to={`/role/edit/${role.id}`}><MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/></Link>
+                                            <Link to={`/role/edit/${role.id}`}>
+                                                <button className='items-center p-3'>
+                                                    <MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/>
+                                                </button>
+                                            </Link>
                                             <button className='items-center'><FaTrashAlt className='text-red-600 items-center' style={{  fontSize: '1.4rem' }}/></button>
                                         </td>
                                     </tr>
