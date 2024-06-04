@@ -14,26 +14,16 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { FaUsers } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { LogOut, reset } from "../features/authSlice";
+import AlertLogout from './AlertLogout';
 
 const SideBar = ({children, isHidden}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const menus =[
-    {name: "Dashboard", link:"/dashboard", icon:RiDashboardFill},
-    {name: "User", link:"/users", icon:FaUserAlt},
-    {name: "Data Asset", link:"/dataaset", icon:FaFolder},
-    {name: "Role", link:"/role", icon:FaUsers},
-    {name: "Relokasi", link:"#", icon:BiSolidEditLocation},
-    {name: "Asset Masuk", link:"/master", icon:LuFolderInput},
-    {name: "Asset Keluar", link:"#", icon:LuFolderOutput},
-    {name: "Laporan", link:"#", icon:TbReportAnalytics},
-    {name : "Settings", link:"#", icon:IoSettingsOutline,margin:true},
-    {name : "LogOut", link:"#", icon:MdLogout},
-  ]
-
   const [activeIndex, setActiveIndex] = useState(0);
   const [sidebarToggle, setSidebarToggle] = useState(false);
+  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+
 
   const handleItemClick = (index) => {
     setActiveIndex(index);
@@ -54,12 +44,36 @@ const SideBar = ({children, isHidden}) => {
     })
   }, [])
 
-  //logout
+  // logout
   const logout = () => {
     dispatch(LogOut());
     dispatch(reset());
     navigate("/");
   };
+
+  // const logout = async () => {
+  //   try {
+  //     await axios.get('http://localhost:5000/logout');
+  //     dispatch(LogOut());
+  //     dispatch(reset());
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log('Logout failed:', error);
+  //   }
+  // };
+
+  const menus =[
+    {name: "Dashboard", link:"/dashboard", icon:RiDashboardFill},
+    {name: "User", link:"/users", icon:FaUserAlt},
+    {name: "Data Asset", link:"/dataaset", icon:FaFolder},
+    {name: "Role", link:"/role", icon:FaUsers},
+    {name: "Relokasi", link:"#", icon:BiSolidEditLocation},
+    {name: "Asset Masuk", link:"/master", icon:LuFolderInput},
+    {name: "Asset Keluar", link:"#", icon:LuFolderOutput},
+    {name: "Laporan", link:"#", icon:TbReportAnalytics},
+    {name : "Settings", link:"#", icon:IoSettingsOutline,margin:true},
+    { name: "LogOut", link: "#", icon: MdLogout, onClick: () => setShowLogoutAlert(true) },
+  ]
 
   return (
     <div className={`flex flex-row ${isHidden ? 'hidden' : ``}`}>
@@ -96,7 +110,12 @@ const SideBar = ({children, isHidden}) => {
               menus?.map((menu,i)=>(
                   <Link to={menu?.link} key={i} 
                   className={`${menu?.margin && 'mt-5'} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md transition-colors duration-300 hover:bg-gray-200 hover:text-gray-800 ${activeIndex === i ? 'bg-gray-200 text-gray-800' : ''}`}
-                  onClick={() => handleItemClick(i)}
+                  onClick={() => {
+                    handleItemClick(i);
+                    if (menu?.onClick) {
+                      menu.onClick();
+                    }
+                  }}
                   style={{ paddingRight: '30px', marginRight: '-20px', width: 'calc(100% + 20px)', borderRadius: '20px 0px 0px 20px' }}
                   >
                     <div>{React.createElement(menu?.icon,{size:"20"})}</div>
@@ -106,13 +125,18 @@ const SideBar = ({children, isHidden}) => {
                   </Link>
               ))
             }
-            <button onClick={logout}>Log out</button>
+            {/* <button onClick={logout}>Log out</button> */}
           </div>
           
                   
         </div>
       </aside>
       <main className='p-7 w-full h-screen overflow-auto'>{children}</main>
+      <AlertLogout
+        show={showLogoutAlert}
+        onConfirm={logout}
+        onCancel={() => setShowLogoutAlert(false)}
+      />
     </div>
   )
 }

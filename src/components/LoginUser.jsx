@@ -71,19 +71,19 @@ function LoginUser() {
         <div className="w-[80%] h-[500px] absolute inset-0 mx-auto my-auto object-cover bg-white border-2 border-gray-200 rounded-md shadow-lg">
           <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 p-8 md:mb-0 gap-4">
             <form onSubmit={Auth} className="w-full">
-              <h1 className="bold-32 my-3">Log In</h1>
-              <h3 className="bold-12 pb-5">Log in with registered account</h3>
+              <h1 className="inter-semiBold text-4xl  my-3">Log In</h1>
+              <h3 className=" inter-semiBold text-m pb-5">Log in with registered account</h3>
               {isError && (
                 <div className="w-full mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                   {message}
                 </div>
               )}
               <div className="field">
-                <label className="label pb-2">Email</label>
-                <div className="control">
+                <label className="inter-semiBold text-m pb-2">Email</label>
+                <div className="control montserrat-medium">
                   <input
                     type="text"
-                    className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
+                    className="montserrat-medium input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
@@ -91,20 +91,20 @@ function LoginUser() {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Password</label>
+                <label className="inter-semiBold text-m label">Password</label>
                 <div className="control">
                   <input
                     type="password"
-                    className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
+                    className="montserrat-medium input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                   />
                 </div>
               </div>
-              <a href="#" className="italic">Forget password?</a>
+              <a href="#" className="inter-light italic">Forget password?</a>
               <div className="field mt-5">
-                <button type="submit" className="bold-32 bg-yellow-300 p-3 w-full rounded-xl shadow-lg hover:bg-yellow-400">
+                <button type="submit" className="inter-semiBold text-5xl bg-yellow-300 p-3 w-full rounded-xl shadow-lg hover:bg-yellow-400">
                   {isLoading ? "Loading..." : "Login"}
                 </button>
               </div>
