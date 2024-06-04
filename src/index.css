@@ -170,3 +170,52 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@font-face {
+  font-family: montserrat-bold;
+  src: url(../public/Montserrat-Bold.ttf);
+}
+.montserrat-bold{
+  font-family: montserrat-bold;
+}
+
+@font-face {
+  font-family: montserrat-semiBold;
+  src: url(../public/Montserrat-SemiBold.ttf);
+}
+
+.montserrat-semiBold{
+  font-family: montserrat-semiBold;
+}
+
+@font-face {
+  font-family: montserrat-reguler;
+  src: url(../public/Montserrat-Regular.ttf);
+}
+.montserrat-reguler{
+  font-family: montserrat-reguler;
+}
+
+@font-face {
+  font-family: montserrat-medium;
+  src: url(../public/Montserrat-Medium.ttf);
+}
+.montserrat-medium{
+  font-family: montserrat-medium;
+}
+
+@font-face {
+  font-family: inter-semiBold;
+  src: url(../public/Inter-SemiBold.ttf);
+}
+.inter-semiBold{
+  font-family: inter-semiBold;
+}
+
+@font-face {
+  font-family: inter-light;
+  src: url(../public/Inter-Light.ttf);
+}
+.inter-light{
+  font-family: inter-light;
+}
