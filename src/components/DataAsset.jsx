@@ -43,7 +43,7 @@ const DataAsset = () => {
           <div class="relative shadow-md sm:rounded-lg container mt-5">
           {isLoading && <p>Loading assets...</p>}
       {error && <p className="error-message">{error}</p>}
-      {!isLoading && !error  && <p>No assets found.</p>}
+      {/* {!isLoading && !error  && <p>No assets found.</p>} */}
       {!isLoading && !error && fixeds.length > 0 && (
           <table class="flex-row  overflow-y-auto w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
