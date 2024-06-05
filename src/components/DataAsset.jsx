@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { MdEdit } from 'react-icons/md';
 import { FaTrashAlt } from "react-icons/fa";
+import { IoMdBarcode } from "react-icons/io";
 import axios from "axios";
+import Barcode from 'react-barcode';
+import ReactToPrint from "react-to-print";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const [barcode, setBarcode] = useState('');
+  const ref = useRef([]);
+  ref.current = [];
 
   useEffect(() => {
     // getFixed();
@@ -32,6 +39,30 @@ const DataAsset = () => {
     await axios.delete(`http://localhost:5000/fixed/${FixedIDNo}`);
     getFixed();
   };
+
+  const data = [
+    12345, 98082, 849438, 9439409
+  ];
+
+  // const [ref, { content }] = useBarcode({ value: data });
+  const printBarcodes = () => {
+    const printableContent = (
+      <div className="barcode-container"> {/* Container for layout */}
+        {ref.current.map((item, index) => (
+          <div key={index} className="barcode-item"> {/* Styling for each barcode */}
+            <Barcode ref={item[index]} value={item} />
+          </div>
+        ))}
+      </div>
+    );
+    return <ReactToPrint ref={ref} documentTitle="Barcodes">{printableContent}</ReactToPrint>;
+  };
+
+  const AddToRefs = (el) => {
+    if(el && !ref.current.includes(el)){
+      ref.current.push(el);
+    } 
+  };
   
   return (
     <div>
@@ -39,6 +70,9 @@ const DataAsset = () => {
         <Link to="/dataaset/add" className="button is-primary mb-2">
           Add New
         </Link>
+        <ReactToPrint 
+                              trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
+                              content={() => ref.current}/>
           <div>
           <div class="relative shadow-md sm:rounded-lg container mt-5">
           {isLoading && <p>Loading assets...</p>}
@@ -66,8 +100,11 @@ const DataAsset = () => {
                 <th >
                 Entitas Bisnis
                 </th>
+                <th>
+                  Barcode
+                </th>
                 <th >
-                    Action
+                  Action
                 </th>
             </tr>
         </thead>
@@ -83,9 +120,13 @@ const DataAsset = () => {
                         <td class="p-3 relative overflow-hidden">{d.FixedNo}</td>
                         <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
                         <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
+                        <td class='overflow-x-auto'><Barcode width={1} height={40} ref={AddToRefs} value={d.FixedNo}/></td>
                         <td class=" ">
                             <Link to={`/dataaset/edit/${d.FixedIDNo}`}><button  className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button></Link>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
+                            <ReactToPrint 
+                              trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
+                              content={() => ref.current[i]}/>
                         </td>
                         
                     </tr>
