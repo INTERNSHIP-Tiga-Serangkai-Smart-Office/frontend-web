@@ -40,10 +40,6 @@ const DataAsset = () => {
     getFixed();
   };
 
-  const data = [
-    12345, 98082, 849438, 9439409
-  ];
-
   // const [ref, { content }] = useBarcode({ value: data });
   const printBarcodes = () => {
     const printableContent = (
@@ -61,6 +57,7 @@ const DataAsset = () => {
   const AddToRefs = (el) => {
     if(el && !ref.current.includes(el)){
       ref.current.push(el);
+      console.log(ref.current);
     } 
   };
   
@@ -70,9 +67,10 @@ const DataAsset = () => {
         <Link to="/dataaset/add" className="button is-primary mb-2">
           Add New
         </Link>
-        <ReactToPrint 
+        {/* <ReactToPrint 
                               trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
-                              content={() => ref.current}/>
+                              content={() => ref.current}/> */}
+        <button onClick={printBarcodes}>print</button>
           <div>
           <div class="relative shadow-md sm:rounded-lg container mt-5">
           {isLoading && <p>Loading assets...</p>}
@@ -120,7 +118,7 @@ const DataAsset = () => {
                         <td class="p-3 relative overflow-hidden">{d.FixedNo}</td>
                         <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
                         <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
-                        <td class='overflow-x-auto'><Barcode width={1} height={40} ref={AddToRefs} value={d.FixedNo}/></td>
+                        <td class='overflow-x-auto'><Barcode width={1} height={30} ref={AddToRefs} value={d.FixedNo}/></td>
                         <td class=" ">
                             <Link to={`/dataaset/edit/${d.FixedIDNo}`}><button  className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button></Link>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
