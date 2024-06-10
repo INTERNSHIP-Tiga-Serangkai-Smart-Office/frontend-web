@@ -108,11 +108,11 @@ const FormEditAsset = () => {
             <div 
             className={toggleState === 2 ? 'inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400' : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"}
             onClick={() => toggleTab(2)}
-            >Tab 2</div>
+            >Maintenance</div>
             <div 
             className={toggleState === 3 ? 'inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400' : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"}
             onClick={() => toggleTab(3)}
-            >Tab 3</div>
+            >Dokumen</div>
           </div>
 
           <div className='w-full h-full'>
@@ -120,14 +120,14 @@ const FormEditAsset = () => {
               <div className='grid xl:grid-cols-2'>
                 { generalInfo.map((data) => (
                     <div key={data.index} className='flex flex-row items-center mx-3'>
-                          <label htmlFor={data.name} className='label w-[40%]' >{data.name}</label>
+                          <label htmlFor={data.name} className='label w-[45%]' >{data.name}</label>
                           <input
                               type={'text'}
                               id={data.name}
                               name={data.name}
                               // value={data.value}
                               onChange={handleChange}
-                              className="w-[60%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                              className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                           />
                     </div>
                 ))
