@@ -6,6 +6,7 @@ import { IoMdBarcode } from "react-icons/io";
 import axios from "axios";
 import Barcode from 'react-barcode';
 import ReactToPrint from "react-to-print";
+import QRCode from "react-qr-code";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -42,35 +43,41 @@ const DataAsset = () => {
 
   // const [ref, { content }] = useBarcode({ value: data });
   const printBarcodes = () => {
-    const printableContent = (
-      <div className="barcode-container"> {/* Container for layout */}
-        {ref.current.map((item, index) => (
-          <div key={index} className="barcode-item"> {/* Styling for each barcode */}
-            <Barcode ref={item[index]} value={item} />
-          </div>
-        ))}
-      </div>
-    );
-    return <ReactToPrint ref={ref} documentTitle="Barcodes">{printableContent}</ReactToPrint>;
+    console.log('print clicked');
+    
+    return <ReactToPrint documentTitle="Barcodes" content={printableContent}/>;
   };
 
+    
   const AddToRefs = (el) => {
     if(el && !ref.current.includes(el)){
       ref.current.push(el);
       console.log(ref.current);
     } 
   };
-  
+        
+  const printableContent = (
+    <div>
+      {fixeds.map((data, index) => (
+        <div key={index} className="barcode-item"> {/* Styling for each barcode */}
+          <QRCode ref={AddToRefs} value={data.FixedNo} />
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div>
         <h1 className='text-2xl montserrat-bold'>Data Asset Page</h1>
         <Link to="/dataaset/add" className="button is-primary mb-2">
           Add New
         </Link>
-        {/* <ReactToPrint 
+        <div className="hidden">{printableContent}</div>
+        <ReactToPrint 
                               trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
-                              content={() => ref.current}/> */}
-        <button onClick={printBarcodes}>print</button>
+                              content={printableContent}/>
+        {/* <button onClick={printBarcodes}>print</button> */}
+        
           <div>
           <div class="relative shadow-md sm:rounded-lg container mt-5">
           {isLoading && <p>Loading assets...</p>}
@@ -98,9 +105,9 @@ const DataAsset = () => {
                 <th >
                 Entitas Bisnis
                 </th>
-                <th>
+                {/* <th>
                   Barcode
-                </th>
+                </th> */}
                 <th >
                   Action
                 </th>
@@ -118,7 +125,8 @@ const DataAsset = () => {
                         <td class="p-3 relative overflow-hidden">{d.FixedNo}</td>
                         <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
                         <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
-                        <td class='overflow-x-auto'><Barcode width={1} height={30} ref={AddToRefs} value={d.FixedNo}/></td>
+                        {/* <td class='overflow-x-auto'><Barcode format={'CODE128'} width={2} height={50} ref={AddToRefs} value={d.FixedNo}/></td> */}
+                        <td class='overflow-x-auto hidden'><QRCode width={30} height={30} ref={AddToRefs} value={d.FixedNo}/></td>
                         <td class=" ">
                             <Link to={`/dataaset/edit/${d.FixedIDNo}`}><button  className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button></Link>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
