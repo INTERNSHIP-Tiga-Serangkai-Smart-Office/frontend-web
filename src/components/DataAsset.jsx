@@ -72,10 +72,10 @@ const DataAsset = () => {
         <Link to="/dataaset/add" className="button is-primary mb-2">
           Add New
         </Link>
-        <div className="hidden">{printableContent}</div>
-        <ReactToPrint 
-                              trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
-                              content={printableContent}/>
+        {/* <div className="hidden">{printableContent}</div> */}
+        {/* <ReactToPrint 
+            trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
+            content={printableContent}/> */}
         {/* <button onClick={printBarcodes}>print</button> */}
         
           <div>

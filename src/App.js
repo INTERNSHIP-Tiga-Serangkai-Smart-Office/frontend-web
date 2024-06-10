@@ -13,6 +13,8 @@ import SideBar from './components/SideBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './features/authSlice';
 import EditAssets from './pages/EditAssets';
+import AddUser from './pages/AddUser';
+import EditUser from './pages/EditUser';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ function App() {
               <Route path='/dashboard' element={<Dashboard />}/>
               <Route path='/dataaset' element={<DataAset/>}/>
               <Route path='/users' element={<Users/>}/>
+              <Route path='/users/add' element={<AddUser/>}/>
+              <Route path='/users/edit/:id' element={<EditUser/>}/>
               <Route path='/role' element={<Roles/>}/>
               <Route path='/role/add/' element={<AddRole/>}/>
               <Route path='/role/edit/:id' element={<EditRole/>}/>
