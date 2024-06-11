@@ -12,6 +12,7 @@ function Userlist() {
     const[data,setdata] = useState([]);
     const [roles, setRoles] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
+    const [selectRole, setSelectRole] = useState(null);
 
     useEffect(()=>{
         getRoles();
@@ -50,7 +51,7 @@ function Userlist() {
           });
     
           setdata(updatedUsers);
-        //   console.log(data);
+          console.log(data);
 
         } catch (error) {
           console.error("Error fetching user roles:", error);
@@ -62,6 +63,20 @@ function Userlist() {
         setShowAlert(false);
         getUserRoles(); // Update users after deletion
     };
+
+    const addRole = async(userId, roleId) => {
+        try {
+            await axios.post("http://localhost:5000/user-role", {
+                userId: userId,
+                roleId: roleId,
+            });
+            await getUserRoles();
+            setSelectRole(null);
+        } catch (error) {
+            console.error("Error adding role:", error);
+            setSelectRole(null);
+        }
+    }
     
     const deleteRole = async (userId, roleId) => {
         try {
@@ -75,13 +90,17 @@ function Userlist() {
         }
     };
 
+    const toggleDropdown = (index) => {
+        setSelectRole((prevIndex) => (prevIndex === index ? null : index));
+    }
+
     return (
         <div className='text-start mb-3'>
                 <Link to='/users/add' className='buton bg-btn-primary'>Add +</Link>
             
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
             
-            <table class="flex-row  w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-auto">
+            <table class="flex-row  w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400  table-auto">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr >
                         <th >
@@ -130,12 +149,31 @@ function Userlist() {
                                             {idx < d.roles.length - 1 && "  "}
                                         </span>
                                     ))}
-                                    <select name="" id="">
+                                    {/* <select name="" id="">
                                         <option value="">+</option>
                                         {roles.map((roles) => (
                                             <option value={roles.id}>{roles.name}</option>
                                         ))}
-                                    </select>
+                                    </select> */}
+                                    <div className='relative inline-block text-left ml-2'>
+                                        <button onClick={() => toggleDropdown(i)} type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                            Roles
+                                            <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+
+                                        <div className={`${ selectRole === i ? 'absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none' : 'hidden'}`}>
+                                            {roles.map((roles, i) => (
+                                                <div key={i}>
+                                                    <button  onClick={() => addRole(d.id, roles.id)}>
+                                                        {roles.name}
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                    </div>
                                 </td>
                                 <td class=" ">
                                     <Link to={`/users/edit/${d.id}`}>
