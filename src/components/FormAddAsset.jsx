@@ -8,9 +8,18 @@ const FormAddAsset = () => {
     const [msg, setMsg] = useState("");
     const navigate = useNavigate();
 
-    const currDate = new Date().toLocaleDateString();
+    const currDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const currTime = new Date().toLocaleTimeString();
     const reg = currDate +' '+ currTime;
+
+    // var date;
+    //     date = new Date();
+    //     date = date.getUTCFullYear() + '-' +
+    //         ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+    //         ('00' + date.getUTCDate()).slice(-2) + 'T' + 
+    //         ('00' + date.getUTCHours()).slice(-2) + ':' + 
+    //         ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+    //         ('00' + date.getUTCSeconds()).slice(-2);
 
     const [asset, setAsset] = useState({
         FixedNo: null,
@@ -127,7 +136,7 @@ const FormAddAsset = () => {
             if(error.response){
                 setMsg(error.response.data.msg);
                 console.log(msg);
-                console.log(reg);
+                // console.log(date);
 
             }
         }

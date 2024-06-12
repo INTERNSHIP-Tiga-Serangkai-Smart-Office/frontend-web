@@ -126,12 +126,11 @@ function Userlist() {
                             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                             key={d.id}>
                             
-                                <td class=" ">{i+1}</td>
+                                <td class="bg-green-200 ">{i+1}</td>
                                 <td class=" ">{d.name}</td>
                                 <td class=" ">{d.email}</td>
                                 <td>
-                                    {d.roles && 
-                                        d.roles.map((role, idx) => (
+                                    {d.roles && d.roles.map((role, idx) => (
                                         <span key={idx}>
                                             {role}
                                             <button
@@ -172,7 +171,6 @@ function Userlist() {
                                                 </div>
                                             ))}
                                         </div>
-
                                     </div>
                                 </td>
                                 <td class=" ">

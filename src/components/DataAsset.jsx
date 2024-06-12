@@ -14,9 +14,8 @@ const DataAsset = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [barcode, setBarcode] = useState('');
   const ref = useRef([]);
-  ref.current = [];
+  const multiRef = useRef([]);
 
   useEffect(() => {
     // getFixed();
@@ -52,15 +51,22 @@ const DataAsset = () => {
   const AddToRefs = (el) => {
     if(el && !ref.current.includes(el)){
       ref.current.push(el);
-      console.log(ref.current);
+      // console.log(ref);
     } 
   };
+
+  const barcodes = (value) => (
+    <div className="p-5">
+      <QRCode value={value} size={200}/>
+      <h1>{value}</h1>
+    </div>
+  );
         
   const printableContent = (
     <div>
       {fixeds.map((data, index) => (
-        <div key={index} className="barcode-item"> {/* Styling for each barcode */}
-          <QRCode ref={AddToRefs} value={data.FixedNo} />
+        <div key={index} className="barcode-item p-5" ref={(el) => (ref.current[index] = el)}>
+          {barcodes(data.FixedNo)}
         </div>
       ))}
     </div>
@@ -72,18 +78,25 @@ const DataAsset = () => {
         <Link to="/dataaset/add" className="button is-primary mb-2">
           Add New
         </Link>
-        {/* <div className="hidden">{printableContent}</div> */}
-        {/* <ReactToPrint 
-            trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
-            content={printableContent}/> */}
-        {/* <button onClick={printBarcodes}>print</button> */}
+        <div className="hidden">
+          <div ref={ref} className="flex flex-row flex-wrap">
+            {fixeds.map((data, index) => (
+              <div key={index} className="barcode-item"  ref={(el) => (multiRef.current[index] = el)}>
+                {barcodes(data.FixedNo)}
+              </div>
+            ))}
+          </div>
+        </div>
+        <ReactToPrint 
+          trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
+          content={() => ref.current}/>
         
-          <div>
-          <div class="relative shadow-md sm:rounded-lg container mt-5">
+        <div>
+        <div class="relative shadow-md sm:rounded-lg container mt-5">
           {isLoading && <p>Loading assets...</p>}
-      {error && <p className="error-message">{error}</p>}
-      {/* {!isLoading && !error  && <p>No assets found.</p>} */}
-      {!isLoading && !error && fixeds.length > 0 && (
+          {error && <p className="error-message">{error}</p>}
+          {/* {!isLoading && !error  && <p>No assets found.</p>} */}
+          {!isLoading && !error && fixeds.length > 0 && (
           <table class="flex-row  overflow-y-auto w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr >
@@ -126,13 +139,14 @@ const DataAsset = () => {
                         <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
                         <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
                         {/* <td class='overflow-x-auto'><Barcode format={'CODE128'} width={2} height={50} ref={AddToRefs} value={d.FixedNo}/></td> */}
-                        <td class='overflow-x-auto hidden'><QRCode width={30} height={30} ref={AddToRefs} value={d.FixedNo}/></td>
+                        <td className='overflow-x-auto hidden'>{barcodes(d.FixedNo)}</td>
                         <td class=" ">
                             <Link to={`/dataaset/edit/${d.FixedIDNo}`}><button  className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button></Link>
                             <button><FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/></button>
                             <ReactToPrint 
                               trigger={() => <button className="p-3"> <IoMdBarcode className="text-green-300" style={{  fontSize: '1.4rem' }}/></button>}
-                              content={() => ref.current[i]}/>
+                              content={() => multiRef.current[i]}
+                              />
                         </td>
                         
                     </tr>
