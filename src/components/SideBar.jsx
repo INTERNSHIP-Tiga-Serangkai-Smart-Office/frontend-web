@@ -123,7 +123,7 @@ const SideBar = ({children, isHidden}) => {
             {
               menus?.map((menu,i)=>(
                   <Link to={menu?.link} key={i} 
-                  className={`${menu?.margin && 'mt-5'} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md transition-colors duration-300 hover:bg-gray-200 hover:text-gray-800 ${activeIndex === i ? 'bg-gray-200 text-gray-800' : ''}`}
+                  className={`${menu?.margin && 'mt-5'} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md  hover:bg-gray-200 hover:text-gray-800 ${activeIndex === i ? 'bg-gray-200 text-red-600' : ''}`}
                   onClick={() => {
                     handleItemClick(i);
                     if (menu?.onClick) {
