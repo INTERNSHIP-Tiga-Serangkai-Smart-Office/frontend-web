@@ -95,8 +95,11 @@ function Userlist() {
     }
 
     return (
-        <div className='text-start mb-3'>
-                <Link to='/users/add' className='buton bg-btn-primary'>Add +</Link>
+        <div>
+        <h1 className='text-2xl montserrat-bold'>User List</h1>
+        <Link to="/users/add" className="button is-primary mb-2">
+          Add New
+        </Link>
             
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
             

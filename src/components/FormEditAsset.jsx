@@ -133,9 +133,9 @@ const FormEditAsset = () => {
                 ))
                 }
               </div>
-              <div>
-                <table class="overflow-y-auto w-[40%] text-sm text-center text-gray-500 dark:text-gray-400 table-auto">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 m-3">
+              <div className='flex items-centers'>
+                <table class=" text-sm text-center text-gray-500 dark:text-gray-400 table-cell table-fixed">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 m-3 ">
                     <tr>
                       <th className='px-4 py-2'>Property Name</th>  
                       <th className='px-4 py-2'>Value</th>
