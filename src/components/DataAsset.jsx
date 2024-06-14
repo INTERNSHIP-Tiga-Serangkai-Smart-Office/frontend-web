@@ -7,12 +7,14 @@ import axios from "axios";
 import Barcode from "react-barcode";
 import ReactToPrint from "react-to-print";
 import QRCode from "react-qr-code";
+import PrintQRModal from "./PrintQRModal";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const ref = useRef([]);
   const multiRef = useRef([]);
@@ -58,8 +60,8 @@ const DataAsset = () => {
     }
   };
 
-  const barcodes = (value) => (
-    <div className="p-5">
+  const barcodes = (value, index) => (
+    <div className="p-5" ref={(el) => (multiRef.current[index] = el)}>
       <QRCode value={value} size={200} />
       <h1>{value}</h1>
     </div>
@@ -71,9 +73,9 @@ const DataAsset = () => {
         <div
           key={index}
           className="barcode-item p-5"
-          ref={(el) => (ref.current[index] = el)}
+          // ref={(el) => (ref.current[index] = el)}
         >
-          {barcodes(data.FixedNo)}
+          {barcodes(data.FixedNo, index)}
         </div>
       ))}
     </div>
@@ -83,23 +85,30 @@ const DataAsset = () => {
     <div>
       <div className="w-full flex items-baseline justify-between">
         <h1 className="text-2xl montserrat-bold">Data Asset Page</h1>
-        <Link to="/dataaset/add" className="button is-primary mb-2 p-3 bg-green-300 rounded-lg">
-          Add New
-        </Link>
+        <div>
+          <button onClick={() => setShowModal(true)} className="m-2 p-3 bg-blue-300 rounded-lg">
+            Print Barcode
+          </button>
+          <button className="m-2 p-3 bg-green-300 rounded-lg">
+            <Link to="/dataaset/add" >
+              Add New
+            </Link>
+          </button>
+        </div>
       </div>
-      <div className="hidden">
+      {/* <div className="hidden">
         <div ref={ref} className="flex flex-row flex-wrap">
           {fixeds.map((data, index) => (
             <div
               key={index}
               className="barcode-item"
-              ref={(el) => (multiRef.current[index] = el)}
+              // ref={(el) => (multiRef.current[index] = el)}
             >
               {barcodes(data.FixedNo)}
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
       {/* <ReactToPrint
         trigger={() => (
           <button className="p-3">
@@ -113,8 +122,8 @@ const DataAsset = () => {
         content={() => ref.current}
       /> */}
 
-      <div>
-        <div class="relative shadow-md sm:rounded-lg container mt-5">
+      <div className="w-full">
+        <div className="w-full shadow-md sm:rounded-lg  mt-5">
           {isLoading && <p>Loading assets...</p>}
           {error && <p className="error-message">{error}</p>}
           {/* {!isLoading && !error  && <p>No assets found.</p>} */}
@@ -156,7 +165,7 @@ const DataAsset = () => {
                         </td>
                         {/* <td class='overflow-x-auto'><Barcode format={'CODE128'} width={2} height={50} ref={AddToRefs} value={d.FixedNo}/></td> */}
                         <td className="overflow-x-auto hidden">
-                          {barcodes(d.FixedNo)}
+                          {barcodes(d.FixedNo, i)}
                         </td>
                         <td class=" ">
                           <Link to={`/dataaset/edit/${d.FixedIDNo}`}>
@@ -199,6 +208,7 @@ const DataAsset = () => {
           <button onClick={handleNextPage}>Next</button>
         </div>
       </div>
+      <PrintQRModal show={showModal} onClosed={() => setShowModal(!showModal)}/>
     </div>
   );
 };
