@@ -103,7 +103,7 @@ function Userlist() {
             
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
             
-            <table class="flex-row  w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400  table-auto">
+            <table class=" min-w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr >
                         <th >
@@ -112,10 +112,10 @@ function Userlist() {
                         <th >
                             Name
                         </th>
-                        <th >
+                        <th className='px-6 py-3'>
                             Email
                         </th>
-                        <th >
+                        <th className='px-4 py-2'>
                             Roles
                         </th>
                         <th >
@@ -131,10 +131,10 @@ function Userlist() {
                             
                                 <td class="bg-green-200 ">{i+1}</td>
                                 <td class=" ">{d.name}</td>
-                                <td class=" ">{d.email}</td>
-                                <td>
+                                <td class="px-6 py-3">{d.email}</td>
+                                <td className='px-4 py-2 block sm:table-cell'>
                                     {d.roles && d.roles.map((role, idx) => (
-                                        <span key={idx}>
+                                        <span className='px-4 py-2 inline-block sm:block' key={idx}>
                                             {role}
                                             <button
                                                 onClick={() => {
@@ -176,7 +176,7 @@ function Userlist() {
                                         </div>
                                     </div>
                                 </td>
-                                <td class=" ">
+                                <td >
                                     <Link to={`/users/edit/${d.id}`}>
                                         <button className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button>
                                     </Link>

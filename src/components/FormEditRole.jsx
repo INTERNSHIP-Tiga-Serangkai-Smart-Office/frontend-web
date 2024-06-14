@@ -69,7 +69,7 @@ const FormEditRole = () => {
               </div>
             </div>
             <div className="flex justify-end mt-5">
-                <button type="submit" className="bold-32 bg-green-300 p-3 w-[30%] rounded-xl shadow-lg hover:bg-green-400">
+                <button type="submit" className="bold-32 bg-green-300 p-3 w-[50%] rounded-xl shadow-lg hover:bg-green-400">
                   Submit
                 </button>
             </div>

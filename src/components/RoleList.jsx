@@ -170,19 +170,21 @@ const RoleList = () => {
     };
 
     return (
+        <div>
+            <h2 className='bold-32 my-5'>Roles</h2>
+            <Link to={`/role/add/`}>Add</Link>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
-                <h2 className='bold-32 my-5'>Roles</h2>
-                <Link to={`/role/add/`}>Add</Link>
-                <table class="flex-row  w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
+                
+                <table class="min-w-full  h-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr >
-                            <th >
+                            <th className='px-2 '>
                                 No
                             </th>
                             <th >
                                 Role Name
                             </th>
-                            <th >
+                            <th className='px-6 py-3'>
                                 Permissions
                             </th>
                             <th >
@@ -196,10 +198,10 @@ const RoleList = () => {
                                 <>
                                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-t dark:border-gray-700"
                                     key={role.id}>
-                                        <td class=" ">{i + 1}</td>
+                                        <td class="px-2 ">{i + 1}</td>
                                         <td class=" ">{role.name}</td>
                                         <td><button onClick={selectedRole? () => setSelectedRole('') : () => setSelectedRole(role.id)}>{(selectedRole === role.id)? 'Hide' : 'Show'}</button></td>
-                                        <td class=" ">
+                                        <td class="px-6 py-3 ">
                                             <Link to={`/role/edit/${role.id}`}>
                                                 <button className='items-center p-3'>
                                                     <MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/>
@@ -211,21 +213,22 @@ const RoleList = () => {
                                     {(selectedRole === role.id) && (
                                         <tr class='border-none'>
                                             <td colSpan={4} className=' flex-col'>
-                                                <div className='p-3 m-3 border rounded-md'>
-                                                    <table className='table-fixed border-collapse p-2 w-full'>
-                                                        <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+                                                <div className='relative overflow-x-auto shadow-md p-3 m-3 border sm:rounded-md'>
+                                                    <div className="max-h-64 overflow-y-auto">
+                                                    <table className='min-w-full table-auto border-collapse p-2 w-full'>
+                                                        <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 '>
                                                             <tr>
-                                                            <th>Resource</th>
-                                                            <th>Create</th>
-                                                            <th>Read</th>
-                                                            <th>Update</th>
-                                                            <th>Delete</th>
+                                                            <th class="px-2 py-3 ">Resource</th>
+                                                            <th class="px-2 py-3 ">Create</th>
+                                                            <th class="px-2 py-3 ">Read</th>
+                                                            <th class="px-2 py-3 ">Update</th>
+                                                            <th class="px-2 py-3 ">Delete</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody >
                                                             {Object.keys(permissions).map((resource) => (
                                                             <tr key={resource}>
-                                                                <td>{resource}</td>
+                                                                <td >{resource}</td>
                                                                 <td>
                                                                 <input type="checkbox" checked={!!selectedPermissions[resource]?.create} onChange={(e) => handlePermissionChange(resource, "create", e.target.checked)} />
                                                                 </td>
@@ -245,6 +248,7 @@ const RoleList = () => {
                                                     <button className="bold-16 bg-green-300 p-3 w-auto m-3 rounded-xl shadow-lg hover:bg-green-400" onClick={handleSave}>
                                                         Save Permissions
                                                     </button>
+                                                    </div>
                                                 </div>
                                                 
                                             </td>
@@ -259,6 +263,7 @@ const RoleList = () => {
                         
                     </tbody>
                 </table>
+            </div>
             </div>
     )
 }
