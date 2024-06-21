@@ -3,6 +3,7 @@ import axios from 'axios';
 import { MdEdit } from 'react-icons/md';
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import AlertComp from './AlertComp';
 
 
 const RoleList = () => {
@@ -12,11 +13,18 @@ const RoleList = () => {
     const [selectedPermissions, setSelectedPermissions] = useState({});
     const [originalPermissions, setOriginalPermissions] = useState({});
 
+    const [showAlert, setShowAlert] = useState(null);
+
+    const getRoles = async () => {
+        const response = await axios.get("http://localhost:5000/role");
+        setRoles(response.data);
+    }
     useEffect(() => {
         // Fetch roles
-        axios.get("http://localhost:5000/role").then((response) => {
-          setRoles(response.data);
-        });
+        // axios.get("http://localhost:5000/role").then((response) => {
+        //   setRoles(response.data);
+        // });
+        getRoles();
         
         //Fetch permissions
         axios.get("http://localhost:5000/permissions").then((response) => {
@@ -169,6 +177,17 @@ const RoleList = () => {
         }
     };
 
+    const deleteRole = async (roleId) => {
+        await axios.delete(`http://localhost:5000/role/${roleId}`);
+        setShowAlert(!showAlert);
+        getRoles();
+    };
+
+    const handleDelete = (roleId) => {
+        deleteRole(roleId);
+        setShowAlert(null);
+    };
+
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
                 <h2 className='bold-32 my-5'>Roles</h2>
@@ -205,7 +224,16 @@ const RoleList = () => {
                                                     <MdEdit className='text-blue-700 items-center' style={{  fontSize: '1.5rem' }}/>
                                                 </button>
                                             </Link>
-                                            <button className='items-center'><FaTrashAlt className='text-red-600 items-center' style={{  fontSize: '1.4rem' }}/></button>
+                                            <button onClick={() => setShowAlert(role.id)} className='items-center'><FaTrashAlt className='text-red-600 items-center' style={{  fontSize: '1.4rem' }}/></button>
+                                            {showAlert === role.id && (
+                                                <AlertComp
+                                                    show={true}
+                                                    title={'Delete User'}
+                                                    message={`Are you sure to delete user ${role.name}?`}
+                                                    onConfirm={() => handleDelete(role.id)}
+                                                    onCancel={() => setShowAlert(null)}
+                                                />
+                                            )}
                                         </td>
                                     </tr>
                                     {(selectedRole === role.id) && (
@@ -255,8 +283,6 @@ const RoleList = () => {
                                 
                             ))
                         }
-                        
-                        
                     </tbody>
                 </table>
             </div>

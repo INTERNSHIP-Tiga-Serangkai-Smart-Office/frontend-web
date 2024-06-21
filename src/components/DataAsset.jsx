@@ -8,6 +8,7 @@ import Barcode from "react-barcode";
 import ReactToPrint from "react-to-print";
 import QRCode from "react-qr-code";
 import PrintQRModal from "./PrintQRModal";
+import AlertComp from "./AlertComp";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -15,24 +16,25 @@ const DataAsset = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(null);
 
   const ref = useRef([]);
   const multiRef = useRef([]);
 
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    // getFixed();
-    axios.get(`http://localhost:5000/fixed?page=${page}`).then((res) => {
-      setFixed(res.data.data);
-    });
+    getFixed(page, pageSize);
     console.log(fixeds);
-  }, [page]);
+  }, [page, pageSize]);
 
-  const getFixed = async () => {
+  const getFixed = async (page, pageSize) => {
     try {
-      const response = await axios.get("http://localhost:5000/fixed");
-      setFixed(response.data.data.data);
+      const response = await axios.get(
+        `http://localhost:5000/fixed?page=${page}&pageSize=${pageSize}`
+      );
+      setFixed(response.data.data);
       console.log(fixeds);
     } catch (error) {
       setError("Failed to fetch fixed assets");
@@ -41,7 +43,7 @@ const DataAsset = () => {
 
   const deleteFixed = async (FixedIDNo) => {
     await axios.delete(`http://localhost:5000/fixed/${FixedIDNo}`);
-    getFixed();
+    getFixed(page, pageSize);
   };
 
   const handleNextPage = () => {
@@ -52,14 +54,6 @@ const DataAsset = () => {
     setPage((prevState) => prevState - 1);
   };
 
-  //qrcode
-  const AddToRefs = (el) => {
-    if (el && !ref.current.includes(el)) {
-      ref.current.push(el);
-      // console.log(ref);
-    }
-  };
-
   const barcodes = (value, index) => (
     <div className="p-5" ref={(el) => (multiRef.current[index] = el)}>
       <QRCode value={value} size={200} />
@@ -67,62 +61,50 @@ const DataAsset = () => {
     </div>
   );
 
-  const printableContent = (
-    <div>
-      {fixeds.map((data, index) => (
-        <div
-          key={index}
-          className="barcode-item p-5"
-          // ref={(el) => (ref.current[index] = el)}
-        >
-          {barcodes(data.FixedNo, index)}
-        </div>
-      ))}
-    </div>
-  );
+  const handlePageSize = (e) => {
+    const value = e.target.value;
+    setPageSize(value);
+    getFixed(page, pageSize);
+  };
+
+  const handleDelete = (fixedId) => {
+    deleteFixed(fixedId);
+    setShowAlert(null);
+  };
 
   return (
     <div>
       <div className="w-full flex items-baseline justify-between">
         <h1 className="text-2xl montserrat-bold">Data Asset Page</h1>
         <div>
-          <button onClick={() => setShowModal(true)} className="m-2 p-3 bg-blue-300 rounded-lg">
+          <button
+            onClick={() => setShowModal(true)}
+            className="mx-2 p-3 bg-blue-300 rounded-lg"
+          >
             Print Barcode
           </button>
-          <button className="m-2 p-3 bg-green-300 rounded-lg">
-            <Link to="/dataaset/add" >
-              Add New
-            </Link>
+          <button className="mx-2 p-3 bg-green-300 rounded-lg">
+            <Link to="/dataaset/add">Add New</Link>
           </button>
         </div>
       </div>
-      {/* <div className="hidden">
-        <div ref={ref} className="flex flex-row flex-wrap">
-          {fixeds.map((data, index) => (
-            <div
-              key={index}
-              className="barcode-item"
-              // ref={(el) => (multiRef.current[index] = el)}
-            >
-              {barcodes(data.FixedNo)}
-            </div>
-          ))}
-        </div>
-      </div> */}
-      {/* <ReactToPrint
-        trigger={() => (
-          <button className="p-3">
-            {" "}
-            <IoMdBarcode
-              className="text-green-300"
-              style={{ fontSize: "1.4rem" }}
-            />
-          </button>
-        )}
-        content={() => ref.current}
-      /> */}
 
       <div className="w-full">
+        <div>
+          <div className="flex">
+            <p>Show</p>
+            <select
+              name=""
+              id=""
+              onChange={handlePageSize}
+              className="mx-3 border rounded-md"
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+            </select>
+          </div>
+        </div>
         <div className="w-full shadow-md sm:rounded-lg  mt-5">
           {isLoading && <p>Loading assets...</p>}
           {error && <p className="error-message">{error}</p>}
@@ -138,9 +120,6 @@ const DataAsset = () => {
                     <th>AIN</th>
                     <th>Fixed Group</th>
                     <th>Entitas Bisnis</th>
-                    {/* <th>
-                          Barcode
-                        </th> */}
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -163,7 +142,6 @@ const DataAsset = () => {
                         <td class=" ">
                           {d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}
                         </td>
-                        {/* <td class='overflow-x-auto'><Barcode format={'CODE128'} width={2} height={50} ref={AddToRefs} value={d.FixedNo}/></td> */}
                         <td className="overflow-x-auto hidden">
                           {barcodes(d.FixedNo, i)}
                         </td>
@@ -176,7 +154,7 @@ const DataAsset = () => {
                               />
                             </button>
                           </Link>
-                          <button>
+                          <button onClick={() => setShowAlert(d.FixedIDNo)}>
                             <FaTrashAlt
                               className="text-red-600"
                               style={{ fontSize: "1.4rem" }}
@@ -194,6 +172,15 @@ const DataAsset = () => {
                             )}
                             content={() => multiRef.current[i]}
                           />
+                          {showAlert === d.FixedIDNo && (
+                            <AlertComp
+                              show={true}
+                              title={"Delete Data"}
+                              message={`Are you sure to delete data ${d.FixedNo}?`}
+                              onConfirm={() => handleDelete(d.FixedIDNo)}
+                              onCancel={() => setShowAlert(null)}
+                            />
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -202,13 +189,16 @@ const DataAsset = () => {
             </>
           )}
         </div>
-        <div className="flex justify-end items-center py-4 px-2 fixed right-3 bottom-0">
+        <div className="flex justify-end items-center py-4 px-2 relative ">
           <button onClick={handlePrevPage}>Prev</button>
           <h2 className="p-5">{page}</h2>
           <button onClick={handleNextPage}>Next</button>
         </div>
       </div>
-      <PrintQRModal show={showModal} onClosed={() => setShowModal(!showModal)}/>
+      <PrintQRModal
+        show={showModal}
+        onClosed={() => setShowModal(!showModal)}
+      />
     </div>
   );
 };

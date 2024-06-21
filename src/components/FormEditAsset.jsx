@@ -30,38 +30,55 @@ const FormEditAsset = () => {
     console.log(asset);
   }, [id]);
 
+  //tab layout
   const mainData = [
-    { name: "IDNoEB", value: asset.IDNoEB, index: 0 },
-    { name: "IDNoGR", value: asset.IDNoGR, index: 1 },
-    { name: "RegDate", value: asset.RegDate, index: 2 },
-    { name: "FixedNo", value: asset.FixedNo, index: 3 },
-    { name: "FixedAssetName", value: asset.FixedAssetName, index: 4 },
-    { name: "Status", value: asset.Status, index: 5 },
-    { name: "Entity", value: asset.Entity, index: 6 },
+    { name: "FixedAssetName", value: asset.FixedAssetName},
+    { name: "FixedNo", value: asset.FixedNo},
+    { name: "Status", value: asset.Status},
+    { name: "Entity", value: asset.Entity},
+    { name: "IDNoEB", value: asset.IDNoEB},
+    { name: "IDNoGR", value: asset.IDNoGR},
+    { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
-    { index: 0, name: "AccNo" },
-    { index: 1, name: "Currency" },
-    { index: 2, name: "DateAq" },
-    { index: 3, name: "CostCenterNo" },
-    { index: 4, name: "ProfitCenterNo" },
-    { index: 5, name: "LocId" },
-    { index: 6, name: "OrderNo" },
-    { index: 7, name: "InvNo" },
-    { index: 8, name: "Qty" },
-    { index: 9, name: "Pick" },
-    { index: 10, name: "PickGR" },
-    { index: 11, name: "GRNo" },
-    { index: 12, name: "Unit" },
-    { index: 13, name: "Cost" },
-    { index: 14, name: "SUnit" },
-    { index: 15, name: "SalVageValue" },
-    { index: 16, name: "SalVageValueORG" },
-    { index: 17, name: "AccDep" },
-    { index: 18, name: "Pict" },
-    { index: 19, name: "Remark" },
-    { index: 20, name: "HolderName" },
+    { name: "AccNo", value: asset.AccNo },
+    { name: "AccDep", value: asset.AccDep },
+    { name: "DateAq", value: asset.DateAq },
+    { name: "DateDisp", value: asset.DateDisp },
+    { name: "CostCenterNo", value: asset.CostCenterNo },
+    { name: "ProfitCenterNo", value: asset.ProfitCenterNo },
+    { name: "LocId", value: asset.LocId },
+    { name: "IDNoPO", value: asset.IDNoPO },
+    { name: "IDNoPR", value: asset.IDNoPR },
+    { name: "IDNoPC", value: asset.IDNoPC },
+    { name: "LineNoBD", value: asset.LineNoBD },
+    { name: "OrderNo", value: asset.OrderNo },
+    { name: "InvNo", value: asset.InvNo },
+    { name: "PickBill", value: asset.PickBill },
+    { name: "SupplierId", value: asset.SupplierId },
+    { name: "Qty", value: asset.Qty },
+    { name: "Pick", value: asset.Pick },
+    { name: "PickGR", value: asset.PickGR },
+    { name: "GRNo", value: asset.GRNo },
+    { name: "Unit", value: asset.Unit },
+    { name: "Cost", value: asset.Cost },
+    { name: "SUnit", value: asset.SUnit },
+    { name: "SalVageValue", value: asset.SalVageValue },
+    { name: "SalVageValueORG", value: asset.SalVageValueORG },
+    { name: "Remark", value: asset.Remark },
+    // { name: "Sqm", value: asset.Sqm },
+    { name: "Classification", value: asset.Classification },
+    { name: "Brand", value: asset.Brand },
+    { name: "ChassisNo", value: asset.ChassisNo },
+    { name: "EngineNo", value: asset.EngineNo },
+    { name: "Weight", value: asset.Weight },
+    { name: "RegNo", value: asset.RegNo },
+    // { name: "RegDate", value: asset.RegDate },
+    { name: "GuaranteeDate", value: asset.GuaranteeDate },
+    { name: "HolderName", value: asset.HolderName },
+    { name: "EmpId", value: asset.EmpID },
+    { name: "UserId", value: asset.UserID },
   ];
 
   const handleChange = (e) => {
@@ -120,7 +137,7 @@ const FormEditAsset = () => {
               }
               onClick={() => toggleTab(2)}
             >
-              Maintenance
+              Specification
             </div>
             <div
               className={
@@ -130,7 +147,7 @@ const FormEditAsset = () => {
               }
               onClick={() => toggleTab(3)}
             >
-              History
+              Document
             </div>
             <div
               className={
@@ -140,7 +157,17 @@ const FormEditAsset = () => {
               }
               onClick={() => toggleTab(4)}
             >
-              Dokumen
+              Maintenance
+            </div>
+            <div
+              className={
+                toggleState === 5
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(5)}
+            >
+              History
             </div>
           </div>
 
@@ -150,10 +177,10 @@ const FormEditAsset = () => {
                 toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
               }
             >
-              <div className="grid xl:grid-cols-3">
-                {generalInfo.map((data) => (
+              <div className="grid xl:grid-cols-3 w-full">
+                {generalInfo.map((data, index) => (
                   <div
-                    key={data.index}
+                    key={index}
                     className="flex flex-row items-center mx-3"
                   >
                     <label htmlFor={data.name} className="label w-[45%]">
@@ -163,7 +190,7 @@ const FormEditAsset = () => {
                       type={"text"}
                       id={data.name}
                       name={data.name}
-                      // value={data.value}
+                      value={data.value}
                       onChange={handleChange}
                       className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                     />
@@ -203,6 +230,15 @@ const FormEditAsset = () => {
             </div>
             <div className={toggleState === 4 ? "" : "hidden"}>
               <h1>Content 4</h1>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Architecto beatae quod perspiciatis excepturi fugit soluta
+                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
+                tenetur veniam aperiam saepe distinctio exercitationem.
+              </p>
+            </div>
+            <div className={toggleState === 5 ? "" : "hidden"}>
+              <h1>Content 5</h1>
               <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Architecto beatae quod perspiciatis excepturi fugit soluta
