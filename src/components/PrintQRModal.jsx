@@ -81,10 +81,6 @@ const PrintQRModal = ({ show, onClosed }) => {
                   <td class=" ">
                     {d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}
                   </td>
-                  {/* <td class='overflow-x-auto'><Barcode format={'CODE128'} width={2} height={50} ref={AddToRefs} value={d.FixedNo}/></td> */}
-                  {/* <td className="overflow-x-auto hidden">
-                            {barcodes(d.FixedNo, i)}
-                            </td> */}
                   <td class=" ">
                     <input
                       type="checkbox"

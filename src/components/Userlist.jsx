@@ -11,7 +11,7 @@ import AlertComp from './AlertComp';
 function Userlist() {
     const[data,setdata] = useState([]);
     const [roles, setRoles] = useState([]);
-    const [showAlert, setShowAlert] = useState(false);
+    const [showAlert, setShowAlert] = useState(null);
     const [selectRole, setSelectRole] = useState(null);
 
     useEffect(()=>{
@@ -94,6 +94,11 @@ function Userlist() {
     const toggleDropdown = (index) => {
         setSelectRole((prevIndex) => (prevIndex === index ? null : index));
     }
+
+    const handleDelete = (userId) => {
+        deleteUser(userId);
+        setShowAlert(null);
+    };
 
     return (
         <div>
@@ -181,9 +186,18 @@ function Userlist() {
                                     <Link to={`/users/edit/${d.id}`}>
                                         <button className='p-3'><MdEdit className='text-blue-700' style={{  fontSize: '1.5rem' }}/></button>
                                     </Link>
-                                    <button onClick={() => deleteUser(d.id)}>
+                                    <button onClick={() => setShowAlert(d.id)}>
                                         <FaTrashAlt className='text-red-600' style={{  fontSize: '1.4rem' }}/>
                                     </button>
+                                    {showAlert === d.id && (
+                                        <AlertComp
+                                            show={true}
+                                            title={'Delete User'}
+                                            message={`Are you sure to delete user ${d.name}?`}
+                                            onConfirm={() => handleDelete(d.id)}
+                                            onCancel={() => setShowAlert(null)}
+                                        />
+                                    )}
                                 </td>
                                 
                             </tr>

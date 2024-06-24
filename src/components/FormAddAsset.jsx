@@ -8,7 +8,9 @@ const FormAddAsset = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const currDate = new Date().toISOString().slice(0, 19).replace("T", " ");
+  const now = new Date();
+  const formattedDatetime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+  const currDate = new Date().toISOString();
   const currTime = new Date().toLocaleTimeString();
   const reg = currDate + " " + currTime;
 
@@ -83,36 +85,39 @@ const FormAddAsset = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/fixed", {
-        FixedAssetName: asset.FixedAssetName,
-        Entity: asset.Entity,
-        AccNo: asset.AccNo,
+        fixedData: {
+          Entity: asset.Entity,
+          FixedAssetName: asset.FixedAssetName,
+          AccNo: asset.AccNo,
+          IDNoEB: asset.IDNoEB,
+          IDNoGR: asset.IDNoGR,
+          Qty: asset.Qty,
+          SalVageValue: asset.SalVageValue,
+          Status: asset.Status,
+          RegDate: currDate,
+        },
         DateAq: asset.DateAq,
         DateDisp: asset.DateDisp,
         CostCenterNo: asset.CostCenterNo,
         ProfitCenterNo: asset.ProfitCenterNo,
         LocId: asset.LocId,
-        IDNoEB: asset.IDNoEB,
         IDNoPO: asset.IDNoPO,
         IDNoPR: asset.IDNoPR,
-        IDNoGR: asset.IDNoGR,
         IDNoPC: asset.IDNoPC,
         LineNoBD: asset.LineNoBD,
         OrderNo: asset.OrderNo,
         InvNo: asset.InvNo,
         PickBill: asset.PickBill,
         SupplierId: asset.SupplierId,
-        Qty: asset.Qty,
         Pick: asset.Pick,
         PickGR: asset.PickGR,
         Unit: asset.Unit,
         SUnit: asset.SUnit,
         Cost: asset.Cost,
-        SalVageValue: asset.SalVageValue,
         SalVageValueORG: asset.SalVageValueORG,
         AccDep: asset.AccDep,
         Pict: asset.Pict,
         Remark: asset.Remark,
-        Status: asset.Status,
         IDNo: asset.IDNo,
         SQM: asset.SQM,
         Weight: asset.Weight,
@@ -122,7 +127,6 @@ const FormAddAsset = () => {
         ChassisNo: asset.ChassisNo,
         EngineNo: asset.EngineNo,
         RegNo: asset.RegNo,
-        RegDate: currDate,
         GuaranteeDate: asset.GuaranteeDate,
         EmpID: asset.EmpID,
         UserID: asset.UserID,
@@ -144,7 +148,7 @@ const FormAddAsset = () => {
     { name: "Entity", value: asset.Entity},
     { name: "IDNoEB", value: asset.IDNoEB},
     { name: "IDNoGR", value: asset.IDNoGR},
-    { name: "RegDate", value: asset.RegDate},
+    // { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
@@ -180,7 +184,7 @@ const FormAddAsset = () => {
     { name: "EngineNo", value: asset.EngineNo },
     { name: "Weight", value: asset.Weight },
     { name: "RegNo", value: asset.RegNo },
-    { name: "RegDate", value: asset.RegDate },
+    // { name: "RegDate", value: asset.RegDate },
     { name: "GuaranteeDate", value: asset.GuaranteeDate },
     { name: "HolderName", value: asset.HolderName },
     { name: "EmpId", value: asset.EmpID },
@@ -216,100 +220,6 @@ const FormAddAsset = () => {
   ]
 
   // Form component logic for each field (replace with your actual components)
-  const renderField = (fieldName) => {
-    const inputType = typeof asset[fieldName] === "number" ? "number" : "text";
-    // const isOptional = fieldName.includes('AccNo');
-
-    const options = (() => {
-      switch (fieldName) {
-        case "Entity":
-          return entity;
-        case "IDNoGR":
-          return group;
-        case "IDNoEB":
-          return entitasBisnis;
-        case "Status":
-          return statusOption;
-        default:
-          return null;
-      }
-    })();
-
-    if (
-      fieldName === "DateAq" ||
-      fieldName === "DateDisp" ||
-      fieldName === "RegDate" ||
-      fieldName === "GuaranteeDate" 
-    ) {
-      return (
-        <div key={fieldName} className="flex flex-col mx-2 w-[22%]">
-          <label htmlFor={fieldName}>{fieldName}</label>
-          <DatePicker
-            selected={asset[fieldName]}
-            onChange={(date) => handleDateChange(date, fieldName)}
-            className="p-3 shadow border rounded my-2"
-          />
-        </div>
-      );
-    } else if (options) {
-      return (
-        <div key={fieldName} className="flex flex-col mx-3 w-[45%]">
-          <label htmlFor={fieldName}>{fieldName}</label>
-          <select
-            id={fieldName}
-            name={fieldName}
-            value={asset[fieldName]}
-            onChange={handleChange}
-            className="flex p-3 shadow border rounded my-2"
-          >
-            <option value="">Select {fieldName}</option>
-            {options.map((option) => (
-              <option
-                key={option.IDNo || option.Entity || option.value}
-                value={option.Entity || option.IDNo || option.IDNo || option.value}
-                style={{ display: "flex" }}
-              >
-                <span style={{ width: "50px" }}>
-                  {option.Entity || option.IDNo || option.IDNo}
-                </span>
-                <span style={{ marginLeft: "20px" }}>
-                  {option.EntityName || option.EBName || option.Name}
-                </span>
-              </option>
-            ))}
-          </select>
-        </div>
-      );
-    } else {
-      return (
-        <div key={fieldName} className="mx-3 w-[45%]">
-          <label htmlFor={fieldName} className="label">
-            {fieldName}
-          </label>
-          {/* {isOptional ? (
-                    <input
-                        type={inputType}
-                        id={fieldName}
-                        name={fieldName}
-                        value={asset[fieldName]}
-                        onChange={handleChange}
-                        className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2 "
-                    />
-                    ) : ( */}
-          <input
-            type={inputType}
-            id={fieldName}
-            name={fieldName}
-            // required
-            value={asset[fieldName]}
-            onChange={handleChange}
-            className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2"
-          />
-          {/* )} */}
-        </div>
-      );
-    }
-  };
 
   const renderForm = (fieldName, value) => {
     const inputType = typeof value === "number" ? "number" : "text";
@@ -337,24 +247,24 @@ const FormAddAsset = () => {
     ) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[40%]">{fieldName}</label>
+          <label htmlFor={fieldName} className="label w-[45%]">{fieldName}</label>
           <DatePicker
             selected={value}
             onChange={(date) => handleDateChange(date, fieldName)}
-            className="w-[60%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           />
         </div>
       );
     } else if (options) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[40%]">{fieldName}</label>
+          <label htmlFor={fieldName} className="label w-[45%]">{fieldName}</label>
           <select
             id={fieldName}
             name={fieldName}
             value={value}
             onChange={handleChange}
-            className="w-[60%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           >
             <option value="">Select {fieldName}</option>
             {options.map((option) => (
@@ -377,7 +287,7 @@ const FormAddAsset = () => {
     } else {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[40%]">
+          <label htmlFor={fieldName} className="label w-[45%]">
             {fieldName}
           </label>
           {/* {isOptional ? (
@@ -397,7 +307,7 @@ const FormAddAsset = () => {
             // required
             value={value}
             onChange={handleChange}
-            className="w-[60%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           />
           {/* )} */}
         </div>
@@ -415,7 +325,7 @@ const FormAddAsset = () => {
     <div className="flex flex-col place-content-center">
       <h2 className="bold-32 my-5">Add New Asset</h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 w-full">
             {mainData.map((data) => (
               renderForm(data.name, data.value)
             ))}
@@ -441,7 +351,7 @@ const FormAddAsset = () => {
               }
               onClick={() => toggleTab(2)}
             >
-              Maintenance
+              Specification
             </div>
             <div
               className={
@@ -451,7 +361,7 @@ const FormAddAsset = () => {
               }
               onClick={() => toggleTab(3)}
             >
-              History
+              Document
             </div>
             <div
               className={
@@ -461,17 +371,27 @@ const FormAddAsset = () => {
               }
               onClick={() => toggleTab(4)}
             >
-              Dokumen
+              Maintenance
+            </div>
+            <div
+              className={
+                toggleState === 5
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(5)}
+            >
+              History
             </div>
           </div>
 
           <div className="w-full h-full">
             <div
               className={
-                toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
+                toggleState === 1 ? "flex flex-col xl:flex-row w-full" : "hidden"
               }
             >
-              <div className="grid xl:grid-cols-3">
+              <div className="grid xl:grid-cols-3 w-full">
                 {generalInfo.map((data) => (
                   renderForm(data.name, data.value)
                 ))}
@@ -497,6 +417,15 @@ const FormAddAsset = () => {
             </div>
             <div className={toggleState === 4 ? "" : "hidden"}>
               <h1>Content 4</h1>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Architecto beatae quod perspiciatis excepturi fugit soluta
+                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
+                tenetur veniam aperiam saepe distinctio exercitationem.
+              </p>
+            </div>
+            <div className={toggleState === 5 ? "" : "hidden"}>
+              <h1>Content 5</h1>
               <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Architecto beatae quod perspiciatis excepturi fugit soluta
