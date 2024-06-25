@@ -143,16 +143,16 @@ const FormAddAsset = () => {
 
   //tab layout
   const mainData = [
-    { name: "FixedAssetName", value: asset.FixedAssetName},
-    { name: "Status", value: asset.Status},
-    { name: "Entity", value: asset.Entity},
-    { name: "IDNoEB", value: asset.IDNoEB},
-    { name: "IDNoGR", value: asset.IDNoGR},
+    { name: "FixedAssetName*", value: asset.FixedAssetName},
+    { name: "Status*", value: asset.Status},
+    { name: "Entity*", value: asset.Entity},
+    { name: "IDNoEB*", value: asset.IDNoEB},
+    { name: "IDNoGR*", value: asset.IDNoGR},
     // { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
-    { name: "AccNo", value: asset.AccNo },
+    { name: "AccNo*", value: asset.AccNo },
     { name: "AccDep", value: asset.AccDep },
     { name: "DateAq", value: asset.DateAq },
     { name: "DateDisp", value: asset.DateDisp },
@@ -167,14 +167,14 @@ const FormAddAsset = () => {
     { name: "InvNo", value: asset.InvNo },
     { name: "PickBill", value: asset.PickBill },
     { name: "SupplierId", value: asset.SupplierId },
-    { name: "Qty", value: asset.Qty },
+    { name: "Qty*", value: asset.Qty },
     { name: "Pick", value: asset.Pick },
     { name: "PickGR", value: asset.PickGR },
     { name: "GRNo", value: asset.GRNo },
     { name: "Unit", value: asset.Unit },
     { name: "Cost", value: asset.Cost },
     { name: "SUnit", value: asset.SUnit },
-    { name: "SalVageValue", value: asset.SalVageValue },
+    { name: "SalVageValue*", value: asset.SalVageValue },
     { name: "SalVageValueORG", value: asset.SalVageValueORG },
     { name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
