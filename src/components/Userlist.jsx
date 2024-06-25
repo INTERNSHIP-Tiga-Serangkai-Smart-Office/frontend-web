@@ -19,6 +19,7 @@ function Userlist() {
         getUserRoles();
     }, []);
 
+
     const getRoles = async () => {
         const response = await axios.get('http://localhost:5000/role');
         setRoles(response.data);
@@ -139,7 +140,7 @@ function Userlist() {
                                 <td class="px-6 py-3">{d.email}</td>
                                 <td className='px-4 py-2 block sm:table-cell'>
                                     {d.roles && d.roles.map((role, idx) => (
-                                        <span className='px-4 py-2 inline-block sm:block' key={idx}>
+                                        <span className={`xl:px-3 py-1 md:inline-block block`} key={idx}>
                                             {role}
                                             <button
                                                 onClick={() => {

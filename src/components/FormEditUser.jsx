@@ -6,7 +6,7 @@ const FormEditUser = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [msg, setMsg] = useState('');
+    const [, setMsg] = useState('');
     const navigate = useNavigate();
 
     const {id} = useParams();
@@ -79,8 +79,8 @@ const FormEditUser = () => {
                   onChange={(e) => setPassword(e.target.value)}/>
               </div>
             </div>
-            <div className="flex justify-end mt-5">
-                <button type="submit" className="bold-32 bg-green-300 p-3 w-[30%] rounded-xl shadow-lg hover:bg-green-400">
+            <div className="flex xl:justify-end mt-5 md:justify-center">
+                <button type="submit" className="bold-32 bg-green-300 p-3 xl:w-[30%] w-[100%] rounded-xl shadow-lg hover:bg-green-400">
                   Submit
                 </button>
             </div>
