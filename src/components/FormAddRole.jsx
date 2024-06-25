@@ -5,7 +5,7 @@ import axios from 'axios';
 const FormAddRole = () => {
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
-    const [msg, setMsg] = useState('');
+    const [, setMsg] = useState('');
     const navigate = useNavigate();
 
     const saveRole = async (e) => {
@@ -48,8 +48,8 @@ const FormAddRole = () => {
                   onChange={(e) => setSlug(e.target.value)}/>
               </div>
             </div>
-            <div className="flex justify-end mt-5">
-                <button type="submit" className="bold-32 bg-green-300 p-3 w-[30%] rounded-xl shadow-lg hover:bg-green-400">
+            <div className="flex xl:justify-end mt-5 md:justify-center">
+                <button type="submit" className="bold-32 bg-green-300 p-3 xl:w-[30%] w-[100%] rounded-xl shadow-lg hover:bg-green-400">
                   Submit
                 </button>
             </div>
