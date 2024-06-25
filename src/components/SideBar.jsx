@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BsArrowLeftShort } from "react-icons/bs";
-import { GiHamburgerMenu } from "react-icons/gi";
+// import { GiHamburgerMenu } from "react-icons/gi";
 import { RiDashboardFill } from "react-icons/ri";
 import { BiSolidEditLocation } from "react-icons/bi";
 import { FaFolder, FaUserAlt, FaUsers } from "react-icons/fa";
@@ -13,6 +13,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { useDispatch } from 'react-redux';
 import { LogOut, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
+import Hamburger from 'hamburger-react'
 
 const SideBar = ({ children, isHidden }) => {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const SideBar = ({ children, isHidden }) => {
         className={`md:hidden flex items-center fixed top-5 right-5 z-50 space-x-2 `}
         onClick={handleMobileToggle}
       >
-        <GiHamburgerMenu size={24} />
+        <Hamburger toggle={setIsMobileOpen} toggled={isMobileOpen} size={25} />
       </button>
       <aside 
         className={`flex h-screen overflow-y-auto overflow-x-hidden bg-clr-bg-sd transition-transform transform 
@@ -117,7 +118,8 @@ const SideBar = ({ children, isHidden }) => {
                 style={{ paddingRight: '30px', marginRight: '-20px', width: 'calc(100% + 20px)', borderRadius: '20px 0px 0px 20px' }}
               >
                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-                <h2 style={{ transitionDelay: `${i + 3}00ms` }} className={`whitespace-pre duration-500 ${!sidebarToggle && 'opacity-0 translate-x-28 overflow-hidden'}`}>
+                <h2 style={{ transitionDelay: `${i + 3}00ms` }} className={`xl:whitespace-pre duration-500 ${!sidebarToggle && 'opacity-0 translate-x-28 overflow-hidden'}
+                  md: duration-500 ${!sidebarToggle && 'opacity-0 translate-x-28 '} `}>
                   {menu?.name}
                 </h2>
               </Link>
