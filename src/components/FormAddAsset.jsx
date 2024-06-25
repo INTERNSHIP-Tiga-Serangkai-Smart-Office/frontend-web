@@ -94,10 +94,10 @@ const FormAddAsset = () => {
           Qty: asset.Qty,
           SalVageValue: asset.SalVageValue,
           Status: asset.Status,
-          RegDate: currDate,
+          // RegDate: currDate,
         },
-        DateAq: asset.DateAq,
-        DateDisp: asset.DateDisp,
+        // DateAq: asset.DateAq,
+        // DateDisp: asset.DateDisp,
         CostCenterNo: asset.CostCenterNo,
         ProfitCenterNo: asset.ProfitCenterNo,
         LocId: asset.LocId,
@@ -386,6 +386,7 @@ const FormAddAsset = () => {
           </div>
 
           <div className="w-full h-full">
+            {/* generalInfo */}
             <div
               className={
                 toggleState === 1 ? "flex flex-col xl:flex-row w-full" : "hidden"
@@ -397,6 +398,8 @@ const FormAddAsset = () => {
                 ))}
               </div>
             </div>
+
+            {/* specification */}
             <div className={toggleState === 2 ? "" : "hidden"}>
               <h1>Content 2</h1>
               <p>
@@ -406,6 +409,8 @@ const FormAddAsset = () => {
                 tenetur veniam aperiam saepe distinctio exercitationem.
               </p>
             </div>
+
+            {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
               <h1>Content 3</h1>
               <p>
@@ -415,6 +420,8 @@ const FormAddAsset = () => {
                 tenetur veniam aperiam saepe distinctio exercitationem.
               </p>
             </div>
+
+            {/* maintenance */}
             <div className={toggleState === 4 ? "" : "hidden"}>
               <h1>Content 4</h1>
               <p>
@@ -424,6 +431,8 @@ const FormAddAsset = () => {
                 tenetur veniam aperiam saepe distinctio exercitationem.
               </p>
             </div>
+
+            {/* history */}
             <div className={toggleState === 5 ? "" : "hidden"}>
               <h1>Content 5</h1>
               <p>

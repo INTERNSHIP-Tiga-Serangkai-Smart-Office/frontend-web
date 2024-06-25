@@ -131,7 +131,7 @@ const DataAsset = () => {
                         key={d.FixedIDNo}
                       >
                         <td class=" ">{i + 1}</td>
-                        <td class=" ">{d.Entity}</td>
+                        <td class=" ">{d.EntityRelations.EntityName}</td>
                         <td class=" overflow-hidden  ">{d.AccNo}</td>
                         <td class="p-3 relative overflow-hidden">
                           {d.FixedNo}
