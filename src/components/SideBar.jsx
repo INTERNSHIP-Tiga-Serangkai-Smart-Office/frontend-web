@@ -38,7 +38,7 @@ const SideBar = ({ children, isHidden }) => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:5000/me').then(res => {
+    axios.get("https://192.168.35.80:5000/me").then(res => {
       setUsername(res.data.User.name);
       setRole(res.data.role.name);
     }).catch(err => {

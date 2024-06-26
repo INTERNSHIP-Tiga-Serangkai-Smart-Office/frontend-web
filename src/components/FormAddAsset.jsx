@@ -14,6 +14,10 @@ const FormAddAsset = () => {
   const currTime = new Date().toLocaleTimeString();
   const reg = currDate + " " + currTime;
 
+  //add docs
+  const [formData, setFormData] = useState({NoDocument: '', ExpiredDate: ''});
+  const [dataArray, setDataArray] = useState([]);
+
   // var date;
   //     date = new Date();
   //     date = date.getUTCFullYear() + '-' +
@@ -23,51 +27,7 @@ const FormAddAsset = () => {
   //         ('00' + date.getUTCMinutes()).slice(-2) + ':' +
   //         ('00' + date.getUTCSeconds()).slice(-2);
 
-  const [asset, setAsset] = useState({
-    FixedAssetName: null,
-    Entity: null,
-    AccNo: null,
-    DateAq: null,
-    DateDisp: null,
-    CostCenterNo: null,
-    ProfitCenterNo: null,
-    LocId: null,
-    IDNoEB: null,
-    IDNoPO: null,
-    IDNoPR: null,
-    IDNoGR: null,
-    IDNoPC: null,
-    LineNoBD: null,
-    OrderNo: null,
-    InvNo: null,
-    PickBill: null,
-    SupplierId: null,
-    Qty: null,
-    Pick: null,
-    PickGR: null,
-    Unit: null,
-    SUnit: null,
-    Cost: null,
-    SalVageValue: null,
-    SalVageValueORG: null,
-    AccDep: null,
-    Pict: null,
-    Remark: null,
-    Status: 0,
-    IDNo: null,
-    SQM: null,
-    Weight: null,
-    HolderName: null,
-    Classification: null,
-    Brand: null,
-    ChassisNo: null,
-    EngineNo: null,
-    RegNo: null,
-    RegDate: null,
-    GuaranteeDate: null,
-    EmpID: null,
-    UserID: null,
-  });
+  const [asset, setAsset] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,10 +41,17 @@ const FormAddAsset = () => {
     setAsset({ ...asset, [fieldName]: date });
   };
 
+  const handleDocsChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/fixed", {
+      const response = await axios.post("http://localhost:5000/fixed", {
         fixedData: {
           Entity: asset.Entity,
           FixedAssetName: asset.FixedAssetName,
@@ -96,6 +63,10 @@ const FormAddAsset = () => {
           Status: asset.Status,
           // RegDate: currDate,
         },
+        documentData: [
+          { NoDocument: asset.NoDocument, ExpiredDate: asset.ExpiredDate },
+        ],
+        
         // DateAq: asset.DateAq,
         // DateDisp: asset.DateDisp,
         CostCenterNo: asset.CostCenterNo,
@@ -131,6 +102,7 @@ const FormAddAsset = () => {
         EmpID: asset.EmpID,
         UserID: asset.UserID,
       });
+      console.log('Data submitted successfully:', response.data);
       navigate("/dataaset");
     } catch (error) {
       if (error.response) {
@@ -143,16 +115,16 @@ const FormAddAsset = () => {
 
   //tab layout
   const mainData = [
-    { name: "FixedAssetName*", value: asset.FixedAssetName},
-    { name: "Status*", value: asset.Status},
-    { name: "Entity*", value: asset.Entity},
-    { name: "IDNoEB*", value: asset.IDNoEB},
-    { name: "IDNoGR*", value: asset.IDNoGR},
+    { name: "FixedAssetName", value: asset.FixedAssetName},
+    { name: "Status", value: asset.Status},
+    { name: "Entity", value: asset.Entity},
+    { name: "IDNoEB", value: asset.IDNoEB},
+    { name: "IDNoGR", value: asset.IDNoGR},
     // { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
-    { name: "AccNo*", value: asset.AccNo },
+    { name: "AccNo", value: asset.AccNo },
     { name: "AccDep", value: asset.AccDep },
     { name: "DateAq", value: asset.DateAq },
     { name: "DateDisp", value: asset.DateDisp },
@@ -164,17 +136,16 @@ const FormAddAsset = () => {
     { name: "IDNoPC", value: asset.IDNoPC },
     { name: "LineNoBD", value: asset.LineNoBD },
     { name: "OrderNo", value: asset.OrderNo },
-    { name: "InvNo", value: asset.InvNo },
     { name: "PickBill", value: asset.PickBill },
     { name: "SupplierId", value: asset.SupplierId },
-    { name: "Qty*", value: asset.Qty },
+    { name: "Qty", value: asset.Qty },
     { name: "Pick", value: asset.Pick },
     { name: "PickGR", value: asset.PickGR },
     { name: "GRNo", value: asset.GRNo },
     { name: "Unit", value: asset.Unit },
     { name: "Cost", value: asset.Cost },
     { name: "SUnit", value: asset.SUnit },
-    { name: "SalVageValue*", value: asset.SalVageValue },
+    { name: "SalVageValue", value: asset.SalVageValue },
     { name: "SalVageValueORG", value: asset.SalVageValueORG },
     { name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
@@ -321,6 +292,16 @@ const FormAddAsset = () => {
     setToggleState(index);
   };
 
+  //tab document
+  const handleAddDocs = () => {
+    setDataArray((prevArray) => [...prevArray, formData]);
+    setFormData({NoDocument: '', ExpiredDate: ''}); // Reset form
+    console.log(dataArray);
+  };
+  const handleDelDocs = (index) => {
+    setDataArray((prevArray) => prevArray.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="flex flex-col place-content-center">
       <h2 className="bold-32 my-5">Add New Asset</h2>
@@ -392,7 +373,7 @@ const FormAddAsset = () => {
                 toggleState === 1 ? "flex flex-col xl:flex-row w-full" : "hidden"
               }
             >
-              <div className="grid xl:grid-cols-3 w-full">
+              <div className="custom-grid w-full">
                 {generalInfo.map((data) => (
                   renderForm(data.name, data.value)
                 ))}
@@ -412,13 +393,61 @@ const FormAddAsset = () => {
 
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
-              <h1>Content 3</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
+              <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>No Document</th>
+                        <th>Expired Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataArray && dataArray.map((doc, i) => 
+                        <tr key={i}>
+                          <td>{i+1}</td>
+                          <td>{doc.NoDocument}</td>
+                          <td>{doc.ExpiredDate}</td>
+                          <td><button onClick={() => handleDelDocs(i)}>delete</button></td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                  <div className="flex w-full">
+                    <div className="flex flex-row items-center justify-between w-[45%]">
+                      <label htmlFor="">No Document</label>
+                      <input
+                        name="NoDocument"
+                        value={asset.NoDocument}
+                        type="text"
+                        onChange={handleDocsChange}
+                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                      />
+                    </div>
+                    <div className="flex flex-row items-center justify-between w-[45%]">
+                      <label htmlFor="">Expired Date</label>
+                      <input
+                        name="ExpiredDate"
+                        value={asset.ExpiredDate}
+                        type="text"
+                        onChange={handleDocsChange}
+                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                      />
+                    </div>
+                    {/* <button
+                      onClick={() => handleAddDocs}
+                      className={`justify-end bold-16 bg-green-300 p-3 m-2 w-[10%] rounded-xl shadow-lg hover:bg-green-400`}
+                    >
+                      Add docs
+                    </button> */}
+                    <button onClick={handleAddDocs}>
+                      add docs
+                    </button>
+                  </div>
+                  {/* <div className="flex w-full justify-end ">
+                </div> */}
             </div>
 
             {/* maintenance */}
