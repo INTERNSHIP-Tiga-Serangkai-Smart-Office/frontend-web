@@ -48,70 +48,7 @@ const FormAddAsset = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/fixed", {
-        fixedData: {
-          Entity: asset.Entity,
-          FixedAssetName: asset.FixedAssetName,
-          AccNo: asset.AccNo,
-          IDNoEB: asset.IDNoEB,
-          IDNoGR: asset.IDNoGR,
-          Qty: asset.Qty,
-          SalVageValue: asset.SalVageValue,
-          Status: asset.Status,
-          // RegDate: currDate,
-        },
-        documentData: [
-          { NoDocument: asset.NoDocument, ExpiredDate: asset.ExpiredDate },
-        ],
-        
-        // DateAq: asset.DateAq,
-        // DateDisp: asset.DateDisp,
-        CostCenterNo: asset.CostCenterNo,
-        ProfitCenterNo: asset.ProfitCenterNo,
-        LocId: asset.LocId,
-        IDNoPO: asset.IDNoPO,
-        IDNoPR: asset.IDNoPR,
-        IDNoPC: asset.IDNoPC,
-        LineNoBD: asset.LineNoBD,
-        OrderNo: asset.OrderNo,
-        InvNo: asset.InvNo,
-        PickBill: asset.PickBill,
-        SupplierId: asset.SupplierId,
-        Pick: asset.Pick,
-        PickGR: asset.PickGR,
-        Unit: asset.Unit,
-        SUnit: asset.SUnit,
-        Cost: asset.Cost,
-        SalVageValueORG: asset.SalVageValueORG,
-        AccDep: asset.AccDep,
-        Pict: asset.Pict,
-        Remark: asset.Remark,
-        IDNo: asset.IDNo,
-        SQM: asset.SQM,
-        Weight: asset.Weight,
-        HolderName: asset.HolderName,
-        Classification: asset.Classification,
-        Brand: asset.Brand,
-        ChassisNo: asset.ChassisNo,
-        EngineNo: asset.EngineNo,
-        RegNo: asset.RegNo,
-        GuaranteeDate: asset.GuaranteeDate,
-        EmpID: asset.EmpID,
-        UserID: asset.UserID,
-      });
-      console.log('Data submitted successfully:', response.data);
-      navigate("/dataaset");
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.msg);
-        console.log(msg);
-        // console.log(date);
-      }
-    }
-  };
+  
 
   //tab layout
   const mainData = [
@@ -294,12 +231,89 @@ const FormAddAsset = () => {
 
   //tab document
   const handleAddDocs = () => {
-    setDataArray((prevArray) => [...prevArray, formData]);
+    setDataArray((prevArray) => [
+      ...prevArray,
+      {
+        NoDocument: formData.NoDocument, ExpiredDate: formData.ExpiredDate
+      },
+    ]);
     setFormData({NoDocument: '', ExpiredDate: ''}); // Reset form
     console.log(dataArray);
+    
   };
-  const handleDelDocs = (index) => {
+  const handleDelDocs = (index, key, value) => {
     setDataArray((prevArray) => prevArray.filter((_, i) => i !== index));
+  };
+  const mapDocs = (dataArray) => {
+    return dataArray.map((data) => (
+      {
+        NoDocument: data.NoDocument, ExpiredDate: data.ExpiredDate
+      }
+    ))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/fixed", {
+        fixedData: {
+          Entity: asset.Entity,
+          FixedAssetName: asset.FixedAssetName,
+          AccNo: asset.AccNo,
+          IDNoEB: asset.IDNoEB,
+          IDNoGR: asset.IDNoGR,
+          Qty: asset.Qty,
+          SalVageValue: asset.SalVageValue,
+          Status: asset.Status,
+          // RegDate: currDate,
+          // DateAq: asset.DateAq,
+          // DateDisp: asset.DateDisp,
+          CostCenterNo: asset.CostCenterNo,
+          ProfitCenterNo: asset.ProfitCenterNo,
+          LocId: asset.LocId,
+          IDNoPO: asset.IDNoPO,
+          IDNoPR: asset.IDNoPR,
+          IDNoPC: asset.IDNoPC,
+          LineNoBD: asset.LineNoBD,
+          OrderNo: asset.OrderNo,
+          InvNo: asset.InvNo,
+          PickBill: asset.PickBill,
+          SupplierId: asset.SupplierId,
+          Pick: asset.Pick,
+          PickGR: asset.PickGR,
+          Unit: asset.Unit,
+          SUnit: asset.SUnit,
+          Cost: asset.Cost,
+          SalVageValueORG: asset.SalVageValueORG,
+          AccDep: asset.AccDep,
+          Pict: asset.Pict,
+          Remark: asset.Remark,
+          IDNo: asset.IDNo,
+          SQM: asset.SQM,
+          Weight: asset.Weight,
+          HolderName: asset.HolderName,
+          Classification: asset.Classification,
+          Brand: asset.Brand,
+          ChassisNo: asset.ChassisNo,
+          EngineNo: asset.EngineNo,
+          RegNo: asset.RegNo,
+          GuaranteeDate: asset.GuaranteeDate,
+          EmpID: asset.EmpID,
+          UserID: asset.UserID,
+        },
+        documentData:dataArray.filter(doc => doc.NoDocument !== "" && doc.ExpiredDate !== "")
+        ,
+        
+      });
+      console.log('Data submitted successfully:', response.data);
+      navigate("/dataaset");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+        console.log(msg);
+        // console.log(date);
+      }
+    }
   };
 
   return (
@@ -420,7 +434,7 @@ const FormAddAsset = () => {
                       <label htmlFor="">No Document</label>
                       <input
                         name="NoDocument"
-                        value={asset.NoDocument}
+                        value={formData.NoDocument}
                         type="text"
                         onChange={handleDocsChange}
                         className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
@@ -430,7 +444,7 @@ const FormAddAsset = () => {
                       <label htmlFor="">Expired Date</label>
                       <input
                         name="ExpiredDate"
-                        value={asset.ExpiredDate}
+                        value={formData.ExpiredDate}
                         type="text"
                         onChange={handleDocsChange}
                         className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
@@ -442,9 +456,9 @@ const FormAddAsset = () => {
                     >
                       Add docs
                     </button> */}
-                    <button onClick={handleAddDocs}>
+                    <div onClick={handleAddDocs}>
                       add docs
-                    </button>
+                    </div>
                   </div>
                   {/* <div className="flex w-full justify-end ">
                 </div> */}
