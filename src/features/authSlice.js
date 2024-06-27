@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { Axios } from "axios";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   user: null,
@@ -9,29 +9,26 @@ const initialState = {
   message: "",
 };
 
-export const LoginAuth = createAsyncThunk(
-  "user/LoginUser",
-  async (user, thunkAPI) => {
-    try {
-      const response = await axios.post("http://192.168.35.80:5000/login", {
-        email: user.email,
-        password: user.password,
-      });
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response) {
-        const message = error.response.data.error;
-        return thunkAPI.rejectWithValue(message);
-      }
+export const LoginAuth = createAsyncThunk("user/LoginUser", async (user, thunkAPI) => {
+  try {
+    const response = await axios.post("http://localhost:5000/login", {
+      email: user.email,
+      password: user.password,
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      const message = error.response.data.error;
+      return thunkAPI.rejectWithValue(message);
     }
   }
-);
+});
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://192.168.35.80:5000/me", {
+    const response = await axios.get("http://localhost:5000/me", {
       withCredentials: true,
     });
     console.log(response);
@@ -45,7 +42,7 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 });
 
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
-  await axios.delete("http://192.168.35.80:5000/logout");
+  await axios.delete("http://localhost:5000/logout");
 });
 
 export const authSlice = createSlice({
