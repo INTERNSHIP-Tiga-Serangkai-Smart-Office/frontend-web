@@ -108,6 +108,7 @@ const FormAddAsset = () => {
   const [group, setGroup] = useState([]);
   const [entitasBisnis, setEntitasBisnis] = useState([]);
   const [location, setLocation] = useState([]);
+  const [unit, setUnit] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
       const res = await axios.get("http://localhost:5000/entity");
@@ -124,12 +125,17 @@ const FormAddAsset = () => {
     const fetchLoc = async () => {
       const res = await axios.get("http://localhost:5000/location");
       setLocation(res.data);
+    };
+    const fetchUnit = async () => {
+      const res = await axios.get("http://localhost:5000/unit");
+      setUnit(res.data);
     }
     fetchEntity();
     fetchEB();
     fetchGroup();
     fetchLoc();
-  }, [setEntity, setGroup, setEntitasBisnis, setLocation]);
+    fetchUnit();
+  }, [setEntity, setGroup, setEntitasBisnis, setLocation, setUnit]);
 
   const statusOption = [
     { Name: "Inactive", value: 0 },
@@ -153,6 +159,8 @@ const FormAddAsset = () => {
           return statusOption;
         case "LocId":
           return location;
+        case "Unit":
+          return unit;
         default:
           return null;
       }
@@ -202,7 +210,7 @@ const FormAddAsset = () => {
                   {option.LocID || option.Entity || option.IDNo || option.IDNo}
                 </span>
                 <span style={{ marginLeft: "20px" }}>
-                  {option.EntityName || option.EBName || option.Name || option.LocationName}
+                  {option.EntityName || option.EBName || option.Name || option.LocationName || option.Unit}
                 </span>
               </option>
             ))}
