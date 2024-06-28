@@ -97,53 +97,53 @@ const FormEditAsset = () => {
 
   //tab layout
   const mainData = [
-    { name: "FixedAssetName", value: asset.FixedAssetName },
-    { name: "FixedNo", value: asset.FixedNo },
-    { name: "Status", value: asset.Status },
-    { name: "Entity", value: asset.Entity },
-    { name: "IDNoEB", value: asset.IDNoEB },
-    { name: "IDNoGR", value: asset.IDNoGR },
-    { name: "RegDate", value: asset.RegDate },
+    { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
+    { label: "AIN", name: "FixedNo", value: asset.FixedNo },
+    { label: "Status", name: "Status", value: asset.Status },
+    { label: "Entity", name: "Entity", value: asset.Entity },
+    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB },
+    { label: "Group", name: "IDNoGR", value: asset.IDNoGR },
+    { label: "Tgl Registrasi", name: "RegDate", value: asset.RegDate },
   ];
 
   const generalInfo = [
-    { name: "AccNo", value: asset.AccNo },
-    { name: "AccDep", value: asset.AccDep },
-    { name: "DateAq", value: asset.DateAq },
-    { name: "DateDisp", value: asset.DateDisp },
-    { name: "CostCenterNo", value: asset.CostCenterNo },
-    { name: "ProfitCenterNo", value: asset.ProfitCenterNo },
-    { name: "LocId", value: asset.LocId },
-    { name: "IDNoPO", value: asset.IDNoPO },
-    { name: "IDNoPR", value: asset.IDNoPR },
-    { name: "IDNoPC", value: asset.IDNoPC },
-    { name: "LineNoBD", value: asset.LineNoBD },
-    { name: "OrderNo", value: asset.OrderNo },
-    { name: "InvNo", value: asset.InvNo },
-    { name: "PickBill", value: asset.PickBill },
-    { name: "SupplierId", value: asset.SupplierId },
-    { name: "Qty", value: asset.Qty },
-    { name: "Pick", value: asset.Pick },
-    { name: "PickGR", value: asset.PickGR },
-    { name: "GRNo", value: asset.GRNo },
-    { name: "Unit", value: asset.Unit },
-    { name: "Cost", value: asset.Cost },
-    { name: "SUnit", value: asset.SUnit },
-    { name: "SalVageValue", value: asset.SalVageValue },
-    { name: "SalVageValueORG", value: asset.SalVageValueORG },
-    { name: "Remark", value: asset.Remark },
+    { label: "Akun Asset", name: "AccNo", value: asset.AccNo },
+    { label: "Akun Penyusutan", name: "AccDep", value: asset.AccDep },
+    { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
+    { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
+    { label: "Cost Center", name: "CostCenterNo", value: asset.CostCenterNo },
+    { label: "Profit Center", name: "ProfitCenterNo", value: asset.ProfitCenterNo },
+    { label: "Lokasi", name: "LocId", value: asset.LocId },
+    { label: "PO", name: "IDNoPO", value: asset.IDNoPO },
+    { label: "PR", name: "IDNoPR", value: asset.IDNoPR },
+    { label: "PC", name: "IDNoPC", value: asset.IDNoPC },
+    { label: "Line No BD", name: "LineNoBD", value: asset.LineNoBD },
+    { label: "Order No", name: "OrderNo", value: asset.OrderNo },
+    { Label: "Inv No", name: "InvNo", value: asset.InvNo },
+    { label: "Pick Bill", name: "PickBill", value: asset.PickBill },
+    { label: "Supplier", name: "SupplierId", value: asset.SupplierId },
+    { label: "Jumlah", name: "Qty", value: asset.Qty },
+    { label: "Pick", name: "Pick", value: asset.Pick },
+    { label: "Pick Group", name: "PickGR", value: asset.PickGR },
+    { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
+    { label: "Unit", name: "Unit", value: asset.Unit },
+    { label: "Cost", name: "Cost", value: asset.Cost },
+    { label: "S Unit", name: "SUnit", value: asset.SUnit },
+    { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
+    { label: "Salvage Value Original", name: "SalVageValueORG", value: asset.SalVageValueORG },
+    { label: "Remark", name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
-    { name: "Classification", value: asset.Classification },
-    { name: "Brand", value: asset.Brand },
-    { name: "ChassisNo", value: asset.ChassisNo },
-    { name: "EngineNo", value: asset.EngineNo },
-    { name: "Weight", value: asset.Weight },
-    { name: "RegNo", value: asset.RegNo },
+    { label: "Kelompok", name: "Classification", value: asset.Classification },
+    { label: "Brand", name: "Brand", value: asset.Brand },
+    { label: "Chassis No", name: "ChassisNo", value: asset.ChassisNo },
+    { label: "Engine NO", name: "EngineNo", value: asset.EngineNo },
+    { label: "Weight", name: "Weight", value: asset.Weight },
+    { label: "No Registrasi", name: "RegNo", value: asset.RegNo },
     // { name: "RegDate", value: asset.RegDate },
-    { name: "GuaranteeDate", value: asset.GuaranteeDate },
-    { name: "HolderName", value: asset.HolderName },
-    { name: "EmpId", value: asset.EmpID },
-    { name: "UserId", value: asset.UserID },
+    { label: "Tgl Garansi", name: "GuaranteeDate", value: asset.GuaranteeDate },
+    { label: "Nama Pengguna", name: "HolderName", value: asset.HolderName },
+    { label: "Emp Id", name: "EmpId", value: asset.EmpID },
+    { label: "User Id", name: "UserId", value: asset.UserID },
   ];
 
   // const documentTab = [
@@ -171,13 +171,13 @@ const FormEditAsset = () => {
     setToggleState(index);
   };
 
-  const renderForm = (fieldName, value) => {
+  const renderForm = (label, fieldName, value) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
     return (
       <div key={fieldName} className="flex flex-row items-center mx-3">
         <label htmlFor={fieldName} className="label w-[45%]">
-          {fieldName}
+          {label}
         </label>
         {/* {isOptional ? (
                     <input
@@ -234,7 +234,7 @@ const FormEditAsset = () => {
             //     disabled={!isEdit}
             //   />
             // </div>
-            renderForm(data.name, data.value)
+            renderForm(data.label, data.name, data.value)
           )}
         </div>
 
@@ -317,7 +317,7 @@ const FormEditAsset = () => {
                   //     disabled={!isEdit}
                   //   />
                   // </div>
-                  renderForm(data.name, data.value)
+                  renderForm(data.label, data.name, data.value)
                 )}
               </div>
             </div>
