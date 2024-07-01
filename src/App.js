@@ -53,7 +53,7 @@ function App() {
                 <Route path="/role" element={<Roles />} />
                 <Route path="/role/add/" element={<AddRole />} />
                 <Route path="/role/edit/:id" element={<EditRole />} />
-                <Route path="/dataaset/detail" element={<Detail />} />
+                <Route path="/dataaset/detail/:id" element={<Detail />} />
                 <Route path="/dataaset/add" element={<AddAssets />} />
                 <Route path="/dataaset/edit/:id" element={<EditAssets />} />
                 <Route path="/dataaset/printqr" element={<PrintQRCode />} />

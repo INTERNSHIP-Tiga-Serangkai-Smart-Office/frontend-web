@@ -188,7 +188,7 @@ const DataAsset = () => {
                           {barcodes(d.FixedNo, i)}
                         </td>
                         <td class=" ">
-                          <Link to={`/dataaset/detail`}>
+                          <Link to={`/dataaset/detail/${d.FixedIDNo}`}>
                             <button className="p-3">
                               <MdEdit
                                 className="text-blue-300"
