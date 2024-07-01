@@ -193,36 +193,43 @@ const AssetRelocationItems = () => {
                           </div>
                         </form>
                       ) : (
-                        <div>
-                          <div className="detail-info">
-                            <div>
-                              <strong>Relocation ID:</strong> {detail.RelocationID}
+                        <tr className="border-none">
+                          <td colSpan={6} className="flex-col">
+                            <div className="max-h-64 overflow-y-auto">
+                              <table className="min-w-full table-auto border-collapse p-2 w-full ">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr className="text-center">
+                                    <th class="px-2 py-3 ">Relocation ID</th>
+                                    <th class="px-2 py-3 ">Previous Location</th>
+                                    <th class="px-2 py-3 ">New Location</th>
+                                    <th class="px-2 py-3 ">Previous Employee Responsible</th>
+                                    <th class="px-2 py-3 ">New Employee Responsible</th>
+                                    <th class="px-2 py-3 ">Relocation Date</th>
+                                    {/* <th class="px-2 py-3 ">actions</th> */}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                      <td class="px-2 ">{detail.RelocationID}</td>
+                                      <td>{detail.PreviousLocation || "N/A"}</td>
+                                      <td>{detail.NewLocation || "N/A"}</td>
+                                      <td>{detail.PreviousEmployeeResponsible || "N/A"}</td>
+                                      <td>{detail.NewEmployeeResponsible || "N/A"}</td>
+                                      <td>{new Date(detail.RelocationDate).toLocaleString()}</td>
+                                      {/* <td className="actions">
+                                      <button onClick={() => handleEdit(detail)} className="edit-button">
+                                          Edit
+                                      </button>
+                                      <button onClick={() => handleDelete(detail.RelocationID)} className="delete-button">
+                                          Delete
+                                      </button>
+                                      </td> */}
+                                    </tr>
+                                </tbody>
+                              </table>
                             </div>
-                            <div>
-                              <strong>Previous Location:</strong> {detail.PreviousLocation || "N/A"}
-                            </div>
-                            <div>
-                              <strong>New Location:</strong> {detail.NewLocation || "N/A"}
-                            </div>
-                            <div>
-                              <strong>Previous Employee Responsible:</strong> {detail.PreviousEmployeeResponsible || "N/A"}
-                            </div>
-                            <div>
-                              <strong>New Employee Responsible:</strong> {detail.NewEmployeeResponsible || "N/A"}
-                            </div>
-                            <div>
-                              <strong>Relocation Date:</strong> {new Date(detail.RelocationDate).toLocaleString()}
-                            </div>
-                          </div>
-                          <div className="actions">
-                            <button onClick={() => handleEdit(detail)} className="edit-button">
-                              Edit
-                            </button>
-                            <button onClick={() => handleDelete(detail.RelocationID)} className="delete-button">
-                              Delete
-                            </button>
-                          </div>
-                        </div>
+                          </td>
+                        </tr>
                       )}
                     </td>
                   </tr>
