@@ -9,13 +9,19 @@ const FormAddAsset = () => {
   const navigate = useNavigate();
 
   const now = new Date();
-  const formattedDatetime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+  const formattedDatetime = `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+    now.getHours()
+  ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
+    now.getSeconds()
+  ).padStart(2, "0")}`;
   const currDate = new Date().toISOString();
   const currTime = new Date().toLocaleTimeString();
   const reg = currDate + " " + currTime;
 
   //add docs
-  const [formData, setFormData] = useState({NoDocument: '', ExpiredDate: ''});
+  const [formData, setFormData] = useState({ NoDocument: "", ExpiredDate: "" });
   const [dataArray, setDataArray] = useState([]);
 
   // var date;
@@ -48,62 +54,60 @@ const FormAddAsset = () => {
     });
   };
 
-  
-
   //tab layout
   const mainData = [
-    { name: "FixedAssetName", value: asset.FixedAssetName},
-    { name: "Status", value: asset.Status},
-    { name: "Entity", value: asset.Entity},
-    { name: "IDNoEB", value: asset.IDNoEB},
-    { name: "IDNoGR", value: asset.IDNoGR},
+    { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
+    { label: "Status", name: "Status", value: asset.Status },
+    { label: "Entity", name: "Entity", value: asset.Entity },
+    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB },
+    { label: "Group", name: "IDNoGR", value: asset.IDNoGR },
     // { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
-    { name: "AccNo", value: asset.AccNo },
-    { name: "AccDep", value: asset.AccDep },
-    { name: "DateAq", value: asset.DateAq },
-    { name: "DateDisp", value: asset.DateDisp },
-    { name: "CostCenterNo", value: asset.CostCenterNo },
-    { name: "ProfitCenterNo", value: asset.ProfitCenterNo },
-    { name: "LocId", value: asset.LocId },
-    { name: "IDNoPO", value: asset.IDNoPO },
-    { name: "IDNoPR", value: asset.IDNoPR },
-    { name: "IDNoPC", value: asset.IDNoPC },
-    { name: "LineNoBD", value: asset.LineNoBD },
-    { name: "OrderNo", value: asset.OrderNo },
-    { name: "PickBill", value: asset.PickBill },
-    { name: "SupplierId", value: asset.SupplierId },
-    { name: "Qty", value: asset.Qty },
-    { name: "Pick", value: asset.Pick },
-    { name: "PickGR", value: asset.PickGR },
-    { name: "GRNo", value: asset.GRNo },
-    { name: "Unit", value: asset.Unit },
-    { name: "Cost", value: asset.Cost },
-    { name: "SUnit", value: asset.SUnit },
-    { name: "SalVageValue", value: asset.SalVageValue },
-    { name: "SalVageValueORG", value: asset.SalVageValueORG },
-    { name: "Remark", value: asset.Remark },
+    { label: "Akun Asset", name: "AccNo", value: asset.AccNo },
+    { label: "Akun Penyusutan", name: "AccDep", value: asset.AccDep },
+    { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
+    { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
+    { label: "Cost Center", name: "CostCenterNo", value: asset.CostCenterNo },
+    { label: "Profit Center", name: "ProfitCenterNo", value: asset.ProfitCenterNo },
+    { label: "Lokasi", name: "LocId", value: asset.LocId },
+    { label: "PO", name: "IDNoPO", value: asset.IDNoPO },
+    { label: "PR", name: "IDNoPR", value: asset.IDNoPR },
+    { label: "PC", name: "IDNoPC", value: asset.IDNoPC },
+    { label: "Line No BD", name: "LineNoBD", value: asset.LineNoBD },
+    { label: "Order No", name: "OrderNo", value: asset.OrderNo },
+    { label: "Pick Bill", name: "PickBill", value: asset.PickBill },
+    { label: "Supplier", name: "SupplierId", value: asset.SupplierId },
+    { label: "Jumlah", name: "Qty", value: asset.Qty },
+    { label: "Pick", name: "Pick", value: asset.Pick },
+    { label: "Pick Group", name: "PickGR", value: asset.PickGR },
+    { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
+    { label: "Unit", name: "Unit", value: asset.Unit },
+    { label: "Cost", name: "Cost", value: asset.Cost },
+    { label: "S Unit", name: "SUnit", value: asset.SUnit },
+    { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
+    { label: "Salvage Value Original", name: "SalVageValueORG", value: asset.SalVageValueORG },
+    { label: "Remark", name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
-    { name: "Classification", value: asset.Classification },
-    { name: "Brand", value: asset.Brand },
-    { name: "ChassisNo", value: asset.ChassisNo },
-    { name: "EngineNo", value: asset.EngineNo },
-    { name: "Weight", value: asset.Weight },
-    { name: "RegNo", value: asset.RegNo },
-    // { name: "RegDate", value: asset.RegDate },
-    { name: "GuaranteeDate", value: asset.GuaranteeDate },
-    { name: "HolderName", value: asset.HolderName },
-    { name: "EmpId", value: asset.EmpID },
-    { name: "UserId", value: asset.UserID },
+    { label: "Kelompok", name: "Classification", value: asset.Classification },
+    { label: "Brand", name: "Brand", value: asset.Brand },
+    { label: "Chassis No", name: "ChassisNo", value: asset.ChassisNo },
+    { label: "Engine NO", name: "EngineNo", value: asset.EngineNo },
+    { label: "Weight", name: "Weight", value: asset.Weight },
+    { label: "No Registrasi", name: "RegNo", value: asset.RegNo },
+    { label: "Tgl Registrasi", name: "RegDate", value: asset.RegDate },
+    { label: "Tgl Garansi", name: "GuaranteeDate", value: asset.GuaranteeDate },
+    { label: "Nama Pengguna", name: "HolderName", value: asset.HolderName },
+    { label: "Emp Id", name: "EmpId", value: asset.EmpID },
+    { label: "User Id", name: "UserId", value: asset.UserID },
   ];
-
 
   //fixed group dropdown
   const [entity, setEntity] = useState([]);
   const [group, setGroup] = useState([]);
   const [entitasBisnis, setEntitasBisnis] = useState([]);
+  const [location, setLocation] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
       const res = await axios.get("http://localhost:5000/entity");
@@ -117,19 +121,24 @@ const FormAddAsset = () => {
       const res = await axios.get("http://localhost:5000/entitas-bisnis");
       setEntitasBisnis(res.data);
     };
+    const fetchLoc = async () => {
+      const res = await axios.get("http://localhost:5000/location");
+      setLocation(res.data);
+    }
     fetchEntity();
     fetchEB();
     fetchGroup();
-  }, [setEntity, setGroup, setEntitasBisnis]);
+    fetchLoc();
+  }, [setEntity, setGroup, setEntitasBisnis, setLocation]);
 
   const statusOption = [
-    {Name:'Inactive', value: 0},
-    {Name:'Active', value: 1},
-  ]
+    { Name: "Inactive", value: 0 },
+    { Name: "Active", value: 1 },
+  ];
 
   // Form component logic for each field (replace with your actual components)
 
-  const renderForm = (fieldName, value) => {
+  const renderForm = (label, fieldName, value) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
     const options = (() => {
@@ -142,6 +151,8 @@ const FormAddAsset = () => {
           return entitasBisnis;
         case "Status":
           return statusOption;
+        case "LocId":
+          return location;
         default:
           return null;
       }
@@ -151,11 +162,13 @@ const FormAddAsset = () => {
       fieldName === "DateAq" ||
       fieldName === "DateDisp" ||
       fieldName === "RegDate" ||
-      fieldName === "GuaranteeDate" 
+      fieldName === "GuaranteeDate"
     ) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[45%]">{fieldName}</label>
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {label}
+          </label>
           <DatePicker
             selected={value}
             onChange={(date) => handleDateChange(date, fieldName)}
@@ -166,7 +179,9 @@ const FormAddAsset = () => {
     } else if (options) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[45%]">{fieldName}</label>
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {label}
+          </label>
           <select
             id={fieldName}
             name={fieldName}
@@ -177,15 +192,17 @@ const FormAddAsset = () => {
             <option value="">Select {fieldName}</option>
             {options.map((option) => (
               <option
-                key={option.IDNo || option.Entity || option.value}
-                value={option.Entity || option.IDNo || option.IDNo || option.value}
+                key={option.LocID || option.IDNo || option.Entity || option.value}
+                value={
+                   option.Entity || option.IDNo || option.IDNo || option.value
+                }
                 style={{ display: "flex" }}
               >
                 <span style={{ width: "50px" }}>
-                  {option.Entity || option.IDNo || option.IDNo}
+                  {option.LocID || option.Entity || option.IDNo || option.IDNo}
                 </span>
                 <span style={{ marginLeft: "20px" }}>
-                  {option.EntityName || option.EBName || option.Name}
+                  {option.EntityName || option.EBName || option.Name || option.LocationName}
                 </span>
               </option>
             ))}
@@ -196,7 +213,7 @@ const FormAddAsset = () => {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
           <label htmlFor={fieldName} className="label w-[45%]">
-            {fieldName}
+            {label}
           </label>
           {/* {isOptional ? (
                     <input
@@ -221,7 +238,7 @@ const FormAddAsset = () => {
         </div>
       );
     }
-  }
+  };
 
   //tab layout
   const [toggleState, setToggleState] = useState(1);
@@ -234,23 +251,22 @@ const FormAddAsset = () => {
     setDataArray((prevArray) => [
       ...prevArray,
       {
-        NoDocument: formData.NoDocument, ExpiredDate: formData.ExpiredDate
+        NoDocument: formData.NoDocument,
+        ExpiredDate: formData.ExpiredDate,
       },
     ]);
-    setFormData({NoDocument: '', ExpiredDate: ''}); // Reset form
+    setFormData({ NoDocument: "", ExpiredDate: "" }); // Reset form
     console.log(dataArray);
-    
   };
   const handleDelDocs = (index, key, value) => {
     setDataArray((prevArray) => prevArray.filter((_, i) => i !== index));
   };
   const mapDocs = (dataArray) => {
-    return dataArray.map((data) => (
-      {
-        NoDocument: data.NoDocument, ExpiredDate: data.ExpiredDate
-      }
-    ))
-  }
+    return dataArray.map((data) => ({
+      NoDocument: data.NoDocument,
+      ExpiredDate: data.ExpiredDate,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -301,11 +317,11 @@ const FormAddAsset = () => {
           EmpID: asset.EmpID,
           UserID: asset.UserID,
         },
-        documentData:dataArray.filter(doc => doc.NoDocument !== "" && doc.ExpiredDate !== "")
-        ,
-        
+        documentData: dataArray.filter(
+          (doc) => doc.NoDocument !== "" && doc.ExpiredDate !== ""
+        ),
       });
-      console.log('Data submitted successfully:', response.data);
+      console.log("Data submitted successfully:", response.data);
       navigate("/dataaset");
     } catch (error) {
       if (error.response) {
@@ -321,9 +337,7 @@ const FormAddAsset = () => {
       <h2 className="bold-32 my-5">Add New Asset</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 w-full">
-            {mainData.map((data) => (
-              renderForm(data.name, data.value)
-            ))}
+          {mainData.map((data) => renderForm(data.label, data.name, data.value))}
         </div>
 
         <div className="w-full mt-3 border-2 p-4 rounded-xl">
@@ -384,13 +398,13 @@ const FormAddAsset = () => {
             {/* generalInfo */}
             <div
               className={
-                toggleState === 1 ? "flex flex-col xl:flex-row w-full" : "hidden"
+                toggleState === 1
+                  ? "flex flex-col xl:flex-row w-full"
+                  : "hidden"
               }
             >
               <div className="custom-grid w-full">
-                {generalInfo.map((data) => (
-                  renderForm(data.name, data.value)
-                ))}
+                {generalInfo.map((data) => renderForm(data.label, data.name, data.value))}
               </div>
             </div>
 
@@ -408,6 +422,7 @@ const FormAddAsset = () => {
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
               <div>
+                {dataArray.length > 0 && (
                   <table>
                     <thead>
                       <tr>
@@ -418,49 +433,52 @@ const FormAddAsset = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {dataArray && dataArray.map((doc, i) => 
+                      {dataArray.map((doc, i) => (
                         <tr key={i}>
-                          <td>{i+1}</td>
+                          <td>{i + 1}</td>
                           <td>{doc.NoDocument}</td>
                           <td>{doc.ExpiredDate}</td>
-                          <td><button onClick={() => handleDelDocs(i)}>delete</button></td>
+                          <td>
+                            <button onClick={() => handleDelDocs(i)}>
+                              delete
+                            </button>
+                          </td>
                         </tr>
-                      )}
+                      ))}
                     </tbody>
                   </table>
+                )}
+              </div>
+              <div className="flex w-full">
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">No Document</label>
+                  <input
+                    name="NoDocument"
+                    value={formData.NoDocument}
+                    type="text"
+                    onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
                 </div>
-                  <div className="flex w-full">
-                    <div className="flex flex-row items-center justify-between w-[45%]">
-                      <label htmlFor="">No Document</label>
-                      <input
-                        name="NoDocument"
-                        value={formData.NoDocument}
-                        type="text"
-                        onChange={handleDocsChange}
-                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-                      />
-                    </div>
-                    <div className="flex flex-row items-center justify-between w-[45%]">
-                      <label htmlFor="">Expired Date</label>
-                      <input
-                        name="ExpiredDate"
-                        value={formData.ExpiredDate}
-                        type="text"
-                        onChange={handleDocsChange}
-                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-                      />
-                    </div>
-                    {/* <button
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">Expired Date</label>
+                  <input
+                    name="ExpiredDate"
+                    value={formData.ExpiredDate}
+                    type="text"
+                    onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
+                </div>
+                {/* <button
                       onClick={() => handleAddDocs}
                       className={`justify-end bold-16 bg-green-300 p-3 m-2 w-[10%] rounded-xl shadow-lg hover:bg-green-400`}
                     >
                       Add docs
                     </button> */}
-                    <div onClick={handleAddDocs}>
-                      add docs
-                    </div>
-                  </div>
-                  {/* <div className="flex w-full justify-end ">
+                <div onClick={handleAddDocs}>add docs</div>
+              </div>
+              {/* <div className="flex w-full justify-end ">
                 </div> */}
             </div>
 
