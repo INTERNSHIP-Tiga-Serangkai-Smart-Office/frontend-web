@@ -16,6 +16,7 @@ import Master from "./pages/Master";
 import Relocation from "./pages/Relocation";
 import Roles from "./pages/Roles";
 import Users from "./pages/Users";
+import AddRelocation from "./pages/AddRelocation";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/users/edit/:id" element={<EditUser />} />
                 <Route path="/role" element={<Roles />} />
                 <Route path="/relocation" element={<Relocation />} />
+                <Route path="/relocation/add" element={<AddRelocation />} />
                 <Route path="/role/add/" element={<AddRole />} />
                 <Route path="/role/edit/:id" element={<EditRole />} />
                 <Route path="/dataaset/add" element={<AddAssets />} />

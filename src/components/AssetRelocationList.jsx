@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/relocation.css";
+import { useNavigate } from "react-router-dom";
 
 const AssetRelocationItems = () => {
   const [data, setData] = useState([]);
@@ -19,6 +20,7 @@ const AssetRelocationItems = () => {
     PreviousEmployeeResponsible: "",
     NewEmployeeResponsible: "",
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -132,7 +134,10 @@ const AssetRelocationItems = () => {
 
   return (
     <div className="container">
-      <h1>Asset Relocation Table</h1>
+      <div className="flex w-full justify-between">
+        <h1>Asset Relocation Table</h1>
+        <button type="button" onClick={() => navigate('/relocation/add')} className="p-3 bg-green-300">Add</button>
+      </div>
       <input type="text" placeholder="Search..." value={search} onChange={handleSearch} className="search-input" />
       <table className="table">
         <thead>
