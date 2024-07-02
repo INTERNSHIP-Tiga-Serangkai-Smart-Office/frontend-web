@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
 
@@ -12,7 +12,8 @@ const PrintQRModal = ({ show, onClosed }) => {
   useEffect(() => {
     // getFixed();
     axios.get(`http://localhost:5000/fixed?page=${page}`).then((res) => {
-      setFixed(res.data.data);
+      const filteredData = res.data.data.filter((d) => d.FixedNo);
+      setFixed(filteredData);
     });
     console.log(fixeds);
   }, [page]);
@@ -49,10 +50,7 @@ const PrintQRModal = ({ show, onClosed }) => {
       <div className="w-full m-10 p-10 bg-white rounded-xl">
         <div className="flex justify-between items-center mb-3">
           <h2 className="bold-20 mb-3">Print QR Code</h2>
-          <button
-            className="text-white bg-red-600 rounded-[100%] py-2 px-3"
-            onClick={onClosed}
-          >
+          <button className="text-white bg-red-600 rounded-[100%] py-2 px-3" onClick={onClosed}>
             X
           </button>
         </div>
@@ -70,25 +68,14 @@ const PrintQRModal = ({ show, onClosed }) => {
           <tbody>
             {fixeds &&
               fixeds.map((d, i) => (
-                <tr
-                  class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                  key={d.FixedIDNo}
-                >
+                <tr class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" key={d.FixedIDNo}>
                   <td class=" ">{i + 1}</td>
                   <td class=" ">{d.FixedAssetName}</td>
                   <td class="p-3 relative overflow-hidden">{d.FixedNo}</td>
                   <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
+                  <td class=" ">{d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</td>
                   <td class=" ">
-                    {d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}
-                  </td>
-                  <td class=" ">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.some(
-                        (i) => i.FixedNo === d.FixedNo
-                      )}
-                      onChange={(event) => handleCheckboxChange(event, d)}
-                    />
+                    <input type="checkbox" checked={selectedItems.some((i) => i.FixedNo === d.FixedNo)} onChange={(event) => handleCheckboxChange(event, d)} />
                   </td>
                 </tr>
               ))}
@@ -114,10 +101,7 @@ const PrintQRModal = ({ show, onClosed }) => {
             <h2 className="p-5">{page}</h2>
             <button onClick={handleNextPage}>Next</button>
           </div>
-          <button
-            className="flex items-center h-10 px-3 bg-green-300 rounded-md"
-            onClick={handlePrint}
-          >
+          <button className="flex items-center h-10 px-3 bg-green-300 rounded-md" onClick={handlePrint}>
             Print
           </button>
         </div>
