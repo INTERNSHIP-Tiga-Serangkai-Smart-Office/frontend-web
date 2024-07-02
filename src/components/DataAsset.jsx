@@ -9,6 +9,7 @@ import ReactToPrint from "react-to-print";
 import QRCode from "react-qr-code";
 import PrintQRModal from "./PrintQRModal";
 import AlertComp from "./AlertComp";
+import GenerateAIN from "./GenerateAIN";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -16,6 +17,7 @@ const DataAsset = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showNull, setShowNull] = useState(false);
   const [showAlert, setShowAlert] = useState(null);
 
   const ref = useRef([]);
@@ -77,6 +79,11 @@ const DataAsset = () => {
       <div className="w-full flex items-baseline justify-between">
         <h1 className="text-2xl montserrat-bold">Data Asset Page</h1>
         <div>
+          <button
+            onClick={() => setShowNull(true)}
+            className="mx-2 p-3 bg-red-300 rounded-lg">
+            Generate AIN
+          </button>
           <button
             onClick={() => setShowModal(true)}
             className="mx-2 p-3 bg-blue-300 rounded-lg"
@@ -198,6 +205,10 @@ const DataAsset = () => {
       <PrintQRModal
         show={showModal}
         onClosed={() => setShowModal(!showModal)}
+      />
+      <GenerateAIN
+        show={showNull}
+        onClosed={() => setShowNull(!showNull)}
       />
     </div>
   );
