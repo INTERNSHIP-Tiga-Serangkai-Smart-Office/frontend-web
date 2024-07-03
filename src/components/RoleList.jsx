@@ -4,7 +4,7 @@ import { MdEdit } from 'react-icons/md';
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import AlertComp from './AlertComp';
-
+import { getToken } from '../features/authSlice';
 
 const RoleList = () => {
     const [roles, setRoles] = useState([]);
@@ -18,7 +18,7 @@ const RoleList = () => {
     const apiUrl = process.env.REACT_APP_API_URL;
 
     const getRoles = async () => {
-        const response = await axios.get(`${apiUrl}/role`);
+        const response = await axios.get(`${apiUrl}/role`, getToken());
         setRoles(response.data);
     }
     useEffect(() => {
@@ -29,7 +29,7 @@ const RoleList = () => {
         getRoles();
         
         //Fetch permissions
-        axios.get(`${apiUrl}/permissions`).then((response) => {
+        axios.get(`${apiUrl}/permissions`, getToken()).then((response) => {
           const organizedPermissions = organizePermissionsByResource(response.data);
           setPermissions(organizedPermissions);
         });
@@ -37,7 +37,7 @@ const RoleList = () => {
 
     useEffect(() => {
         if(selectedRole){
-            axios.get(`${apiUrl}/role-permissions/${selectedRole}`)
+            axios.get(`${apiUrl}/role-permissions/${selectedRole}`, getToken())
             .then((response) => {
                 updateSelectedPermission(response.data);
             })
@@ -136,7 +136,7 @@ const RoleList = () => {
 
                 if(addedPermissions.length > 0){
                     promises.push(
-                        axios.post(`${apiUrl}/role-permissions`,{
+                        axios.post(`${apiUrl}/role-permissions`, getToken(),{
                             roleId: selectedRole,
                             permissionId: addedPermissions,
                         })
@@ -146,7 +146,7 @@ const RoleList = () => {
 
                 if(removedPermissions.length > 0){
                     promises.push(
-                        axios.delete(`${apiUrl}/role-permissions`,{
+                        axios.delete(`${apiUrl}/role-permissions`, getToken(),{
                             data: {
                                 roleId: selectedRole,
                                 permissionId: removedPermissions,
@@ -180,7 +180,7 @@ const RoleList = () => {
     };
 
     const deleteRole = async (roleId) => {
-        await axios.delete(`${apiUrl}/role/${roleId}`);
+        await axios.delete(`${apiUrl}/role/${roleId}`, getToken());
         setShowAlert(!showAlert);
         getRoles();
     };

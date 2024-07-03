@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { getToken } from '../features/authSlice';
 
 const FormEditRole = () => {
     const [name, setName] = useState('');
@@ -17,7 +18,7 @@ const FormEditRole = () => {
         
         const getRoleById = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/role/${id}`);
+                const response = await axios.get(`${apiUrl}/role/${id}`, getToken());
                 setName(response.data.name);
                 setSlug(response.data.slug);
             } catch (error) {
@@ -33,7 +34,7 @@ const FormEditRole = () => {
   const saveRole = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/role/${id}`, {
+      await axios.put(`${apiUrl}/role/${id}`, getToken(), {
         name: name,
         slug: slug,
       });

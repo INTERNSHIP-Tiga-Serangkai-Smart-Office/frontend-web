@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { getToken } from "../features/authSlice";
 
 const FormAddAsset = () => {
   const [msg, setMsg] = useState("");
@@ -113,23 +114,23 @@ const FormAddAsset = () => {
   const [unit, setUnit] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
-      const res = await axios.get(`${apiUrl}/entity`);
+      const res = await axios.get(`${apiUrl}/entity`, getToken());
       setEntity(res.data);
     };
     const fetchGroup = async () => {
-      const res = await axios.get(`${apiUrl}/fixed-group`);
+      const res = await axios.get(`${apiUrl}/fixed-group`, getToken());
       setGroup(res.data);
     };
     const fetchEB = async () => {
-      const res = await axios.get(`${apiUrl}/entitas-bisnis`);
+      const res = await axios.get(`${apiUrl}/entitas-bisnis`, getToken());
       setEntitasBisnis(res.data);
     };
     const fetchLoc = async () => {
-      const res = await axios.get(`${apiUrl}/location`);
+      const res = await axios.get(`${apiUrl}/location`, getToken());
       setLocation(res.data);
     };
     const fetchUnit = async () => {
-      const res = await axios.get(`${apiUrl}/unit`);
+      const res = await axios.get(`${apiUrl}/unit`, getToken());
       setUnit(res.data);
     }
     fetchEntity();
@@ -281,7 +282,7 @@ const FormAddAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${apiUrl}/fixed`, {
+      const response = await axios.post(`${apiUrl}/fixed`, getToken(), {
         fixedData: {
           Entity: asset.Entity,
           FixedAssetName: asset.FixedAssetName,

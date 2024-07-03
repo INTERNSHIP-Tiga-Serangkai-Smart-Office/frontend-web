@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { getToken } from "../features/authSlice";
 
 const FormEditAsset = () => {
   const [msg, setMsg] = useState("");
@@ -30,7 +31,7 @@ const FormEditAsset = () => {
     //   };
     //   getFixedById();
     // }
-    axios.get(`${apiUrl}/fixed/${id}`).then((res) => {
+    axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
     });
     console.log(asset);
@@ -40,7 +41,7 @@ const FormEditAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/fixed/${id}`, {
+      await axios.put(`${apiUrl}/fixed/${id}`, getToken(), {
         // fixedData: {
         Entity: asset.Entity,
         FixedAssetName: asset.FixedAssetName,

@@ -19,6 +19,11 @@ export const LoginAuth = createAsyncThunk(
         email: user.email,
         password: user.password,
       });
+
+      const { accessToken } = response.data;
+
+      localStorage.setItem("accessToken", accessToken);
+
       console.log(response);
       return response.data;
     } catch (error) {
@@ -33,9 +38,7 @@ export const LoginAuth = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${apiUrl}/me`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`${apiUrl}/me`, getToken());
     console.log(response);
     return response.data;
   } catch (error) {
@@ -87,6 +90,15 @@ export const authSlice = createSlice({
     });
   },
 });
+
+export const getToken = () => {
+  const accessToken = localStorage.getItem("accessToken");
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+};
 
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;

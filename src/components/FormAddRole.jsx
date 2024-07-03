@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getToken } from '../features/authSlice';
 
 const FormAddRole = () => {
     const [name, setName] = useState('');
@@ -13,7 +14,7 @@ const FormAddRole = () => {
     const saveRole = async (e) => {
       e.preventDefault();
       try {
-        await axios.post(`${apiUrl}/role`, {
+        await axios.post(`${apiUrl}/role`, getToken(), {
           name: name,
           slug: slug,
         });

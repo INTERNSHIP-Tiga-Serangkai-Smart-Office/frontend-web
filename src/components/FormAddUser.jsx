@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getToken } from '../features/authSlice';
 
 const FormAddUser = () => {
     const [name, setName] = useState('');
@@ -14,7 +15,7 @@ const FormAddUser = () => {
     const saveUser = async (e) => {
         e.preventDefault();
         try {
-          await axios.post(`${apiUrl}/users`, {
+          await axios.post(`${apiUrl}/users`, getToken(), {
             name: name,
             email: email,
             password: password,

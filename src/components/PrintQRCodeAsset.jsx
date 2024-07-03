@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
+import { getToken } from "../features/authSlice";
 
 const PrintQRCodeAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -16,7 +17,7 @@ const PrintQRCodeAsset = () => {
   const getAsset = async(page, pageSize, search) => {
     try {
       const response = await axios.get(
-        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`
+        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`, getToken()
       );
       setFixed(response.data.data);
       console.log(fixeds);

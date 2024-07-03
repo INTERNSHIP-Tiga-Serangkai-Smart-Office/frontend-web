@@ -11,9 +11,10 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { useDispatch } from 'react-redux';
-import { LogOut, reset } from "../features/authSlice";
+import { LogOut, getMe, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
 import Hamburger from 'hamburger-react'
+import { getToken } from '../features/authSlice';
 
 const SideBar = ({ children, isHidden }) => {
   const dispatch = useDispatch();
@@ -40,12 +41,17 @@ const SideBar = ({ children, isHidden }) => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    axios.get(`${apiUrl}/me`).then(res => {
-      setUsername(res.data.User.name);
-      setRole(res.data.role.name);
-    }).catch(err => {
-      console.log(err);
-    });
+    const res = getMe();
+    setUsername(res.name);
+    setRole(res.email);
+
+    // axios.get(`${apiUrl}/me`, { getToken }).then(res => {
+    //   setUsername(res.data.User.name);
+    //   setRole(res.data.role.name);
+    //   console.log(res);
+    // }).catch(err => {
+    //   console.log(err);
+    // });
   }, []);
 
   // Logout

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { getToken } from '../features/authSlice';
 
 const FormEditUser = () => {
     const [name, setName] = useState('');
@@ -17,7 +18,7 @@ const FormEditUser = () => {
         if(id){
             const getUserById = async () => {
                 try {
-                    const response = await axios.get(`${apiUrl}/users/${id}`);
+                    const response = await axios.get(`${apiUrl}/users/${id}`, getToken());
                     setName(response.data.name);
                     setEmail(response.data.email);
                 } catch (error) {
@@ -33,7 +34,7 @@ const FormEditUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/users/${id}`, {
+      await axios.put(`${apiUrl}/users/${id}`, getToken(), {
         name: name,
         email: email,
         password: password,

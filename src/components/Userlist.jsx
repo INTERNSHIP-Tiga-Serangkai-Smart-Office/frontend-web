@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { MdEdit } from 'react-icons/md';
 import { FaTrashAlt } from "react-icons/fa";
 import AlertComp from './AlertComp';
+import { getToken } from '../features/authSlice';
 
 
 function Userlist() {
@@ -13,6 +14,7 @@ function Userlist() {
     const [roles, setRoles] = useState([]);
     const [showAlert, setShowAlert] = useState(null);
     const [selectRole, setSelectRole] = useState(null);
+    const accessToken = getToken();
 
     const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -23,15 +25,15 @@ function Userlist() {
 
 
     const getRoles = async () => {
-        const response = await axios.get(`${apiUrl}/role`);
+        const response = await axios.get(`${apiUrl}/role`, accessToken);
         setRoles(response.data);
     };
 
     const getUserRoles = async () => {
         try {
-          const userResponse = await axios.get(`${apiUrl}/users`);
-          const userRolesResponse = await axios.get(`${apiUrl}/user-role`);
-          const rolesResponse = await axios.get(`${apiUrl}/role`);
+          const userResponse = await axios.get(`${apiUrl}/users`, accessToken);
+          const userRolesResponse = await axios.get(`${apiUrl}/user-role`, accessToken);
+          const rolesResponse = await axios.get(`${apiUrl}/role`, accessToken);
     
           const users = userResponse.data;
           const userRoles = userRolesResponse.data.userRoles;
@@ -62,14 +64,14 @@ function Userlist() {
     };
 
     const deleteUser = async (userId) => {
-        await axios.delete(`${apiUrl}/users/${userId}`);
+        await axios.delete(`${apiUrl}/users/${userId}`, accessToken);
         setShowAlert(false);
         getUserRoles(); // Update users after deletion
     };
 
     const addRole = async(userId, roleId) => {
         try {
-            await axios.post(`${apiUrl}/user-role`, {
+            await axios.post(`${apiUrl}/user-role`, accessToken, {
                 userId: userId,
                 roleId: roleId,
             });
@@ -83,7 +85,7 @@ function Userlist() {
     
     const deleteRole = async (userId, roleId) => {
         try {
-          await axios.delete(`${apiUrl}/user-role`, {
+          await axios.delete(`${apiUrl}/user-role`, accessToken, {
             data: { userId, roleId },
           });
           // Update user data after role deletion

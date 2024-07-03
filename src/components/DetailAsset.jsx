@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import QRCode from "react-qr-code";
+import { getToken } from "../features/authSlice";
 
 const DetailAsset = () => {
   const [msg, setMsg] = useState("");
@@ -28,7 +29,7 @@ const DetailAsset = () => {
     //   };
     //   getFixedById();
     // }
-    axios.get(`${apiUrl}/fixed/${id}`).then((res) => {
+    axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
     });
     console.log(asset);

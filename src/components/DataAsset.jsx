@@ -9,6 +9,7 @@ import ReactToPrint from "react-to-print";
 import QRCode from "react-qr-code";
 import PrintQRModal from "./PrintQRModal";
 import AlertComp from "./AlertComp";
+import { getToken } from "../features/authSlice";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -34,7 +35,7 @@ const DataAsset = () => {
   const getFixed = async (page, pageSize) => {
     try {
       const response = await axios.get(
-        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}`
+        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}`, getToken()
       );
       setFixed(response.data.data);
       console.log(fixeds);
@@ -44,7 +45,7 @@ const DataAsset = () => {
   };
 
   const deleteFixed = async (FixedIDNo) => {
-    await axios.delete(`${apiUrl}/fixed/${FixedIDNo}`);
+    await axios.delete(`${apiUrl}/fixed/${FixedIDNo}`, getToken());
     getFixed(page, pageSize);
   };
 
