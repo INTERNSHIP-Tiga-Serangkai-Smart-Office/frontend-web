@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { Axios } from "axios";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   user: null,
@@ -9,30 +9,39 @@ const initialState = {
   message: "",
 };
 
-export const LoginAuth = createAsyncThunk(
-  "user/LoginUser",
-  async (user, thunkAPI) => {
-    try {
-      const response = await axios.post("http://localhost:5000/login", {
-        email: user.email,
-        password: user.password,
-      });
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response) {
-        const message = error.response.data.error;
-        return thunkAPI.rejectWithValue(message);
-      }
+// Async thunk to handle user login
+export const LoginAuth = createAsyncThunk("user/LoginUser", async (user, thunkAPI) => {
+  try {
+    const response = await axios.post("http://192.168.35.80:5000/login", {
+      email: user.email,
+      password: user.password,
+    });
+    // Assuming your response includes an accessToken
+    const { accessToken } = response.data;
+
+    // Save the accessToken in localStorage (optional) or Redux state
+    localStorage.setItem("accessToken", accessToken);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      const message = error.response.data.error;
+      return thunkAPI.rejectWithValue(message);
     }
   }
-);
+});
 
+// Async thunk to fetch user data after successful login
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:5000/me", {
-      withCredentials: true,
+    // Get the accessToken from localStorage or Redux state
+    const accessToken = localStorage.getItem("accessToken");
+
+    const response = await axios.get("http://192.168.35.80:5000/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
     console.log(response);
     return response.data;
@@ -44,10 +53,15 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   }
 });
 
+// Async thunk to handle user logout
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
-  await axios.delete("http://localhost:5000/logout");
+  // Clear the accessToken from localStorage or Redux state upon logout
+  localStorage.removeItem("accessToken");
+
+  await axios.delete("http://192.168.35.80:5000/logout");
 });
 
+// Create the auth slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -69,7 +83,6 @@ export const authSlice = createSlice({
       state.message = action.payload;
     });
 
-    //Get user login
     builder.addCase(getMe.pending, (state) => {
       state.isLoading = true;
     });
@@ -83,8 +96,14 @@ export const authSlice = createSlice({
       state.isError = true;
       state.message = action.payload;
     });
+
+    builder.addCase(LogOut.fulfilled, (state) => {
+      state.user = null;
+      localStorage.removeItem("accessToken");
+    });
   },
 });
 
+// Export actions and reducer
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;
