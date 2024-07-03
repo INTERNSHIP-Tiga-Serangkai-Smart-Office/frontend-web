@@ -10,12 +10,14 @@ const FormEditRole = () => {
 
     const {id} = useParams();
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
     if(id){
         
         const getRoleById = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/role/${id}`);
+                const response = await axios.get(`${apiUrl}/role/${id}`);
                 setName(response.data.name);
                 setSlug(response.data.slug);
             } catch (error) {
@@ -31,7 +33,7 @@ const FormEditRole = () => {
   const saveRole = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/role/${id}`, {
+      await axios.put(`${apiUrl}/role/${id}`, {
         name: name,
         slug: slug,
       });

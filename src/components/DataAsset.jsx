@@ -24,6 +24,8 @@ const DataAsset = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     getFixed(page, pageSize);
     console.log(fixeds);
@@ -32,7 +34,7 @@ const DataAsset = () => {
   const getFixed = async (page, pageSize) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/fixed?page=${page}&pageSize=${pageSize}`
+        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}`
       );
       setFixed(response.data.data);
       console.log(fixeds);
@@ -42,7 +44,7 @@ const DataAsset = () => {
   };
 
   const deleteFixed = async (FixedIDNo) => {
-    await axios.delete(`http://localhost:5000/fixed/${FixedIDNo}`);
+    await axios.delete(`${apiUrl}/fixed/${FixedIDNo}`);
     getFixed(page, pageSize);
   };
 

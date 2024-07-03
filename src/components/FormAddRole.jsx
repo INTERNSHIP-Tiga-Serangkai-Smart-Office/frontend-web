@@ -8,10 +8,12 @@ const FormAddRole = () => {
     const [, setMsg] = useState('');
     const navigate = useNavigate();
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const saveRole = async (e) => {
       e.preventDefault();
       try {
-        await axios.post('http://localhost:5000/role', {
+        await axios.post(`${apiUrl}/role`, {
           name: name,
           slug: slug,
         });

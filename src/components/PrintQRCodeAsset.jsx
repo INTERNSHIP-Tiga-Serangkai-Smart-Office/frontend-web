@@ -11,10 +11,12 @@ const PrintQRCodeAsset = () => {
   const [pageSize, setPageSize] = useState(10);
   const [search, setSearch] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const getAsset = async(page, pageSize, search) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/fixed?page=${page}&pageSize=${pageSize}&search=${search}`
+        `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`
       );
       setFixed(response.data.data);
       console.log(fixeds);

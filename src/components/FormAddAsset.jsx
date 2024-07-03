@@ -35,6 +35,8 @@ const FormAddAsset = () => {
 
   const [asset, setAsset] = useState([]);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAsset((prev) => {
@@ -111,23 +113,23 @@ const FormAddAsset = () => {
   const [unit, setUnit] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
-      const res = await axios.get("http://localhost:5000/entity");
+      const res = await axios.get(`${apiUrl}/entity`);
       setEntity(res.data);
     };
     const fetchGroup = async () => {
-      const res = await axios.get("http://localhost:5000/fixed-group");
+      const res = await axios.get(`${apiUrl}/fixed-group`);
       setGroup(res.data);
     };
     const fetchEB = async () => {
-      const res = await axios.get("http://localhost:5000/entitas-bisnis");
+      const res = await axios.get(`${apiUrl}/entitas-bisnis`);
       setEntitasBisnis(res.data);
     };
     const fetchLoc = async () => {
-      const res = await axios.get("http://localhost:5000/location");
+      const res = await axios.get(`${apiUrl}/location`);
       setLocation(res.data);
     };
     const fetchUnit = async () => {
-      const res = await axios.get("http://localhost:5000/unit");
+      const res = await axios.get(`${apiUrl}/unit`);
       setUnit(res.data);
     }
     fetchEntity();
@@ -279,7 +281,7 @@ const FormAddAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/fixed", {
+      const response = await axios.post(`${apiUrl}/fixed`, {
         fixedData: {
           Entity: asset.Entity,
           FixedAssetName: asset.FixedAssetName,

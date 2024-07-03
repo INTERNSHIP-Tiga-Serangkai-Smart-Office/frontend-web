@@ -9,6 +9,8 @@ const FormEditAsset = () => {
   const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   // const [docData, setDocData] = useState({ NoDocument: '', ExpiredDate: ''});
   // const [docsArray, setDocsArray] = useState([]);
 
@@ -28,7 +30,7 @@ const FormEditAsset = () => {
     //   };
     //   getFixedById();
     // }
-    axios.get(`http://localhost:5000/fixed/${id}`).then((res) => {
+    axios.get(`${apiUrl}/fixed/${id}`).then((res) => {
       setAsset(res.data);
     });
     console.log(asset);
@@ -38,7 +40,7 @@ const FormEditAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/fixed/${id}`, {
+      await axios.put(`${apiUrl}/fixed/${id}`, {
         // fixedData: {
         Entity: asset.Entity,
         FixedAssetName: asset.FixedAssetName,

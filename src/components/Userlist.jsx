@@ -14,6 +14,8 @@ function Userlist() {
     const [showAlert, setShowAlert] = useState(null);
     const [selectRole, setSelectRole] = useState(null);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(()=>{
         getRoles();
         getUserRoles();
@@ -21,15 +23,15 @@ function Userlist() {
 
 
     const getRoles = async () => {
-        const response = await axios.get('http://localhost:5000/role');
+        const response = await axios.get(`${apiUrl}/role`);
         setRoles(response.data);
     };
 
     const getUserRoles = async () => {
         try {
-          const userResponse = await axios.get("http://localhost:5000/users");
-          const userRolesResponse = await axios.get("http://localhost:5000/user-role");
-          const rolesResponse = await axios.get("http://localhost:5000/role");
+          const userResponse = await axios.get(`${apiUrl}/users`);
+          const userRolesResponse = await axios.get(`${apiUrl}/user-role`);
+          const rolesResponse = await axios.get(`${apiUrl}/role`);
     
           const users = userResponse.data;
           const userRoles = userRolesResponse.data.userRoles;
@@ -60,14 +62,14 @@ function Userlist() {
     };
 
     const deleteUser = async (userId) => {
-        await axios.delete(`http://localhost:5000/users/${userId}`);
+        await axios.delete(`${apiUrl}/users/${userId}`);
         setShowAlert(false);
         getUserRoles(); // Update users after deletion
     };
 
     const addRole = async(userId, roleId) => {
         try {
-            await axios.post("http://localhost:5000/user-role", {
+            await axios.post(`${apiUrl}/user-role`, {
                 userId: userId,
                 roleId: roleId,
             });
@@ -81,7 +83,7 @@ function Userlist() {
     
     const deleteRole = async (userId, roleId) => {
         try {
-          await axios.delete("http://localhost:5000/user-role", {
+          await axios.delete(`${apiUrl}/user-role`, {
             data: { userId, roleId },
           });
           // Update user data after role deletion

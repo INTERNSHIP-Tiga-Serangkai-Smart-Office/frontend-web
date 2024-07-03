@@ -15,8 +15,10 @@ const RoleList = () => {
 
     const [showAlert, setShowAlert] = useState(null);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const getRoles = async () => {
-        const response = await axios.get("http://localhost:5000/role");
+        const response = await axios.get(`${apiUrl}/role`);
         setRoles(response.data);
     }
     useEffect(() => {
@@ -27,7 +29,7 @@ const RoleList = () => {
         getRoles();
         
         //Fetch permissions
-        axios.get("http://localhost:5000/permissions").then((response) => {
+        axios.get(`${apiUrl}/permissions`).then((response) => {
           const organizedPermissions = organizePermissionsByResource(response.data);
           setPermissions(organizedPermissions);
         });
@@ -35,7 +37,7 @@ const RoleList = () => {
 
     useEffect(() => {
         if(selectedRole){
-            axios.get(`http://localhost:5000/role-permissions/${selectedRole}`)
+            axios.get(`${apiUrl}/role-permissions/${selectedRole}`)
             .then((response) => {
                 updateSelectedPermission(response.data);
             })
@@ -134,7 +136,7 @@ const RoleList = () => {
 
                 if(addedPermissions.length > 0){
                     promises.push(
-                        axios.post("http://localhost:5000/role-permissions",{
+                        axios.post(`${apiUrl}/role-permissions`,{
                             roleId: selectedRole,
                             permissionId: addedPermissions,
                         })
@@ -144,7 +146,7 @@ const RoleList = () => {
 
                 if(removedPermissions.length > 0){
                     promises.push(
-                        axios.delete("http://localhost:5000/role-permissions",{
+                        axios.delete(`${apiUrl}/role-permissions`,{
                             data: {
                                 roleId: selectedRole,
                                 permissionId: removedPermissions,
@@ -178,7 +180,7 @@ const RoleList = () => {
     };
 
     const deleteRole = async (roleId) => {
-        await axios.delete(`http://localhost:5000/role/${roleId}`);
+        await axios.delete(`${apiUrl}/role/${roleId}`);
         setShowAlert(!showAlert);
         getRoles();
     };

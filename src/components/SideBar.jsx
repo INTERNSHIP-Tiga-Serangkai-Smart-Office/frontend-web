@@ -24,6 +24,8 @@ const SideBar = ({ children, isHidden }) => {
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleItemClick = (index) => {
     setActiveIndex(index);
     setIsMobileOpen(false);
@@ -38,7 +40,7 @@ const SideBar = ({ children, isHidden }) => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/me").then(res => {
+    axios.get(`${apiUrl}/me`).then(res => {
       setUsername(res.data.User.name);
       setRole(res.data.role.name);
     }).catch(err => {

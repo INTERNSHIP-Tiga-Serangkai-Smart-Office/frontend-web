@@ -9,10 +9,12 @@ const FormAddUser = () => {
     const [, setMsg] = useState('');
     const navigate = useNavigate();
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const saveUser = async (e) => {
         e.preventDefault();
         try {
-          await axios.post('http://localhost:5000/users', {
+          await axios.post(`${apiUrl}/users`, {
             name: name,
             email: email,
             password: password,

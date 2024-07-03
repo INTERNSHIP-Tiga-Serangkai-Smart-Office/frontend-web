@@ -10,6 +10,8 @@ const DetailAsset = () => {
   const { id } = useParams();
   const ref = useRef([]);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     // if(id){
     //   const getFixedById = async () => {
@@ -26,7 +28,7 @@ const DetailAsset = () => {
     //   };
     //   getFixedById();
     // }
-    axios.get(`http://localhost:5000/fixed/${id}`).then((res) => {
+    axios.get(`${apiUrl}/fixed/${id}`).then((res) => {
       setAsset(res.data);
     });
     console.log(asset);

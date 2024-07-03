@@ -11,11 +11,13 @@ const FormEditUser = () => {
 
     const {id} = useParams();
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
         if(id){
             const getUserById = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/users/${id}`);
+                    const response = await axios.get(`${apiUrl}/users/${id}`);
                     setName(response.data.name);
                     setEmail(response.data.email);
                 } catch (error) {
@@ -31,7 +33,7 @@ const FormEditUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/users/${id}`, {
+      await axios.put(`${apiUrl}/users/${id}`, {
         name: name,
         email: email,
         password: password,
