@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
+import DatePicker from "react-datepicker";
 
 const FormEditAsset = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const [asset, setAsset] = useState([]);
   const { id } = useParams();
-  const [isEdit, setIsEdit] = useState(false);
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -16,21 +16,6 @@ const FormEditAsset = () => {
   // const [docsArray, setDocsArray] = useState([]);
 
   useEffect(() => {
-    // if(id){
-    //   const getFixedById = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5000/fixed/${id}`);
-    //         setAsset(response.data);
-    //       console.log(asset);
-
-    //     } catch (error) {
-    //         if(error.response){
-    //             setMsg(error.response.data.msg);
-    //         }
-    //     }
-    //   };
-    //   getFixedById();
-    // }
     axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
     });
@@ -41,7 +26,7 @@ const FormEditAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/fixed/${id}`, getToken(), {
+      await axios.put(`${apiUrl}/fixed/${id}`, {
         // fixedData: {
         Entity: asset.Entity,
         FixedAssetName: asset.FixedAssetName,
@@ -87,7 +72,7 @@ const FormEditAsset = () => {
         GuaranteeDate: asset.GuaranteeDate,
         EmpID: asset.EmpID,
         UserID: asset.UserID,
-      });
+      }, getToken());
       navigate("/dataaset");
     } catch (error) {
       if (error.response) {
@@ -122,7 +107,7 @@ const FormEditAsset = () => {
     { label: "PC", name: "IDNoPC", value: asset.IDNoPC },
     { label: "Line No BD", name: "LineNoBD", value: asset.LineNoBD },
     { label: "Order No", name: "OrderNo", value: asset.OrderNo },
-    { Label: "Inv No", name: "InvNo", value: asset.InvNo },
+    { label: "Inv No", name: "InvNo", value: asset.InvNo },
     { label: "Pick Bill", name: "PickBill", value: asset.PickBill },
     { label: "Supplier", name: "SupplierId", value: asset.SupplierId },
     { label: "Jumlah", name: "Qty", value: asset.Qty },
@@ -154,6 +139,10 @@ const FormEditAsset = () => {
   //   { name: "ExpiredDate", value: asset.FixedDocuments.ExpiredDate },
   // ];
 
+  const handleDateChange = (date, fieldName) => {
+    setAsset({ ...asset, [fieldName]: date });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAsset((prev) => {
@@ -174,51 +163,145 @@ const FormEditAsset = () => {
     setToggleState(index);
   };
 
+  //fixed group dropdown
+  const [entity, setEntity] = useState([]);
+  const [group, setGroup] = useState([]);
+  const [entitasBisnis, setEntitasBisnis] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [unit, setUnit] = useState([]);
+  useEffect(() => {
+    const fetchEntity = async () => {
+      const res = await axios.get(`${apiUrl}/entity`, getToken());
+      setEntity(res.data);
+    };
+    const fetchGroup = async () => {
+      const res = await axios.get(`${apiUrl}/fixed-group`, getToken());
+      setGroup(res.data);
+    };
+    const fetchEB = async () => {
+      const res = await axios.get(`${apiUrl}/entitas-bisnis`, getToken());
+      setEntitasBisnis(res.data);
+    };
+    const fetchLoc = async () => {
+      const res = await axios.get(`${apiUrl}/location`, getToken());
+      setLocation(res.data);
+    };
+    const fetchUnit = async () => {
+      const res = await axios.get(`${apiUrl}/unit`, getToken());
+      setUnit(res.data);
+    }
+    fetchEntity();
+    fetchEB();
+    fetchGroup();
+    fetchLoc();
+    fetchUnit();
+  }, [setEntity, setGroup, setEntitasBisnis, setLocation, setUnit]);
+
+  const statusOption = [
+    { Name: "Inactive", value: 0 },
+    { Name: "Active", value: 1 },
+  ];
+
   const renderForm = (label, fieldName, value) => {
     const inputType = typeof value === "number" ? "number" : "text";
+    const readonlyFields = ['FixedNo', 'LocId', 'EmpId', 'InvNo'];
 
-    return (
-      <div key={fieldName} className="flex flex-row items-center mx-3">
-        <label htmlFor={fieldName} className="label w-[45%]">
-          {label}
-        </label>
-        {/* {isOptional ? (
-                    <input
-                        type={inputType}
-                        id={fieldName}
-                        name={fieldName}
-                        value={asset[fieldName]}
-                        onChange={handleChange}
-                        className="input p-3 shadow appearance-none border rounded w-full focus:outline-none focus:shadow-outline my-2 "
-                    />
-                    ) : ( */}
-        <input
-          type={inputType}
-          id={fieldName}
-          name={fieldName}
-          // required
-          value={value}
-          onChange={handleChange}
-          className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-          disabled={!isEdit}
-        />
-        {/* )} */}
-      </div>
-    );
+    const options = (() => {
+      switch (fieldName) {
+        case "Entity":
+          return entity;
+        case "IDNoGR":
+          return group;
+        case "IDNoEB":
+          return entitasBisnis;
+        case "Status":
+          return statusOption;
+        case "LocId":
+          return location;
+        case "Unit":
+          return unit;
+        default:
+          return null;
+      }
+    })();
+
+    if (
+      fieldName === "DateAq" ||
+      fieldName === "DateDisp" ||
+      fieldName === "RegDate" ||
+      fieldName === "GuaranteeDate"
+    ) {
+      return (
+        <div key={fieldName} className="flex flex-row items-center mx-3">
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {label}
+          </label>
+          <DatePicker
+            selected={value}
+            onChange={(date) => handleDateChange(date, fieldName)}
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+          />
+        </div>
+      );
+    } else if (options) {
+      return (
+        <div key={fieldName} className="flex flex-row items-center mx-3">
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {label}
+          </label>
+          <select
+            id={fieldName}
+            name={fieldName}
+            value={value}
+            onChange={handleChange}
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+            disabled={readonlyFields.includes(fieldName)}
+          >
+            <option value="">Select {fieldName}</option>
+            {options.map((option) => (
+              <option
+                key={option.LocID || option.IDNo || option.Entity || option.value}
+                value={
+                   option.Entity || option.IDNo || option.IDNo || option.value
+                }
+                style={{ display: "flex" }}
+              >
+                <span style={{ width: "50px" }}>
+                  {option.LocID || option.Entity || option.IDNo || option.IDNo}
+                </span>
+                <span style={{ marginLeft: "20px" }}>
+                  {option.EntityName || option.EBName || option.Name || option.LocationName || option.Unit}
+                </span>
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+    } else {
+      return (
+        <div key={fieldName} className="flex flex-row items-center mx-3">
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {label}
+          </label>
+          <input
+            type={inputType}
+            id={fieldName}
+            name={fieldName}
+            value={value}
+            onChange={handleChange}
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+            disabled={readonlyFields.includes(fieldName)}
+          />
+        </div>
+      );
+    }
   };
 
   return (
-    <div className="flex w-full h-full flex-col">
-      <div className="w-full flex items-baseline justify-between m-3">
-        <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
-        <div>
-          <button
-            className="mx-2 p-3 bg-green-300 rounded-lg"
-            onClick={() => setIsEdit(!isEdit)}
-          >
-            {isEdit ? "Readonly" : "Edit"}
-          </button>
-        </div>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
+      <div className="w-full items-baseline m-3">
+        <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
+        <h1 className="text-2xl montserrat-bold">Edit Asset</h1>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3">
@@ -417,9 +500,7 @@ const FormEditAsset = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className={`bold-20 bg-green-300 p-3 w-[30%] m-10 rounded-xl shadow-lg hover:bg-green-400 ${
-              isEdit ? "" : "hidden"
-            }`}
+            className={`bold-20 bg-green-300 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-green-400`}
           >
             Submit
           </button>

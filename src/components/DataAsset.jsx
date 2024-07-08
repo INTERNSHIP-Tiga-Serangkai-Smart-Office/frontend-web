@@ -76,19 +76,19 @@ const DataAsset = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className="w-full flex items-baseline justify-between">
         <h1 className="text-2xl montserrat-bold">Data Asset Page</h1>
         <div>
           <button
             className="mx-2 p-3 bg-blue-300 rounded-lg"
+            type="button"
+            onClick={() => navigate("/dataaset/printqr")}
           >
-            <Link to="/dataaset/printqr">
             Print Barcode
-            </Link>
           </button>
-          <button className="mx-2 p-3 bg-green-300 rounded-lg">
-            <Link to="/dataaset/add">Add New</Link>
+          <button className="mx-2 p-3 bg-green-300 rounded-lg" type="button" onClick={() => navigate("/dataaset/add")}>
+            Add New
           </button>
         </div>
       </div>
@@ -159,7 +159,7 @@ const DataAsset = () => {
               <table class="flex-row  overflow-y-auto w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th>No</th>
+                    <th className="px-6 py-3">No</th>
                     <th>Entity</th>
                     <th>Acc No</th>
                     <th>AIN</th>
@@ -241,10 +241,10 @@ const DataAsset = () => {
               </table>
             </>
           )}
-        </div>
-        <div className="flex justify-end items-center py-4 px-2 relative ">
+        </div> 
+        <div className="flex justify-end items-baseline px-2 pt-3">
           <button onClick={handlePrevPage}>Prev</button>
-          <h2 className="p-5">{page}</h2>
+          <h2 className="px-5 ">{page}</h2>
           <button onClick={handleNextPage}>Next</button>
         </div>
       </div>

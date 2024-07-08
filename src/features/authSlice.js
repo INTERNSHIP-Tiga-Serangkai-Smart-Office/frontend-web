@@ -39,7 +39,7 @@ export const LoginAuth = createAsyncThunk(
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
     const response = await axios.get(`${apiUrl}/me`, getToken());
-    console.log(response);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -51,6 +51,7 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
   await axios.delete(`${apiUrl}/logout`);
+  localStorage.removeItem("accessToken");
 });
 
 export const authSlice = createSlice({

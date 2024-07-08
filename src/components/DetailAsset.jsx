@@ -31,6 +31,7 @@ const DetailAsset = () => {
     // }
     axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
+      console.log(res.data);
     });
     console.log(asset);
   }, [id]);
@@ -42,13 +43,17 @@ const DetailAsset = () => {
 
   //tab layout
   const mainData = [
-    { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
-    { label: "AIN", name: "FixedNo", value: asset.FixedNo },
-    { label: "Status", name: "Status", value: asset.Status },
-    { label: "Entity", name: "Entity", value: asset.Entity },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB },
-    { label: "Group", name: "IDNoGR", value: asset.IDNoGR },
-    { label: "Tgl Registrasi", name: "RegDate", value: asset.RegDate },
+    {
+      label: "Nama Asset",
+      name: "FixedAssetName",
+      value: asset?.FixedAssetName,
+    },
+    { label: "AIN", name: "FixedNo", value: asset?.FixedNo },
+    { label: "Status", name: "Status", value: asset?.Status === 1 ? 'Active' : 'Inactive'  },
+    { label: "Entity", name: "Entity", value: asset?.EntityRelations?.EntityName },
+    { label: "Entitas Bisnis", name: "IDNoEB", value: asset?.EntitasBisni?.EBCode },
+    { label: "Group", name: "IDNoGR", value: asset?.FixedGroup?.Name },
+    { label: "Tgl Registrasi", name: "RegDate", value: asset?.RegDate },
   ];
 
   const generalInfo = [
@@ -57,7 +62,11 @@ const DetailAsset = () => {
     { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
     { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
     { label: "Cost Center", name: "CostCenterNo", value: asset.CostCenterNo },
-    { label: "Profit Center", name: "ProfitCenterNo", value: asset.ProfitCenterNo },
+    {
+      label: "Profit Center",
+      name: "ProfitCenterNo",
+      value: asset.ProfitCenterNo,
+    },
     { label: "Lokasi", name: "LocId", value: asset.LocId },
     { label: "PO", name: "IDNoPO", value: asset.IDNoPO },
     { label: "PR", name: "IDNoPR", value: asset.IDNoPR },
@@ -75,7 +84,11 @@ const DetailAsset = () => {
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
     { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
-    { label: "Salvage Value Original", name: "SalVageValueORG", value: asset.SalVageValueORG },
+    {
+      label: "Salvage Value Original",
+      name: "SalVageValueORG",
+      value: asset.SalVageValueORG,
+    },
     { label: "Remark", name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
     { label: "Kelompok", name: "Classification", value: asset.Classification },
@@ -92,114 +105,125 @@ const DetailAsset = () => {
   ];
 
   const renderData = (label, fieldName, value) => {
-    return(
+    return (
       <div key={fieldName} className="flex justify-between my-3 mx-5">
         <p>{label} :</p>
         <h1>{value}</h1>
       </div>
-    )
-  }
+    );
+  };
 
   const barcodes = (value) => (
     <div className="p-5" ref={ref}>
-      <QRCode value={value} size={250} style={{ height: "auto", maxWidth: "100%", width: "100%" }}/>
+      <QRCode
+        value={value}
+        size={250}
+        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+      />
       <h1 className="overflow-hidden">{value}</h1>
     </div>
   );
 
   return (
-    <div className="flex w-full h-full flex-col">
-      <div className="w-full flex items-baseline justify-between m-3">
-        <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
-      </div>
-
-      <div className="grid md:grid-cols-2 xl:grid-cols-3">
-        {asset && mainData.map((data) => renderData(data.label, data.name, data.value))}
-      </div>
-
-      <div className="w-full mt-3 border-2 p-4 rounded-xl">
-        <div className="flex flex-row border-b-2 overflow-auto no-scrollbar">
-          <div
-            className={
-              toggleState === 1
-                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            }
-            onClick={() => toggleTab(1)}
-          >
-            General Info
-          </div>
-          <div
-            className={
-              toggleState === 2
-                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            }
-            onClick={() => toggleTab(2)}
-          >
-            Specification
-          </div>
-          <div
-            className={
-              toggleState === 3
-                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            }
-            onClick={() => toggleTab(3)}
-          >
-            Document
-          </div>
-          <div
-            className={
-              toggleState === 4
-                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            }
-            onClick={() => toggleTab(4)}
-          >
-            Maintenance
-          </div>
-          <div
-            className={
-              toggleState === 5
-                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            }
-            onClick={() => toggleTab(5)}
-          >
-            History
-          </div>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
+        <div className="w-full items-baseline m-3">
+          <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
+          <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
         </div>
-        <div className="w-full h-full">
-          <div
-            className={
-              toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
-            }
-          >
-            <div className="md:flex w-full">
-              <div className="md:w-[30%] p-5">
-                <div className="justify-center mx-auto">{asset.FixedNo && barcodes(asset.FixedNo)}</div>
-              </div>
-              <div className="md:w-[70%] grid xl:grid-flow-col xl:grid-rows-12">
-                {generalInfo.map((data) => renderData(data.label, data.name, data.value))}
-              </div>
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-3">
+          {mainData &&
+            mainData.map((data) =>
+              renderData(data.label, data.name, data.value)
+            )}
+        </div>
+
+        <div className="w-full mt-3 border-2 p-4 rounded-xl">
+          <div className="flex flex-row border-b-2 overflow-auto no-scrollbar">
+            <div
+              className={
+                toggleState === 1
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(1)}
+            >
+              General Info
+            </div>
+            <div
+              className={
+                toggleState === 2
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(2)}
+            >
+              Specification
+            </div>
+            <div
+              className={
+                toggleState === 3
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(3)}
+            >
+              Document
+            </div>
+            <div
+              className={
+                toggleState === 4
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(4)}
+            >
+              Maintenance
+            </div>
+            <div
+              className={
+                toggleState === 5
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              }
+              onClick={() => toggleTab(5)}
+            >
+              History
             </div>
           </div>
-          <div className={toggleState === 2 ? "" : "hidden"}>
-            <h1>Content 2</h1>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
-              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
-              aperiam saepe distinctio exercitationem.
-            </p>
-          </div>
+          <div className="w-full h-full">
+            <div
+              className={
+                toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
+              }
+            >
+              <div className="md:flex w-full">
+                <div className="md:w-[30%] p-5">
+                  <div className="justify-center mx-auto">
+                    {asset.FixedNo && barcodes(asset.FixedNo)}
+                  </div>
+                </div>
+                <div className="md:w-[70%] grid xl:grid-flow-col xl:grid-rows-12">
+                  {generalInfo.map((data) =>
+                    renderData(data.label, data.name, data.value)
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className={toggleState === 2 ? "" : "hidden"}>
+              <h1>Content 2</h1>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Architecto beatae quod perspiciatis excepturi fugit soluta
+                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
+                tenetur veniam aperiam saepe distinctio exercitationem.
+              </p>
+            </div>
 
-          {/* document */}
-          <div className={toggleState === 3 ? "" : "hidden"}>
-            <div>
-              {asset.FixedDocuments && asset.FixedDocuments.length > 0 ?
-                (
+            {/* document */}
+            <div className={toggleState === 3 ? "" : "hidden"}>
+              <div>
+                {asset.FixedDocuments && asset.FixedDocuments.length > 0 ? (
                   <table>
                     <thead>
                       <tr>
@@ -221,30 +245,29 @@ const DetailAsset = () => {
                 ) : (
                   <div>Document not found</div>
                 )}
-              
+              </div>
+            </div>
+
+            <div className={toggleState === 4 ? "" : "hidden"}>
+              <h1>Content 4</h1>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Architecto beatae quod perspiciatis excepturi fugit soluta
+                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
+                tenetur veniam aperiam saepe distinctio exercitationem.
+              </p>
+            </div>
+            <div className={toggleState === 5 ? "" : "hidden"}>
+              <h1>Content 5</h1>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Architecto beatae quod perspiciatis excepturi fugit soluta
+                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
+                tenetur veniam aperiam saepe distinctio exercitationem.
+              </p>
             </div>
           </div>
-
-          <div className={toggleState === 4 ? "" : "hidden"}>
-            <h1>Content 4</h1>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
-              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
-              aperiam saepe distinctio exercitationem.
-            </p>
-          </div>
-          <div className={toggleState === 5 ? "" : "hidden"}>
-            <h1>Content 5</h1>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
-              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
-              aperiam saepe distinctio exercitationem.
-            </p>
-          </div>
         </div>
-      </div>
     </div>
   );
 };

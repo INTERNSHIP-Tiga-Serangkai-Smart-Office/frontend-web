@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BsArrowLeftShort } from "react-icons/bs";
 // import { GiHamburgerMenu } from "react-icons/gi";
@@ -11,10 +10,10 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { useDispatch } from 'react-redux';
-import { LogOut, getMe, reset } from "../features/authSlice";
+import { LogOut, getMe, getToken, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
 import Hamburger from 'hamburger-react'
-import { getToken } from '../features/authSlice';
+import axios from 'axios';
 
 const SideBar = ({ children, isHidden }) => {
   const dispatch = useDispatch();
@@ -41,17 +40,18 @@ const SideBar = ({ children, isHidden }) => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    const res = getMe();
-    setUsername(res.name);
-    setRole(res.email);
+    // const res = getMe();
+    // console.log(res);
+    // setUsername(res.name);
+    // setRole(res.email);
 
-    // axios.get(`${apiUrl}/me`, { getToken }).then(res => {
-    //   setUsername(res.data.User.name);
-    //   setRole(res.data.role.name);
-    //   console.log(res);
-    // }).catch(err => {
-    //   console.log(err);
-    // });
+    axios.get(`${apiUrl}/me`,  getToken() ).then(res => {
+      setUsername(res.data.User.name);
+      setRole(res.data.role.name);
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
   }, []);
 
   // Logout
@@ -68,8 +68,8 @@ const SideBar = ({ children, isHidden }) => {
     { name: "Role", link: "/role", icon: FaUsers },
     { name: "Relokasi", link: "#", icon: BiSolidEditLocation },
     { name: "Asset Masuk", link: "/master", icon: LuFolderInput },
-    { name: "Asset Keluar", link: "#", icon: LuFolderOutput },
-    { name: "Laporan", link: "#", icon: TbReportAnalytics },
+    // { name: "Asset Keluar", link: "#", icon: LuFolderOutput },
+    // { name: "Laporan", link: "#", icon: TbReportAnalytics },
     { name: "Settings", link: "#", icon: IoSettingsOutline, margin: true },
     { name: "LogOut", link: "#", icon: MdLogout, onClick: () => setShowLogoutAlert(true) },
   ];

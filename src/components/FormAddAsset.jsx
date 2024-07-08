@@ -282,7 +282,7 @@ const FormAddAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${apiUrl}/fixed`, getToken(), {
+      const response = await axios.post(`${apiUrl}/fixed`, {
         fixedData: {
           Entity: asset.Entity,
           FixedAssetName: asset.FixedAssetName,
@@ -331,7 +331,7 @@ const FormAddAsset = () => {
         documentData: dataArray.filter(
           (doc) => doc.NoDocument !== "" && doc.ExpiredDate !== ""
         ),
-      });
+      }, getToken());
       console.log("Data submitted successfully:", response.data);
       navigate("/dataaset");
     } catch (error) {
@@ -344,8 +344,9 @@ const FormAddAsset = () => {
   };
 
   return (
-    <div className="flex flex-col place-content-center">
-      <h2 className="bold-32 my-5">Add New Asset</h2>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
+      <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
+      <h2 className="text-2xl montserrat-bold">Add New Asset</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 w-full">
           {mainData.map((data) => renderForm(data.label, data.name, data.value))}
@@ -371,37 +372,7 @@ const FormAddAsset = () => {
               }
               onClick={() => toggleTab(2)}
             >
-              Specification
-            </div>
-            <div
-              className={
-                toggleState === 3
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(3)}
-            >
               Document
-            </div>
-            <div
-              className={
-                toggleState === 4
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(4)}
-            >
-              Maintenance
-            </div>
-            <div
-              className={
-                toggleState === 5
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(5)}
-            >
-              History
             </div>
           </div>
 
@@ -419,19 +390,8 @@ const FormAddAsset = () => {
               </div>
             </div>
 
-            {/* specification */}
-            <div className={toggleState === 2 ? "" : "hidden"}>
-              <h1>Content 2</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
-            </div>
-
             {/* document */}
-            <div className={toggleState === 3 ? "" : "hidden"}>
+            <div className={toggleState === 2 ? "" : "hidden"}>
               <div>
                 {dataArray.length > 0 && (
                   <table>
@@ -460,7 +420,7 @@ const FormAddAsset = () => {
                   </table>
                 )}
               </div>
-              <div className="flex w-full">
+              <div className="flex w-full p-3">
                 <div className="flex flex-row items-center justify-between w-[45%]">
                   <label htmlFor="">No Document</label>
                   <input
@@ -487,32 +447,10 @@ const FormAddAsset = () => {
                     >
                       Add docs
                     </button> */}
-                <div onClick={handleAddDocs}>add docs</div>
+                <button type="button" onClick={handleAddDocs} className="p-2 rounded-md bg-green-300">add docs</button>
               </div>
               {/* <div className="flex w-full justify-end ">
                 </div> */}
-            </div>
-
-            {/* maintenance */}
-            <div className={toggleState === 4 ? "" : "hidden"}>
-              <h1>Content 4</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
-            </div>
-
-            {/* history */}
-            <div className={toggleState === 5 ? "" : "hidden"}>
-              <h1>Content 5</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
             </div>
           </div>
         </div>
@@ -521,9 +459,9 @@ const FormAddAsset = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bold-20 bg-green-300 p-3 w-[30%] m-10 rounded-xl shadow-lg hover:bg-green-400"
+            className="bold-20 bg-green-300 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-green-400"
           >
-            Add
+            Add New Asset
           </button>
         </div>
       </form>
