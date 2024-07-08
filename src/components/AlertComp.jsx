@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 const AlertComp = ({ show, title, message, onConfirm, onCancel }) => {
-    if (!show) {
-        return null;
-      }
+  if (!show) {
+    return null;
+  }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-md">
         <h2 className="text-lg font-semibold">{title}</h2>
         <p>{message}</p>
@@ -26,7 +26,7 @@ const AlertComp = ({ show, title, message, onConfirm, onCancel }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AlertComp
+export default AlertComp;
