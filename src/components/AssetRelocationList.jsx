@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/relocation.css";
 import { useNavigate } from "react-router-dom";
+import { getToken } from "../features/authSlice";
 
 const AssetRelocationItems = () => {
   const [data, setData] = useState([]);
@@ -22,22 +23,29 @@ const AssetRelocationItems = () => {
   });
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     fetchData();
   }, [page, pageSize, search, sortField, sortOrder]);
 
   const fetchData = async () => {
-    let query = `http://localhost:5000/asset-relocation?page=${page}&pageSize=${pageSize}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}`;
-    const response = await fetch(query);
+    let query = `${apiUrl}/asset-relocation?page=${page}&pageSize=${pageSize}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}`;
+    const response = await fetch(query, getToken());
     const result = await response.json();
     setData(result.data);
+    console.log(result.data)
     setTotalPages(result.totalPages);
   };
 
   const fetchDetails = async (id) => {
-    const response = await fetch(`http://localhost:5000/asset-relocation/${id}`);
-    const result = await response.json();
-    return result.AssetRelocationItems;
+    try {
+      const response = await fetch(`${apiUrl}/asset-relocation/${id}`, getToken());
+      const result = await response.json();
+      return result.AssetRelocationItems;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleExpandRow = async (id) => {
@@ -93,7 +101,7 @@ const AssetRelocationItems = () => {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/asset-relocation-item/${id}`, {
+    await fetch(`${apiUrl}/asset-relocation-item/${id}`, getToken(), {
       method: "DELETE",
     });
     fetchData();
@@ -109,7 +117,7 @@ const AssetRelocationItems = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`http://localhost:5000/asset-relocation-item/${editItem.RelocationID}`, {
+    await fetch(`${apiUrl}/asset-relocation-item/${editItem.RelocationID}`, getToken(), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -133,10 +141,10 @@ const AssetRelocationItems = () => {
   };
 
   return (
-    <div className="container">
-      <div className="flex w-full justify-between">
-        <h1>Asset Relocation Table</h1>
-        <button type="button" onClick={() => navigate('/relocation/add')} className="p-3 bg-green-300">Add</button>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
+      <div className="flex w-full justify-between items-center">
+        <h1 className="text-2xl montserrat-bold">Asset Relocation Table</h1>
+        <button type="button" onClick={() => navigate('/relocation/add')} className="p-3 bg-green-300 rounded-md">Add</button>
       </div>
       <input type="text" placeholder="Search..." value={search} onChange={handleSearch} className="search-input" />
       <table className="table">
@@ -151,7 +159,7 @@ const AssetRelocationItems = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data && data.map((item) => (
             <React.Fragment key={item.ID}>
               <tr>
                 <td>{item.ID}</td>

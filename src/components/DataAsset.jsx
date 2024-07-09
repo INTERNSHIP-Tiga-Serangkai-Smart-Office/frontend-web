@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import { IoMdBarcode } from "react-icons/io";
+import { HiDocumentText } from "react-icons/hi2";
 import axios from "axios";
 import Barcode from "react-barcode";
 import ReactToPrint from "react-to-print";
@@ -11,6 +12,7 @@ import PrintQRModal from "./PrintQRModal";
 import AlertComp from "./AlertComp";
 import { getToken } from "../features/authSlice";
 import GenerateAIN from "./GenerateAIN";
+import QrPrintLayout from "./QrPrintLayout";
 
 const DataAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -195,13 +197,20 @@ const DataAsset = () => {
                           {d.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}
                         </td>
                         <td className="overflow-x-auto hidden">
-                          {barcodes(d.FixedNo, i)}
+                          <div ref={(el) => (multiRef.current[i] = el)} className="max-w-85">
+                            <QrPrintLayout
+                              FixedNo={d.FixedNo}
+                              FixedAssetName={d.FixedAssetName}
+                              EntityName={d?.EntityRelations?.EntityName}
+                              GroupName={d?.FixedGroup?.Name}
+                            />
+                          </div>
                         </td>
-                        <td class=" ">
+                        <td class="">
                           <Link to={`/dataaset/detail/${d.FixedIDNo}`}>
-                            <button className="p-3">
-                              <MdEdit
-                                className="text-blue-300"
+                            <button className="">
+                              <HiDocumentText 
+                                className="text-green-300"
                                 style={{ fontSize: "1.5rem" }}
                               />
                             </button>
@@ -214,24 +223,25 @@ const DataAsset = () => {
                               />
                             </button>
                           </Link>
-                          <button onClick={() => setShowAlert(d.FixedIDNo)}>
-                            <FaTrashAlt
-                              className="text-red-600"
-                              style={{ fontSize: "1.4rem" }}
-                            />
-                          </button>
                           <ReactToPrint
                             trigger={() => (
-                              <button className="p-3">
+                              <button className="pr-3">
                                 {" "}
                                 <IoMdBarcode
-                                  className="text-green-300"
+                                  className="text-gray-400"
                                   style={{ fontSize: "1.4rem" }}
                                 />
                               </button>
                             )}
                             content={() => multiRef.current[i]}
                           />
+                          <button onClick={() => setShowAlert(d.FixedIDNo)}>
+                            <FaTrashAlt
+                              className="text-red-600"
+                              style={{ fontSize: "1.4rem" }}
+                            />
+                          </button>
+                          
                           {showAlert === d.FixedIDNo && (
                             <AlertComp
                               show={true}

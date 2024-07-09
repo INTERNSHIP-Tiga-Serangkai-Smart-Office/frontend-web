@@ -1,3 +1,4 @@
+import { getToken } from "../features/authSlice";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
@@ -7,10 +8,12 @@ const GenerateAIN = ({ show, onClosed }) => {
   const ref = useRef([]);
   const [page, setPage] = useState(1);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchFixedAssets = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/fixed?page=${page}`);
+        const res = await axios.get(`${apiUrl}/fixed?page=${page}`, getToken());
         const filteredData = res.data.data.filter((d) => !d.FixedNo || d.FixedNo.trim() === "");
         setFixed(filteredData);
       } catch (error) {
@@ -43,7 +46,7 @@ const GenerateAIN = ({ show, onClosed }) => {
   const handleGenerate = async () => {
     const fixedIds = selectedItems.map((item) => item.FixedIDNo);
     try {
-      await axios.post("http://localhost:5000/generateFixedNoAndInvNo", { fixedIds });
+      await axios.post(`${apiUrl}/generateFixedNoAndInvNo`, { fixedIds });
       alert("FixedNo and InvNo generated successfully!");
       onClosed(); // Close the modal after generating FixedNo and InvNo
     } catch (error) {

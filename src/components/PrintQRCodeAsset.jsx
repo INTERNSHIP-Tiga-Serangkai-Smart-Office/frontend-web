@@ -4,6 +4,7 @@ import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
 import { getToken } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import QrPrintLayout from "./QrPrintLayout";
 
 const PrintQRCodeAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -63,9 +64,9 @@ const PrintQRCodeAsset = () => {
     onAfterPrint: () => setSelectedItems([]),
   });
   return (
-    <div className="w-full m-3 p-3 bg-white rounded-xl min-h-full">
-      <div className="flex justify-between items-center">
-        <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='m-3'>&lt; Back</button>
+    <div className="w-full m-3 p-3 px-5 bg-white rounded-xl min-h-full">
+      <div className=" justify-between items-center">
+        <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className=''>&lt; Back</button>
         <h2 className="bold-20 mb-3">Print QR Code</h2>
       </div>
       <div>
@@ -146,18 +147,13 @@ const PrintQRCodeAsset = () => {
           {selectedItems.map((data, index) => (
             <div
               key={index}
-              className="barcode-item p-3 m-3 flex border rounded-md w-85 items-center"
-              // ref={(el) => (multiRef.current[index] = el)}
             >
-              <QRCode value={data.FixedNo} size={50} />
-              <div className="px-1">
-                <p className="items-center text-xs">{data.FixedNo}</p>
-                <p className="items-center text-xs">{data.FixedAssetName}</p>
-                <p className="items-center text-xs">
-                  {data.EntityRelations.EntityName}
-                </p>
-                <p className="items-center text-xs">{data.FixedGroup.Name}</p>
-              </div>
+              <QrPrintLayout
+                FixedNo={data.FixedNo}
+                FixedAssetName={data.FixedAssetName}
+                EntityName={data?.EntityRelations?.EntityName}
+                GroupName={data?.FixedGroup?.Name}
+              />
             </div>
           ))}
         </div>

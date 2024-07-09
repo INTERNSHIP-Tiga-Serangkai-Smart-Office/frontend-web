@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { getToken } from "../features/authSlice";
 
 const FormAddRelacation = () => {
+  const [asset, setAsset] = useState([]);
   const [header, setHeader] = useState([]);
   const [item, setItem] = useState({
     FixedIDNo: "",
@@ -10,9 +12,30 @@ const FormAddRelacation = () => {
     NewEmployeeResponsible: "",
   });
   const [items, setItems] = useState([]);
+  const [search, setSearch] = useState("");
 
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const getAsset = async (search) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/fixed?search=${search}`,
+        getToken()
+      );
+      setAsset(response.data.data);
+      console.log(asset);
+    } catch (error) {
+      console.log("Failed to fetch fixed assets");
+    }
+  };
+
+  useEffect(() => {
+    getAsset(search);
+    console.log(asset);
+  }, [search]);
 
   const handleHeaderChange = (e) => {
     const { name, value } = e.target;
@@ -39,24 +62,39 @@ const FormAddRelacation = () => {
     setItems((prevArray) => prevArray.filter((_, i) => i !== index));
   };
 
+  //dropdown
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSelectOption = (option) => {
+    setItem({FixedIDNo: option});
+    setSearch('');
+    setIsOpen(false);
+  };
+
+  //submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const request = await axios.post(
-        "http://localhost:5000/asset-relocation",
-        {
-          TransDesc: header.TransDesc,
-          IDNoEB: header.IDNoEB,
-          items: items,
-        }
-      );
+      const request = await axios.post(`${apiUrl}/asset-relocation`, {
+        TransDesc: header.TransDesc,
+        IDNoEB: header.IDNoEB,
+        items: items,
+      });
       console.log("Data submitted successfully:", request.data);
       navigate("/relocation");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
-        console.log(msg);
-        // console.log(date);
       }
     }
   };
@@ -67,12 +105,12 @@ const FormAddRelacation = () => {
   ];
 
   const itemFields = [
-    { label: "ID Asset", name: "FixedIDNo", value: header.FixedIDNo },
-    { label: "New Location", name: "NewLocation", value: header.NewLocation },
+    { label: "ID Asset", name: "FixedIDNo", value: item.FixedIDNo },
+    { label: "New Location", name: "NewLocation", value: item.NewLocation },
     {
       label: "New Employee",
       name: "NewEmployeeResponsible",
-      value: header.NewEmployeeResponsible,
+      value: item.NewEmployeeResponsible,
     },
   ];
 
@@ -95,41 +133,96 @@ const FormAddRelacation = () => {
       </div>
     );
   };
+
   const renderItem = (fieldName, value) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
-    return (
-      <div key={fieldName} className="flex flex-row items-center mx-3">
-        <label htmlFor={fieldName} className="label w-[45%]">
-          {fieldName}
-        </label>
-        <input
-          type={inputType}
-          id={fieldName}
-          name={fieldName}
-          value={value}
-          onChange={handleItemChange}
-          className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-        />
-      </div>
-    );
+    if (fieldName === "FixedIDNo") {
+      return (
+        <div ref={dropdownRef} className="custom-dropdown flex m-3">
+          <div className="label w-[45%]">
+            Asset
+          </div>
+          <div>
+
+            <div className="dropdown-header" onClick={toggleDropdown}>
+              {/* {selectedOption || 'Select an option'} */}
+              Select
+              <span className="arrow">{isOpen ? "▲" : "▼"}</span>
+            </div>
+            {isOpen && (
+              <div className="dropdown-body">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  // value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="dropdown-search"
+                />
+                <ul className="dropdown-options">
+                  {Array.isArray(asset) ? (
+                    asset.map((data, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelectOption(data.FixedIDNo)}
+                        className="dropdown-option"
+                      >
+                        {data.FixedNo}
+                      </li>
+                    ))
+                  ) : (
+                    <div>No assets available</div>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div key={fieldName} className="flex flex-row items-center mx-3">
+          <label htmlFor={fieldName} className="label w-[45%]">
+            {fieldName}
+          </label>
+          <input
+            type={inputType}
+            id={fieldName}
+            name={fieldName}
+            value={value}
+            onChange={handleItemChange}
+            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+          />
+        </div>
+      );
+    }
   };
 
   return (
-    <div>
+    <div className="bg-white border rounded-xl p-5 min-h-full">
+      <div className=" justify-between items-center">
+        <button
+          type="button"
+          onClick={() => navigate("/relocation", { replace: true })}
+          className=""
+        >
+          &lt; Back
+        </button>
+        <h2 className="bold-20 mb-3">Relocate</h2>
+      </div>
       <form onSubmit={handleSubmit}>
-        <h1>Header</h1>
+        {/* <h1>Header</h1> */}
         <div>
           {headerFields &&
             headerFields.map((data) => renderForm(data.name, data.value))}
         </div>
-        <div className="p-3 border rounded-md">
+        <div className="p-3 border rounded-md my-3">
           {items.length > 0 && (
-            <table>
-              <thead>
+            <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <td>No</td>
-                  <td>Asset ID</td>
+                  <td className="px-6 py-3">Asset ID</td>
                   <td>New Location</td>
                   <td>New Employee</td>
                 </tr>
@@ -137,9 +230,9 @@ const FormAddRelacation = () => {
               <tbody>
                 {items &&
                   items.map((data, index) => (
-                    <tr>
+                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                       <td>{index + 1}</td>
-                      <td>{data.FixedIDNo}</td>
+                      <td className="px-6 py-3">{data.FixedIDNo}</td>
                       <td>{data.NewLocation}</td>
                       <td>{data.NewEmployeeResponsible}</td>
                     </tr>
@@ -152,14 +245,20 @@ const FormAddRelacation = () => {
               {itemFields &&
                 itemFields.map((data) => renderItem(data.name, data.value))}
             </div>
-            <button type="button" onClick={handleAddItem}>
-              add item
+            <button
+              type="button"
+              onClick={handleAddItem}
+              className="p-3 bg-green-200 rounded-md"
+            >
+              Add item
             </button>
           </div>
         </div>
-        <button type="submit" className="bg-green-300 p-3 rounded-md">
-          submit
-        </button>
+        <div className="flex w-full justify-end">
+          <button type="submit" className="bg-green-300 p-3 rounded-md">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

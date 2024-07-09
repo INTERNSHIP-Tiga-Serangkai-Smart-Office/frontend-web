@@ -138,12 +138,12 @@ function Userlist() {
           <tbody>
             {data.map((d, i) => (
               <tr
-                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 key={d.id}
               >
                 <td>{i + 1}</td>
                 <td>{d.name}</td>
-                <td class="px-6 py-3">{d.email}</td>
+                <td className="px-6 py-3">{d.email}</td>
                 <td className="px-4 py-2 block sm:table-cell">
                   {d.roles &&
                     d.roles.map((role, idx) => (

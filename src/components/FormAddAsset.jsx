@@ -22,7 +22,7 @@ const FormAddAsset = () => {
   const reg = currDate + " " + currTime;
 
   //add docs
-  const [formData, setFormData] = useState({ NoDocument: "", ExpiredDate: "" });
+  const [formData, setFormData] = useState({ NoDocument: "", ExpiredDate: "", DocumentType: "" });
   const [dataArray, setDataArray] = useState([]);
 
   // var date;
@@ -264,9 +264,10 @@ const FormAddAsset = () => {
       {
         NoDocument: formData.NoDocument,
         ExpiredDate: formData.ExpiredDate,
+        DocumentType: formData.DocumentType,
       },
     ]);
-    setFormData({ NoDocument: "", ExpiredDate: "" }); // Reset form
+    setFormData({ NoDocument: "", ExpiredDate: "", DocumentType: "" }); // Reset form
     console.log(dataArray);
   };
   const handleDelDocs = (index, key, value) => {
@@ -276,6 +277,7 @@ const FormAddAsset = () => {
     return dataArray.map((data) => ({
       NoDocument: data.NoDocument,
       ExpiredDate: data.ExpiredDate,
+      DocumentType: data.DocumentType,
     }));
   };
 
@@ -329,7 +331,7 @@ const FormAddAsset = () => {
           UserID: asset.UserID,
         },
         documentData: dataArray.filter(
-          (doc) => doc.NoDocument !== "" && doc.ExpiredDate !== ""
+          (doc) => doc.NoDocument !== "" && doc.ExpiredDate !== "" && doc.DocumentType !== ""
         ),
       }, getToken());
       console.log("Data submitted successfully:", response.data);
@@ -394,24 +396,26 @@ const FormAddAsset = () => {
             <div className={toggleState === 2 ? "" : "hidden"}>
               <div>
                 {dataArray.length > 0 && (
-                  <table>
-                    <thead>
+                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <th>No</th>
-                        <th>No Document</th>
+                        <th className="px-6 py-3">No Document</th>
+                        <th>Document Type</th>
                         <th>Expired Date</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {dataArray.map((doc, i) => (
-                        <tr key={i}>
+                        <tr key={i} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                           <td>{i + 1}</td>
-                          <td>{doc.NoDocument}</td>
+                          <td className="px-6 py-3">{doc.NoDocument}</td>
+                          <td>{doc.DocumentType}</td>
                           <td>{doc.ExpiredDate}</td>
                           <td>
                             <button onClick={() => handleDelDocs(i)}>
-                              delete
+                              Delete
                             </button>
                           </td>
                         </tr>
@@ -426,6 +430,16 @@ const FormAddAsset = () => {
                   <input
                     name="NoDocument"
                     value={formData.NoDocument}
+                    type="text"
+                    onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
+                </div>
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">Document Type</label>
+                  <input
+                    name="DocumentType"
+                    value={formData.DocumentType}
                     type="text"
                     onChange={handleDocsChange}
                     className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"

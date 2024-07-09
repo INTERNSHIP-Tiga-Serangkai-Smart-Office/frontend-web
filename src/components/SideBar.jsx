@@ -13,7 +13,6 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { useDispatch } from 'react-redux';
 import { LogOut, getMe, getToken, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
-import Hamburger from 'hamburger-react'
 import axios from 'axios';
 
 const SideBar = ({ children, isHidden }) => {

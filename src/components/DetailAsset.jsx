@@ -222,21 +222,23 @@ const DetailAsset = () => {
 
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
-              <div>
+              <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
                 {asset.FixedDocuments && asset.FixedDocuments.length > 0 ? (
-                  <table>
-                    <thead>
+                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <td>No</td>
-                        <td>No Document</td>
+                        <td className="px-6 py-3">No Document</td>
+                        <td>Document Type</td>
                         <td>Expired Date</td>
                       </tr>
                     </thead>
                     <tbody>
                       {asset.FixedDocuments.map((data, index) => (
-                        <tr>
+                        <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                           <td>{index + 1}</td>
-                          <td>{data.NoDocument}</td>
+                          <td className="px-6 py-3">{data.NoDocument}</td>
+                          <td>{data.DocumentType}</td>
                           <td>{data.ExpiredDate}</td>
                         </tr>
                       ))}
