@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getToken } from "../features/authSlice";
+import DropdownComp from "./DropdownComp";
 
 const FormAddAsset = () => {
   const [msg, setMsg] = useState("");
@@ -22,7 +23,11 @@ const FormAddAsset = () => {
   const reg = currDate + " " + currTime;
 
   //add docs
-  const [formData, setFormData] = useState({ NoDocument: "", ExpiredDate: "", DocumentType: "" });
+  const [formData, setFormData] = useState({
+    NoDocument: "",
+    ExpiredDate: "",
+    DocumentType: "",
+  });
   const [dataArray, setDataArray] = useState([]);
 
   // var date;
@@ -38,12 +43,18 @@ const FormAddAsset = () => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAsset((prev) => {
       return { ...prev, [name]: value };
     });
     console.log(e.target);
+  };
+
+  const handleDropdownChange = (name, value) => {
+    setAsset((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleDateChange = (date, fieldName) => {
@@ -59,11 +70,39 @@ const FormAddAsset = () => {
 
   //tab layout
   const mainData = [
-    { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
-    { label: "Status", name: "Status", value: asset.Status },
-    { label: "Entity", name: "Entity", value: asset.Entity },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB },
-    { label: "Group", name: "IDNoGR", value: asset.IDNoGR },
+    {
+      label: "Nama Asset",
+      name: "FixedAssetName",
+      value: asset.FixedAssetName,
+    },
+    {
+      label: "Status",
+      name: "Status",
+      value: asset.Status,
+      displayKey: "Name",
+      valueKey: "value",
+    },
+    {
+      label: "Entity",
+      name: "Entity",
+      value: asset.Entity,
+      displayKey: "EntityName",
+      valueKey: "Entity",
+    },
+    {
+      label: "Entitas Bisnis",
+      name: "IDNoEB",
+      value: asset.IDNoEB,
+      displayKey: "EBName",
+      valueKey: "IDNo",
+    },
+    {
+      label: "Group",
+      name: "IDNoGR",
+      value: asset.IDNoGR,
+      displayKey: "Name",
+      valueKey: "IDNo",
+    },
     // { name: "RegDate", value: asset.RegDate},
   ];
 
@@ -73,8 +112,18 @@ const FormAddAsset = () => {
     { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
     { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
     { label: "Cost Center", name: "CostCenterNo", value: asset.CostCenterNo },
-    { label: "Profit Center", name: "ProfitCenterNo", value: asset.ProfitCenterNo },
-    { label: "Lokasi", name: "LocId", value: asset.LocId },
+    {
+      label: "Profit Center",
+      name: "ProfitCenterNo",
+      value: asset.ProfitCenterNo,
+    },
+    {
+      label: "Lokasi",
+      name: "LocId",
+      value: asset.LocId,
+      displayKey: "LocationName",
+      valueKey: "LocID",
+    },
     { label: "PO", name: "IDNoPO", value: asset.IDNoPO },
     { label: "PR", name: "IDNoPR", value: asset.IDNoPR },
     { label: "PC", name: "IDNoPC", value: asset.IDNoPC },
@@ -86,11 +135,21 @@ const FormAddAsset = () => {
     { label: "Pick", name: "Pick", value: asset.Pick },
     { label: "Pick Group", name: "PickGR", value: asset.PickGR },
     { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
-    { label: "Unit", name: "Unit", value: asset.Unit },
+    {
+      label: "Unit",
+      name: "Unit",
+      value: asset.Unit,
+      displayKey: "Unit",
+      valueKey: "IDNo",
+    },
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
     { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
-    { label: "Salvage Value Original", name: "SalVageValueORG", value: asset.SalVageValueORG },
+    {
+      label: "Salvage Value Original",
+      name: "SalVageValueORG",
+      value: asset.SalVageValueORG,
+    },
     { label: "Remark", name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
     { label: "Kelompok", name: "Classification", value: asset.Classification },
@@ -132,7 +191,7 @@ const FormAddAsset = () => {
     const fetchUnit = async () => {
       const res = await axios.get(`${apiUrl}/unit`, getToken());
       setUnit(res.data);
-    }
+    };
     fetchEntity();
     fetchEB();
     fetchGroup();
@@ -147,7 +206,7 @@ const FormAddAsset = () => {
 
   // Form component logic for each field (replace with your actual components)
 
-  const renderForm = (label, fieldName, value) => {
+  const renderForm = (label, fieldName, value, displayKey, valueKey) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
     const options = (() => {
@@ -190,34 +249,17 @@ const FormAddAsset = () => {
     } else if (options) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[45%]">
-            {label}
-          </label>
-          <select
-            id={fieldName}
+          <DropdownComp
+            label={label}
             name={fieldName}
-            value={value}
-            onChange={handleChange}
-            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-          >
-            <option value="">Select {fieldName}</option>
-            {options.map((option) => (
-              <option
-                key={option.LocID || option.IDNo || option.Entity || option.value}
-                value={
-                   option.Entity || option.IDNo || option.IDNo || option.value
-                }
-                style={{ display: "flex" }}
-              >
-                <span style={{ width: "50px" }}>
-                  {option.LocID || option.Entity || option.IDNo || option.IDNo}
-                </span>
-                <span style={{ marginLeft: "20px" }}>
-                  {option.EntityName || option.EBName || option.Name || option.LocationName || option.Unit}
-                </span>
-              </option>
-            ))}
-          </select>
+            options={options}
+            selectedOption={value}
+            onOptionSelect={handleDropdownChange}
+            placeholder={`Select ${label}`}
+            displayKey={displayKey}
+            valueKey={valueKey}
+            enableSearch={false}
+          />
         </div>
       );
     } else {
@@ -242,7 +284,7 @@ const FormAddAsset = () => {
             name={fieldName}
             // required
             value={value}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           />
           {/* )} */}
@@ -284,56 +326,63 @@ const FormAddAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${apiUrl}/fixed`, {
-        fixedData: {
-          Entity: asset.Entity,
-          FixedAssetName: asset.FixedAssetName,
-          AccNo: asset.AccNo,
-          IDNoEB: asset.IDNoEB,
-          IDNoGR: asset.IDNoGR,
-          Qty: asset.Qty,
-          SalVageValue: asset.SalVageValue,
-          Status: asset.Status,
-          // RegDate: currDate,
-          // DateAq: asset.DateAq,
-          // DateDisp: asset.DateDisp,
-          CostCenterNo: asset.CostCenterNo,
-          ProfitCenterNo: asset.ProfitCenterNo,
-          LocId: asset.LocId,
-          IDNoPO: asset.IDNoPO,
-          IDNoPR: asset.IDNoPR,
-          IDNoPC: asset.IDNoPC,
-          LineNoBD: asset.LineNoBD,
-          OrderNo: asset.OrderNo,
-          InvNo: asset.InvNo,
-          PickBill: asset.PickBill,
-          SupplierId: asset.SupplierId,
-          Pick: asset.Pick,
-          PickGR: asset.PickGR,
-          Unit: asset.Unit,
-          SUnit: asset.SUnit,
-          Cost: asset.Cost,
-          SalVageValueORG: asset.SalVageValueORG,
-          AccDep: asset.AccDep,
-          Pict: asset.Pict,
-          Remark: asset.Remark,
-          IDNo: asset.IDNo,
-          SQM: asset.SQM,
-          Weight: asset.Weight,
-          HolderName: asset.HolderName,
-          Classification: asset.Classification,
-          Brand: asset.Brand,
-          ChassisNo: asset.ChassisNo,
-          EngineNo: asset.EngineNo,
-          RegNo: asset.RegNo,
-          GuaranteeDate: asset.GuaranteeDate,
-          EmpID: asset.EmpID,
-          UserID: asset.UserID,
+      const response = await axios.post(
+        `${apiUrl}/fixed`,
+        {
+          fixedData: {
+            Entity: asset.Entity,
+            FixedAssetName: asset.FixedAssetName,
+            AccNo: asset.AccNo,
+            IDNoEB: asset.IDNoEB,
+            IDNoGR: asset.IDNoGR,
+            Qty: asset.Qty,
+            SalVageValue: asset.SalVageValue,
+            Status: asset.Status,
+            // RegDate: currDate,
+            // DateAq: asset.DateAq,
+            // DateDisp: asset.DateDisp,
+            CostCenterNo: asset.CostCenterNo,
+            ProfitCenterNo: asset.ProfitCenterNo,
+            LocId: asset.LocId,
+            IDNoPO: asset.IDNoPO,
+            IDNoPR: asset.IDNoPR,
+            IDNoPC: asset.IDNoPC,
+            LineNoBD: asset.LineNoBD,
+            OrderNo: asset.OrderNo,
+            InvNo: asset.InvNo,
+            PickBill: asset.PickBill,
+            SupplierId: asset.SupplierId,
+            Pick: asset.Pick,
+            PickGR: asset.PickGR,
+            Unit: asset.Unit,
+            SUnit: asset.SUnit,
+            Cost: asset.Cost,
+            SalVageValueORG: asset.SalVageValueORG,
+            AccDep: asset.AccDep,
+            Pict: asset.Pict,
+            Remark: asset.Remark,
+            IDNo: asset.IDNo,
+            SQM: asset.SQM,
+            Weight: asset.Weight,
+            HolderName: asset.HolderName,
+            Classification: asset.Classification,
+            Brand: asset.Brand,
+            ChassisNo: asset.ChassisNo,
+            EngineNo: asset.EngineNo,
+            RegNo: asset.RegNo,
+            GuaranteeDate: asset.GuaranteeDate,
+            EmpID: asset.EmpID,
+            UserID: asset.UserID,
+          },
+          documentData: dataArray.filter(
+            (doc) =>
+              doc.NoDocument !== "" &&
+              doc.ExpiredDate !== "" &&
+              doc.DocumentType !== ""
+          ),
         },
-        documentData: dataArray.filter(
-          (doc) => doc.NoDocument !== "" && doc.ExpiredDate !== "" && doc.DocumentType !== ""
-        ),
-      }, getToken());
+        getToken()
+      );
       console.log("Data submitted successfully:", response.data);
       navigate("/dataaset");
     } catch (error) {
@@ -347,11 +396,25 @@ const FormAddAsset = () => {
 
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
-      <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
+      <button
+        type="button"
+        onClick={() => navigate("/dataaset", { replace: true })}
+        className="mb-3"
+      >
+        &lt; Back
+      </button>
       <h2 className="text-2xl montserrat-bold">Add New Asset</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 w-full">
-          {mainData.map((data) => renderForm(data.label, data.name, data.value))}
+          {mainData.map((data) =>
+            renderForm(
+              data.label,
+              data.name,
+              data.value,
+              data.displayKey,
+              data.valueKey
+            )
+          )}
         </div>
 
         <div className="w-full mt-3 border-2 p-4 rounded-xl">
@@ -388,7 +451,15 @@ const FormAddAsset = () => {
               }
             >
               <div className="custom-grid w-full">
-                {generalInfo.map((data) => renderForm(data.label, data.name, data.value))}
+                {generalInfo.map((data) =>
+                  renderForm(
+                    data.label,
+                    data.name,
+                    data.value,
+                    data.displayKey,
+                    data.valueKey
+                  )
+                )}
               </div>
             </div>
 
@@ -408,7 +479,10 @@ const FormAddAsset = () => {
                     </thead>
                     <tbody>
                       {dataArray.map((doc, i) => (
-                        <tr key={i} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <tr
+                          key={i}
+                          className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        >
                           <td>{i + 1}</td>
                           <td className="px-6 py-3">{doc.NoDocument}</td>
                           <td>{doc.DocumentType}</td>
@@ -461,7 +535,13 @@ const FormAddAsset = () => {
                     >
                       Add docs
                     </button> */}
-                <button type="button" onClick={handleAddDocs} className="p-2 rounded-md bg-green-300">add docs</button>
+                <button
+                  type="button"
+                  onClick={handleAddDocs}
+                  className="p-2 rounded-md bg-green-300"
+                >
+                  add docs
+                </button>
               </div>
               {/* <div className="flex w-full justify-end ">
                 </div> */}

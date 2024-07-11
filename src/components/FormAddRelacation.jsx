@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getToken } from "../features/authSlice";
+import DropdownComp from "./DropdownComp";
 
 const FormAddRelacation = () => {
   const [asset, setAsset] = useState([]);
+  const [location, setLocation] = useState([]);
   const [header, setHeader] = useState([]);
   const [item, setItem] = useState({
     FixedIDNo: "",
@@ -32,8 +34,14 @@ const FormAddRelacation = () => {
     }
   };
 
+  const getLocation = async () => {
+    const res = await axios.get(`${apiUrl}/location`, getToken());
+    setLocation(res.data);
+  };
+
   useEffect(() => {
     getAsset(search);
+    getLocation();
     console.log(asset);
   }, [search]);
 
@@ -64,8 +72,9 @@ const FormAddRelacation = () => {
 
   //dropdown
   const [isOpen, setIsOpen] = useState(false);
+  const [isLocOpen, setIsLocOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -75,9 +84,18 @@ const FormAddRelacation = () => {
     setSearch(e.target.value);
   };
 
-  const handleSelectOption = (option) => {
-    setItem({FixedIDNo: option});
-    setSearch('');
+  const handleSelectOption = (name, value) => {
+    setItem((prevItems) => ({
+      ...prevItems,
+      [name]: value,
+    }));
+    setSearch("");
+    setIsOpen(false);
+  };
+
+  const handleSelectLoc = (option) => {
+    setItem({ FixedIDNo: option });
+    setSearch("");
     setIsOpen(false);
   };
 
@@ -85,11 +103,15 @@ const FormAddRelacation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const request = await axios.post(`${apiUrl}/asset-relocation`, {
-        TransDesc: header.TransDesc,
-        IDNoEB: header.IDNoEB,
-        items: items,
-      });
+      const request = await axios.post(
+        `${apiUrl}/asset-relocation`,
+        {
+          TransDesc: header.TransDesc,
+          IDNoEB: header.IDNoEB,
+          items: items,
+        },
+        getToken()
+      );
       console.log("Data submitted successfully:", request.data);
       navigate("/relocation");
     } catch (error) {
@@ -114,12 +136,12 @@ const FormAddRelacation = () => {
     },
   ];
 
-  const renderForm = (fieldName, value) => {
+  const renderForm = (fieldName, value, onChange) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
     return (
-      <div key={fieldName} className="flex flex-row items-center mx-3">
-        <label htmlFor={fieldName} className="label w-[45%]">
+      <div key={fieldName} className="flex flex-row items-center my-3">
+        <label htmlFor={fieldName} className="label w-[50%]">
           {fieldName}
         </label>
         <input
@@ -127,76 +149,17 @@ const FormAddRelacation = () => {
           id={fieldName}
           name={fieldName}
           value={value}
-          onChange={handleHeaderChange}
-          className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+          onChange={onChange}
+          className="w-[50%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
         />
       </div>
     );
   };
 
-  const renderItem = (fieldName, value) => {
-    const inputType = typeof value === "number" ? "number" : "text";
-
-    if (fieldName === "FixedIDNo") {
-      return (
-        <div ref={dropdownRef} className="custom-dropdown flex m-3">
-          <div className="label w-[45%]">
-            Asset
-          </div>
-          <div>
-
-            <div className="dropdown-header" onClick={toggleDropdown}>
-              {/* {selectedOption || 'Select an option'} */}
-              Select
-              <span className="arrow">{isOpen ? "▲" : "▼"}</span>
-            </div>
-            {isOpen && (
-              <div className="dropdown-body">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  // value={searchTerm}
-                  onChange={handleSearchChange}
-                  className="dropdown-search"
-                />
-                <ul className="dropdown-options">
-                  {Array.isArray(asset) ? (
-                    asset.map((data, index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleSelectOption(data.FixedIDNo)}
-                        className="dropdown-option"
-                      >
-                        {data.FixedNo}
-                      </li>
-                    ))
-                  ) : (
-                    <div>No assets available</div>
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[45%]">
-            {fieldName}
-          </label>
-          <input
-            type={inputType}
-            id={fieldName}
-            name={fieldName}
-            value={value}
-            onChange={handleItemChange}
-            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-          />
-        </div>
-      );
-    }
-  };
+  const displayDataName = ( data, selectedOption, displayKey, valueKey) => {
+    const selectedValue = data.filter(item => item[valueKey] === selectedOption).map(item => item[displayKey]);
+    return selectedValue;
+  }
 
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
@@ -212,9 +175,11 @@ const FormAddRelacation = () => {
       </div>
       <form onSubmit={handleSubmit}>
         {/* <h1>Header</h1> */}
-        <div>
+        <div className="px-3">
           {headerFields &&
-            headerFields.map((data) => renderForm(data.name, data.value))}
+            headerFields.map((data) =>
+              renderForm(data.name, data.value, handleHeaderChange)
+            )}
         </div>
         <div className="p-3 border rounded-md my-3">
           {items.length > 0 && (
@@ -232,8 +197,8 @@ const FormAddRelacation = () => {
                   items.map((data, index) => (
                     <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                       <td>{index + 1}</td>
-                      <td className="px-6 py-3">{data.FixedIDNo}</td>
-                      <td>{data.NewLocation}</td>
+                      <td className="px-6 py-3">{displayDataName(asset, data.FixedIDNo, "FixedNo", "FixedIDNo")}</td>
+                      <td>{displayDataName(location, data.NewLocation, "LocationName", "LocID")}</td>
                       <td>{data.NewEmployeeResponsible}</td>
                     </tr>
                   ))}
@@ -241,9 +206,29 @@ const FormAddRelacation = () => {
             </table>
           )}
           <div>
-            <div>
-              {itemFields &&
-                itemFields.map((data) => renderItem(data.name, data.value))}
+            <div className="px-3">
+              <DropdownComp
+                label="Select Item"
+                name="FixedIDNo"
+                options={asset}
+                selectedOption={item.FixedIDNo}
+                onOptionSelect={handleSelectOption}
+                placeholder="Select Item"
+                displayKey="FixedNo"
+                valueKey="FixedIDNo"
+                enableSearch={true}
+              />
+              <DropdownComp
+                label="Select New Location"
+                name="NewLocation"
+                options={location}
+                selectedOption={item.NewLocation}
+                onOptionSelect={handleSelectOption}
+                placeholder="Select Location"
+                displayKey="LocationName"
+                valueKey="LocID"
+              />
+              {renderForm("NewEmployeeResponsible", item.NewEmployeeResponsible, handleItemChange)}
             </div>
             <button
               type="button"

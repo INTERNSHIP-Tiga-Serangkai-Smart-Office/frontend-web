@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import DatePicker from "react-datepicker";
+import DropdownComp from "./DropdownComp";
 
 const FormEditAsset = () => {
   const [msg, setMsg] = useState("");
@@ -87,10 +88,10 @@ const FormEditAsset = () => {
   const mainData = [
     { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
     { label: "AIN", name: "FixedNo", value: asset.FixedNo },
-    { label: "Status", name: "Status", value: asset.Status },
-    { label: "Entity", name: "Entity", value: asset.Entity },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB },
-    { label: "Group", name: "IDNoGR", value: asset.IDNoGR },
+    { label: "Status", name: "Status", value: asset.Status, displayKey: "Name", valueKey: "value" },
+    { label: "Entity", name: "Entity", value: asset.Entity,  displayKey: "EntityName", valueKey: "Entity" },
+    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB, displayKey: "EBName", valueKey: "IDNo" },
+    { label: "Group", name: "IDNoGR", value: asset.IDNoGR, displayKey: "Name", valueKey: "IDNo" },
     { label: "Tgl Registrasi", name: "RegDate", value: asset.RegDate },
   ];
 
@@ -114,7 +115,7 @@ const FormEditAsset = () => {
     { label: "Pick", name: "Pick", value: asset.Pick },
     { label: "Pick Group", name: "PickGR", value: asset.PickGR },
     { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
-    { label: "Unit", name: "Unit", value: asset.Unit },
+    { label: "Unit", name: "Unit", value: asset.Unit, displayKey: "Unit", valueKey: "IDNo" },
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
     { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
@@ -143,12 +144,18 @@ const FormEditAsset = () => {
     setAsset({ ...asset, [fieldName]: date });
   };
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAsset((prev) => {
       return { ...prev, [name]: value };
     });
     console.log(e.target);
+  };
+
+  const handleDropdownChange = (name, value) => {
+    setAsset((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
 
   // const handleAddDocs = (e) => {
@@ -202,7 +209,7 @@ const FormEditAsset = () => {
     { Name: "Active", value: 1 },
   ];
 
-  const renderForm = (label, fieldName, value) => {
+  const renderForm = (label, fieldName, value, displayKey, valueKey) => {
     const inputType = typeof value === "number" ? "number" : "text";
     const readonlyFields = ['FixedNo', 'LocId', 'EmpId', 'InvNo'];
 
@@ -216,8 +223,6 @@ const FormEditAsset = () => {
           return entitasBisnis;
         case "Status":
           return statusOption;
-        case "LocId":
-          return location;
         case "Unit":
           return unit;
         default:
@@ -246,35 +251,17 @@ const FormEditAsset = () => {
     } else if (options) {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
-          <label htmlFor={fieldName} className="label w-[45%]">
-            {label}
-          </label>
-          <select
-            id={fieldName}
-            name={fieldName}
-            value={value}
-            onChange={handleChange}
-            className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-            disabled={readonlyFields.includes(fieldName)}
-          >
-            <option value="">Select {fieldName}</option>
-            {options.map((option) => (
-              <option
-                key={option.LocID || option.IDNo || option.Entity || option.value}
-                value={
-                   option.Entity || option.IDNo || option.IDNo || option.value
-                }
-                style={{ display: "flex" }}
-              >
-                <span style={{ width: "50px" }}>
-                  {option.LocID || option.Entity || option.IDNo || option.IDNo}
-                </span>
-                <span style={{ marginLeft: "20px" }}>
-                  {option.EntityName || option.EBName || option.Name || option.LocationName || option.Unit}
-                </span>
-              </option>
-            ))}
-          </select>
+          <DropdownComp
+                label={label}
+                name={fieldName}
+                options={options}
+                selectedOption={value}
+                onOptionSelect={handleDropdownChange}
+                placeholder={`Select ${label}`}
+                displayKey={displayKey}
+                valueKey={valueKey}
+                enableSearch={false}
+              />
         </div>
       );
     } else {
@@ -288,7 +275,7 @@ const FormEditAsset = () => {
             id={fieldName}
             name={fieldName}
             value={value}
-            onChange={handleChange}
+            onChange={handleInputChange}
             className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
             disabled={readonlyFields.includes(fieldName)}
           />
@@ -306,21 +293,7 @@ const FormEditAsset = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3">
           {mainData.map((data) =>
-            // <div key={data.index} className="flex flex-row items-center mx-3">
-            //   <label htmlFor={data.name} className="label w-[40%]">
-            //     {data.name}
-            //   </label>
-            //   <input
-            //     type={"text"}
-            //     id={data.name}
-            //     name={data.name}
-            //     value={data.value}
-            //     onChange={handleChange}
-            //     className="w-[60%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-            //     disabled={!isEdit}
-            //   />
-            // </div>
-            renderForm(data.label, data.name, data.value)
+            renderForm(data.label, data.name, data.value, data.displayKey, data.valueKey)
           )}
         </div>
 
@@ -386,24 +359,7 @@ const FormEditAsset = () => {
             >
               <div className="grid xl:grid-cols-3 w-full">
                 {generalInfo.map((data, index) =>
-                  // <div
-                  //   key={index}
-                  //   className="flex flex-row items-center mx-3"
-                  // >
-                  //   <label htmlFor={data.name} className="label w-[45%]">
-                  //     {data.name}
-                  //   </label>
-                  //   <input
-                  //     type={"text"}
-                  //     id={data.name}
-                  //     name={data.name}
-                  //     value={data.value}
-                  //     onChange={handleChange}
-                  //     className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-                  //     disabled={!isEdit}
-                  //   />
-                  // </div>
-                  renderForm(data.label, data.name, data.value)
+                  renderForm(data.label, data.name, data.value, data.displayKey, data.valueKey)
                 )}
               </div>
             </div>
@@ -419,61 +375,77 @@ const FormEditAsset = () => {
 
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
-              {/* {docsArray && (
-                <div>
-                  <table>
-                    <thead>
+              <div>
+                {asset.FixedDocuments.length > 0 && (
+                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <th>No</th>
-                        <th>No Document</th>
+                        <th className="px-6 py-3">No Document</th>
+                        <th>Document Type</th>
                         <th>Expired Date</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {docsArray.map((doc, i) => 
-                        <tr key={i}>
-                          <td>{i+1}</td>
-                          <td>{doc.NoDocument}</td>
+                      {asset.FixedDocuments.map((doc, i) => (
+                        <tr
+                          key={i}
+                          className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        >
+                          <td>{i + 1}</td>
+                          <td className="px-6 py-3">{doc.NoDocument}</td>
+                          <td>{doc.DocumentType}</td>
                           <td>{doc.ExpiredDate}</td>
+                          <td>
+                            {/* <button onClick={() => handleDelDocs(i)}>
+                              Delete
+                            </button> */}
+                          </td>
                         </tr>
-                      )}
+                      ))}
                     </tbody>
                   </table>
+                )}
+              </div>
+              <div className="flex w-full p-3">
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">No Document</label>
+                  <input
+                    name="NoDocument"
+                    // value={formData.NoDocument}
+                    type="text"
+                    // onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
                 </div>
-              )} */}
-              <div className="m-3 p-3 border rounded-xl">
-                <form >
-                  <div className="flex w-full">
-                    <div className="flex flex-row items-center justify-between w-[45%]">
-                      <label htmlFor="">No Document</label>
-                      <input
-                        name="NoDocument"
-                        // value={docData.NoDocument}
-                        type="text"
-                        onChange={handleChange}
-                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-                      />
-                    </div>
-                    <div className="flex flex-row items-center justify-between w-[45%]">
-                      <label htmlFor="">Expired Date</label>
-                      <input
-                        name="ExpiredDate"
-                        // value={docData.ExpiredDate}
-                        type="text"
-                        onChange={handleChange}
-                        className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className={`justify-end bold-16 bg-green-300 p-3 m-2 w-[10%] rounded-xl shadow-lg hover:bg-green-400`}
-                    >
-                      Add
-                    </button>
-                  </div>
-                  {/* <div className="flex w-full justify-end ">
-                </div> */}
-                </form>
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">Document Type</label>
+                  <input
+                    name="DocumentType"
+                    // value={formData.DocumentType}
+                    type="text"
+                    // onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
+                </div>
+                <div className="flex flex-row items-center justify-between w-[45%]">
+                  <label htmlFor="">Expired Date</label>
+                  <input
+                    name="ExpiredDate"
+                    // value={formData.ExpiredDate}
+                    type="text"
+                    // onChange={handleDocsChange}
+                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  />
+                </div>
+                <button
+                  type="button"
+                  // onClick={handleAddDocs}
+                  className="p-2 rounded-md bg-green-300"
+                >
+                  Add
+                </button>
               </div>
             </div>
 
