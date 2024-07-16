@@ -450,7 +450,7 @@ const FormAddAsset = () => {
                   : "hidden"
               }
             >
-              <div className="custom-grid w-full">
+              <div className="grid gap-4 lg:grid-rows-12 lg:grid-flow-col sm:grid-cols-1 sm:grid-flow-row w-full">
                 {generalInfo.map((data) =>
                   renderForm(
                     data.label,

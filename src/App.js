@@ -54,7 +54,10 @@ function App() {
                 <Route path="/users/edit/:id" element={<EditUser />} />
                 <Route path="/role" element={<Roles />} />
                 <Route path="/relocation" element={<Relocation />} />
-                <Route path="/relocation/add" element={<AddRelocation />} />
+                <Route
+                  path="/relocation/add/:id?"
+                  element={<AddRelocation />}
+                />
                 <Route path="/role/add/" element={<AddRole />} />
                 <Route path="/role/edit/:id" element={<EditRole />} />
                 <Route path="/dataaset/detail/:id" element={<Detail />} />

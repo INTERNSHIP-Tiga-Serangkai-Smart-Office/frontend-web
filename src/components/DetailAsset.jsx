@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import { getToken } from "../features/authSlice";
+import { BiSolidEditLocation } from "react-icons/bi";
 
 const DetailAsset = () => {
   const [msg, setMsg] = useState("");
@@ -49,9 +50,21 @@ const DetailAsset = () => {
       value: asset?.FixedAssetName,
     },
     { label: "AIN", name: "FixedNo", value: asset?.FixedNo },
-    { label: "Status", name: "Status", value: asset?.Status === 1 ? 'Active' : 'Inactive'  },
-    { label: "Entity", name: "Entity", value: asset?.EntityRelations?.EntityName },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: asset?.EntitasBisni?.EBCode },
+    {
+      label: "Status",
+      name: "Status",
+      value: asset?.Status === 1 ? "Active" : "Inactive",
+    },
+    {
+      label: "Entity",
+      name: "Entity",
+      value: asset?.EntityRelations?.EntityName,
+    },
+    {
+      label: "Entitas Bisnis",
+      name: "IDNoEB",
+      value: asset?.EntitasBisni?.EBCode,
+    },
     { label: "Group", name: "IDNoGR", value: asset?.FixedGroup?.Name },
     { label: "Tgl Registrasi", name: "RegDate", value: asset?.RegDate },
   ];
@@ -104,11 +117,19 @@ const DetailAsset = () => {
     { label: "User Id", name: "UserId", value: asset.UserID },
   ];
 
-  const renderData = (label, fieldName, value) => {
+  const renderData = (label, fieldName, value, id) => {
     return (
       <div key={fieldName} className="flex justify-between my-3 mx-5">
         <p>{label} :</p>
-        <h1>{value}</h1>
+        <div>
+          <h1>{value}</h1>
+          <button type="button" onClick={() => navigate(`/relocation/add/${id}`)} className={`${fieldName === "LocId" ? "px-2" : "hidden"}`}>
+            <BiSolidEditLocation
+              className="text-blue-700"
+              style={{ fontSize: "1.5rem" }}
+            />
+          </button>
+        </div>
       </div>
     );
   };
@@ -126,150 +147,154 @@ const DetailAsset = () => {
 
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
-        <div className="w-full items-baseline m-3">
-          <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
-          <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
-        </div>
+      <div className="w-full items-baseline m-3">
+        <button
+          type="button"
+          onClick={() => navigate("/dataaset", { replace: true })}
+          className="mb-3"
+        >
+          &lt; Back
+        </button>
+        <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
+      </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3">
-          {mainData &&
-            mainData.map((data) =>
-              renderData(data.label, data.name, data.value)
-            )}
-        </div>
+      <div className="grid md:grid-cols-2 xl:grid-cols-3">
+        {mainData &&
+          mainData.map((data) => renderData(data.label, data.name, data.value))}
+      </div>
 
-        <div className="w-full mt-3 border-2 p-4 rounded-xl">
-          <div className="flex flex-row border-b-2 overflow-auto no-scrollbar">
-            <div
-              className={
-                toggleState === 1
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(1)}
-            >
-              General Info
-            </div>
-            <div
-              className={
-                toggleState === 2
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(2)}
-            >
-              Specification
-            </div>
-            <div
-              className={
-                toggleState === 3
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(3)}
-            >
-              Document
-            </div>
-            <div
-              className={
-                toggleState === 4
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(4)}
-            >
-              Maintenance
-            </div>
-            <div
-              className={
-                toggleState === 5
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
-                  : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              }
-              onClick={() => toggleTab(5)}
-            >
-              History
-            </div>
+      <div className="w-full mt-3 border-2 p-4 rounded-xl">
+        <div className="flex flex-row border-b-2 overflow-auto no-scrollbar">
+          <div
+            className={
+              toggleState === 1
+                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            }
+            onClick={() => toggleTab(1)}
+          >
+            General Info
           </div>
-          <div className="w-full h-full">
-            <div
-              className={
-                toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
-              }
-            >
-              <div className="md:flex w-full">
-                <div className="md:w-[30%] p-5">
-                  <div className="justify-center mx-auto">
-                    {asset.FixedNo && barcodes(asset.FixedNo)}
-                  </div>
-                </div>
-                <div className="md:w-[70%] grid xl:grid-flow-col xl:grid-rows-12">
-                  {generalInfo.map((data) =>
-                    renderData(data.label, data.name, data.value)
-                  )}
+          <div
+            className={
+              toggleState === 2
+                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            }
+            onClick={() => toggleTab(2)}
+          >
+            Specification
+          </div>
+          <div
+            className={
+              toggleState === 3
+                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            }
+            onClick={() => toggleTab(3)}
+          >
+            Document
+          </div>
+          <div
+            className={
+              toggleState === 4
+                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            }
+            onClick={() => toggleTab(4)}
+          >
+            Maintenance
+          </div>
+          <div
+            className={
+              toggleState === 5
+                ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            }
+            onClick={() => toggleTab(5)}
+          >
+            History
+          </div>
+        </div>
+        <div className="w-full h-full">
+          <div
+            className={
+              toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
+            }
+          >
+            <div className="md:flex w-full">
+              <div className="md:w-[25%] p-5">
+                <div className="justify-center mx-auto">
+                  {asset.FixedNo && barcodes(asset.FixedNo)}
                 </div>
               </div>
-            </div>
-            <div className={toggleState === 2 ? "" : "hidden"}>
-              <h1>Content 2</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
-            </div>
-
-            {/* document */}
-            <div className={toggleState === 3 ? "" : "hidden"}>
-              <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
-                {asset.FixedDocuments && asset.FixedDocuments.length > 0 ? (
-                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <td>No</td>
-                        <td className="px-6 py-3">No Document</td>
-                        <td>Document Type</td>
-                        <td>Expired Date</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {asset.FixedDocuments.map((data, index) => (
-                        <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                          <td>{index + 1}</td>
-                          <td className="px-6 py-3">{data.NoDocument}</td>
-                          <td>{data.DocumentType}</td>
-                          <td>{data.ExpiredDate}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <div>Document not found</div>
+              <div className="md:w-[75%] grid xl:grid-flow-col xl:grid-rows-12">
+                {generalInfo.map((data) =>
+                  renderData(data.label, data.name, data.value, asset.FixedIDNo)
                 )}
               </div>
             </div>
+          </div>
+          <div className={toggleState === 2 ? "" : "hidden"}>
+            <h1>Content 2</h1>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
+              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
+              aperiam saepe distinctio exercitationem.
+            </p>
+          </div>
 
-            <div className={toggleState === 4 ? "" : "hidden"}>
-              <h1>Content 4</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
-            </div>
-            <div className={toggleState === 5 ? "" : "hidden"}>
-              <h1>Content 5</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Architecto beatae quod perspiciatis excepturi fugit soluta
-                natus, sunt odio impedit ipsum culpa deserunt nihil nobis
-                tenetur veniam aperiam saepe distinctio exercitationem.
-              </p>
+          {/* document */}
+          <div className={toggleState === 3 ? "" : "hidden"}>
+            <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
+              {asset.FixedDocuments && asset.FixedDocuments.length > 0 ? (
+                <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <td>No</td>
+                      <td className="px-6 py-3">No Document</td>
+                      <td>Document Type</td>
+                      <td>Expired Date</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {asset.FixedDocuments.map((data, index) => (
+                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td>{index + 1}</td>
+                        <td className="px-6 py-3">{data.NoDocument}</td>
+                        <td>{data.DocumentType}</td>
+                        <td>{data.ExpiredDate}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div>Document not found</div>
+              )}
             </div>
           </div>
+
+          <div className={toggleState === 4 ? "" : "hidden"}>
+            <h1>Content 4</h1>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
+              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
+              aperiam saepe distinctio exercitationem.
+            </p>
+          </div>
+          <div className={toggleState === 5 ? "" : "hidden"}>
+            <h1>Content 5</h1>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
+              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
+              aperiam saepe distinctio exercitationem.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
   );
 };

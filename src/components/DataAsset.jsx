@@ -28,6 +28,7 @@ const DataAsset = () => {
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [totalPage, setTotalPage] = useState();
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -42,6 +43,8 @@ const DataAsset = () => {
         `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}`, getToken()
       );
       setFixed(response.data.data);
+      setTotalPage(response.totalPages)
+      console.log(totalPage);
       console.log(fixeds);
     } catch (error) {
       setError("Failed to fetch fixed assets");
@@ -169,6 +172,7 @@ const DataAsset = () => {
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th className="px-6 py-3">No</th>
+                    <th>Asset Name</th>
                     <th>Entity</th>
                     <th>Acc No</th>
                     <th>AIN</th>
@@ -184,7 +188,8 @@ const DataAsset = () => {
                         class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         key={d.FixedIDNo}
                       >
-                        <td class=" ">{i + 1}</td>
+                        <td class=" ">{(page - 1) * pageSize + i + 1}</td>
+                        <td>{d.FixedAssetName}</td>
                         <td class=" ">{d.EntityRelations.EntityName}</td>
                         <td class=" overflow-hidden  ">{d.AccNo}</td>
                         <td class="p-3 relative overflow-hidden">
@@ -260,9 +265,9 @@ const DataAsset = () => {
           )}
         </div> 
         <div className="flex justify-end items-baseline px-2 pt-3">
-          <button onClick={handlePrevPage}>Prev</button>
+          <button onClick={handlePrevPage} disabled={page === 1}>Prev</button>
           <h2 className="px-5 ">{page}</h2>
-          <button onClick={handleNextPage}>Next</button>
+          <button onClick={handleNextPage} disabled={page === totalPage}>Next</button>
         </div>
       </div>
       

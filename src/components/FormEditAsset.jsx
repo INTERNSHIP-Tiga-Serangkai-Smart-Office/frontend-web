@@ -27,53 +27,57 @@ const FormEditAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/fixed/${id}`, {
-        // fixedData: {
-        Entity: asset.Entity,
-        FixedAssetName: asset.FixedAssetName,
-        AccNo: asset.AccNo,
-        IDNoEB: asset.IDNoEB,
-        IDNoGR: asset.IDNoGR,
-        Qty: asset.Qty,
-        SalVageValue: asset.SalVageValue,
-        Status: asset.Status,
-        // RegDate: currDate,
-        // },
-        // DateAq: asset.DateAq,
-        // DateDisp: asset.DateDisp,
-        CostCenterNo: asset.CostCenterNo,
-        ProfitCenterNo: asset.ProfitCenterNo,
-        LocId: asset.LocId,
-        IDNoPO: asset.IDNoPO,
-        IDNoPR: asset.IDNoPR,
-        IDNoPC: asset.IDNoPC,
-        LineNoBD: asset.LineNoBD,
-        OrderNo: asset.OrderNo,
-        InvNo: asset.InvNo,
-        PickBill: asset.PickBill,
-        SupplierId: asset.SupplierId,
-        Pick: asset.Pick,
-        PickGR: asset.PickGR,
-        Unit: asset.Unit,
-        SUnit: asset.SUnit,
-        Cost: asset.Cost,
-        SalVageValueORG: asset.SalVageValueORG,
-        AccDep: asset.AccDep,
-        Pict: asset.Pict,
-        Remark: asset.Remark,
-        IDNo: asset.IDNo,
-        SQM: asset.SQM,
-        Weight: asset.Weight,
-        HolderName: asset.HolderName,
-        Classification: asset.Classification,
-        Brand: asset.Brand,
-        ChassisNo: asset.ChassisNo,
-        EngineNo: asset.EngineNo,
-        RegNo: asset.RegNo,
-        GuaranteeDate: asset.GuaranteeDate,
-        EmpID: asset.EmpID,
-        UserID: asset.UserID,
-      }, getToken());
+      await axios.put(
+        `${apiUrl}/fixed/${id}`,
+        {
+          // fixedData: {
+          Entity: asset.Entity,
+          FixedAssetName: asset.FixedAssetName,
+          AccNo: asset.AccNo,
+          IDNoEB: asset.IDNoEB,
+          IDNoGR: asset.IDNoGR,
+          Qty: asset.Qty,
+          SalVageValue: asset.SalVageValue,
+          Status: asset.Status,
+          // RegDate: currDate,
+          // },
+          // DateAq: asset.DateAq,
+          // DateDisp: asset.DateDisp,
+          CostCenterNo: asset.CostCenterNo,
+          ProfitCenterNo: asset.ProfitCenterNo,
+          LocId: asset.LocId,
+          IDNoPO: asset.IDNoPO,
+          IDNoPR: asset.IDNoPR,
+          IDNoPC: asset.IDNoPC,
+          LineNoBD: asset.LineNoBD,
+          OrderNo: asset.OrderNo,
+          InvNo: asset.InvNo,
+          PickBill: asset.PickBill,
+          SupplierId: asset.SupplierId,
+          Pick: asset.Pick,
+          PickGR: asset.PickGR,
+          Unit: asset.Unit,
+          SUnit: asset.SUnit,
+          Cost: asset.Cost,
+          SalVageValueORG: asset.SalVageValueORG,
+          AccDep: asset.AccDep,
+          Pict: asset.Pict,
+          Remark: asset.Remark,
+          IDNo: asset.IDNo,
+          SQM: asset.SQM,
+          Weight: asset.Weight,
+          HolderName: asset.HolderName,
+          Classification: asset.Classification,
+          Brand: asset.Brand,
+          ChassisNo: asset.ChassisNo,
+          EngineNo: asset.EngineNo,
+          RegNo: asset.RegNo,
+          GuaranteeDate: asset.GuaranteeDate,
+          EmpID: asset.EmpID,
+          UserID: asset.UserID,
+        },
+        getToken()
+      );
       navigate("/dataaset");
     } catch (error) {
       if (error.response) {
@@ -86,12 +90,40 @@ const FormEditAsset = () => {
 
   //tab layout
   const mainData = [
-    { label: "Nama Asset", name: "FixedAssetName", value: asset.FixedAssetName },
+    {
+      label: "Nama Asset",
+      name: "FixedAssetName",
+      value: asset.FixedAssetName,
+    },
     { label: "AIN", name: "FixedNo", value: asset.FixedNo },
-    { label: "Status", name: "Status", value: asset.Status, displayKey: "Name", valueKey: "value" },
-    { label: "Entity", name: "Entity", value: asset.Entity,  displayKey: "EntityName", valueKey: "Entity" },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: asset.IDNoEB, displayKey: "EBName", valueKey: "IDNo" },
-    { label: "Group", name: "IDNoGR", value: asset.IDNoGR, displayKey: "Name", valueKey: "IDNo" },
+    {
+      label: "Status",
+      name: "Status",
+      value: asset.Status,
+      displayKey: "Name",
+      valueKey: "value",
+    },
+    {
+      label: "Entity",
+      name: "Entity",
+      value: asset.Entity,
+      displayKey: "EntityName",
+      valueKey: "Entity",
+    },
+    {
+      label: "Entitas Bisnis",
+      name: "IDNoEB",
+      value: asset.IDNoEB,
+      displayKey: "EBName",
+      valueKey: "IDNo",
+    },
+    {
+      label: "Group",
+      name: "IDNoGR",
+      value: asset.IDNoGR,
+      displayKey: "Name",
+      valueKey: "IDNo",
+    },
     { label: "Tgl Registrasi", name: "RegDate", value: asset.RegDate },
   ];
 
@@ -101,7 +133,11 @@ const FormEditAsset = () => {
     { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
     { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
     { label: "Cost Center", name: "CostCenterNo", value: asset.CostCenterNo },
-    { label: "Profit Center", name: "ProfitCenterNo", value: asset.ProfitCenterNo },
+    {
+      label: "Profit Center",
+      name: "ProfitCenterNo",
+      value: asset.ProfitCenterNo,
+    },
     { label: "Lokasi", name: "LocId", value: asset.LocId },
     { label: "PO", name: "IDNoPO", value: asset.IDNoPO },
     { label: "PR", name: "IDNoPR", value: asset.IDNoPR },
@@ -115,11 +151,21 @@ const FormEditAsset = () => {
     { label: "Pick", name: "Pick", value: asset.Pick },
     { label: "Pick Group", name: "PickGR", value: asset.PickGR },
     { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
-    { label: "Unit", name: "Unit", value: asset.Unit, displayKey: "Unit", valueKey: "IDNo" },
+    {
+      label: "Unit",
+      name: "Unit",
+      value: asset.Unit,
+      displayKey: "Unit",
+      valueKey: "IDNo",
+    },
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
     { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
-    { label: "Salvage Value Original", name: "SalVageValueORG", value: asset.SalVageValueORG },
+    {
+      label: "Salvage Value Original",
+      name: "SalVageValueORG",
+      value: asset.SalVageValueORG,
+    },
     { label: "Remark", name: "Remark", value: asset.Remark },
     // { name: "Sqm", value: asset.Sqm },
     { label: "Kelompok", name: "Classification", value: asset.Classification },
@@ -196,7 +242,7 @@ const FormEditAsset = () => {
     const fetchUnit = async () => {
       const res = await axios.get(`${apiUrl}/unit`, getToken());
       setUnit(res.data);
-    }
+    };
     fetchEntity();
     fetchEB();
     fetchGroup();
@@ -211,7 +257,7 @@ const FormEditAsset = () => {
 
   const renderForm = (label, fieldName, value, displayKey, valueKey) => {
     const inputType = typeof value === "number" ? "number" : "text";
-    const readonlyFields = ['FixedNo', 'LocId', 'EmpId', 'InvNo'];
+    const readonlyFields = ["FixedNo", "LocId", "EmpId", "InvNo"];
 
     const options = (() => {
       switch (fieldName) {
@@ -252,16 +298,16 @@ const FormEditAsset = () => {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
           <DropdownComp
-                label={label}
-                name={fieldName}
-                options={options}
-                selectedOption={value}
-                onOptionSelect={handleDropdownChange}
-                placeholder={`Select ${label}`}
-                displayKey={displayKey}
-                valueKey={valueKey}
-                enableSearch={false}
-              />
+            label={label}
+            name={fieldName}
+            options={options}
+            selectedOption={value}
+            onOptionSelect={handleDropdownChange}
+            placeholder={`Select ${label}`}
+            displayKey={displayKey}
+            valueKey={valueKey}
+            enableSearch={false}
+          />
         </div>
       );
     } else {
@@ -287,13 +333,25 @@ const FormEditAsset = () => {
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className="w-full items-baseline m-3">
-        <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className='mb-3'>&lt; Back</button>
+        <button
+          type="button"
+          onClick={() => navigate("/dataaset", { replace: true })}
+          className="mb-3"
+        >
+          &lt; Back
+        </button>
         <h1 className="text-2xl montserrat-bold">Edit Asset</h1>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3">
           {mainData.map((data) =>
-            renderForm(data.label, data.name, data.value, data.displayKey, data.valueKey)
+            renderForm(
+              data.label,
+              data.name,
+              data.value,
+              data.displayKey,
+              data.valueKey
+            )
           )}
         </div>
 
@@ -357,9 +415,15 @@ const FormEditAsset = () => {
                 toggleState === 1 ? "flex flex-col xl:flex-row" : "hidden"
               }
             >
-              <div className="grid xl:grid-cols-3 w-full">
+              <div className="grid gap-4 lg:grid-rows-12 lg:grid-flow-col sm:grid-cols-1 sm:grid-flow-row w-full">
                 {generalInfo.map((data, index) =>
-                  renderForm(data.label, data.name, data.value, data.displayKey, data.valueKey)
+                  renderForm(
+                    data.label,
+                    data.name,
+                    data.value,
+                    data.displayKey,
+                    data.valueKey
+                  )
                 )}
               </div>
             </div>
@@ -376,7 +440,7 @@ const FormEditAsset = () => {
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
               <div>
-                {asset.FixedDocuments.length > 0 && (
+                {asset.FixedDocuments && asset.FixedDocuments.length ? (
                   <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
@@ -406,6 +470,8 @@ const FormEditAsset = () => {
                       ))}
                     </tbody>
                   </table>
+                ) : (
+                  <div className="m-3">No Document found</div>
                 )}
               </div>
               <div className="flex w-full p-3">

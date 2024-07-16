@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getToken } from "../features/authSlice";
 import DropdownComp from "./DropdownComp";
 
 const FormAddRelacation = () => {
+  const {id} = useParams();
   const [asset, setAsset] = useState([]);
   const [location, setLocation] = useState([]);
   const [header, setHeader] = useState([]);
@@ -43,7 +44,18 @@ const FormAddRelacation = () => {
     getAsset(search);
     getLocation();
     console.log(asset);
-  }, [search]);
+    if(id){
+      console.log(id)
+      setItem((prevItems) => ({
+        ...prevItems,
+        FixedIDNo: id,
+      }));
+    }
+  }, [search, id]);
+
+  useEffect(() => {
+      console.log(item.FixedIDNo)
+  }, [item.FixedIDNo]);
 
   const handleHeaderChange = (e) => {
     const { name, value } = e.target;

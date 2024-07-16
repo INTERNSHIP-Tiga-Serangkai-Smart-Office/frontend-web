@@ -12,6 +12,7 @@ const PrintQRCodeAsset = () => {
   const ref = useRef([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [totalPage, setTotalPage] = useState();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const PrintQRCodeAsset = () => {
         getToken()
       );
       setFixed(response.data.data);
+      setTotalPage(response.totalPages);
       console.log(fixeds);
     } catch (error) {
       console.log("Failed to fetch fixed assets");
@@ -124,7 +126,7 @@ const PrintQRCodeAsset = () => {
                 class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 key={d.FixedIDNo}
               >
-                <td class=" ">{i + 1}</td>
+                <td class=" ">{(page - 1) * pageSize + i + 1}</td>
                 <td class=" ">{d.FixedAssetName}</td>
                 <td class="p-3 relative overflow-hidden">{d.FixedNo}</td>
                 <td class=" ">{d.FixedGroup ? d.FixedGroup.Name : "N/A"}</td>
@@ -160,9 +162,9 @@ const PrintQRCodeAsset = () => {
       </div>
       <div className="flex w-full justify-between items-center">
         <div className="flex items-center py-4 px-2 right-3 ">
-          <button onClick={handlePrevPage}>Prev</button>
+          <button onClick={handlePrevPage} disabled={page === 1}>Prev</button>
           <h2 className="p-5">{page}</h2>
-          <button onClick={handleNextPage}>Next</button>
+          <button onClick={handleNextPage} disabled={page === totalPage}>Next</button>
         </div>
         <button
           className="flex items-center h-10 px-3 bg-green-300 rounded-md"
