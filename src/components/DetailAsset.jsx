@@ -4,6 +4,7 @@ import axios from "axios";
 import QRCode from "react-qr-code";
 import { getToken } from "../features/authSlice";
 import { BiSolidEditLocation } from "react-icons/bi";
+import ButtonBackComp from "./ButtonBackComp";
 
 const DetailAsset = () => {
   const [msg, setMsg] = useState("");
@@ -148,13 +149,7 @@ const DetailAsset = () => {
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className="w-full items-baseline m-3">
-        <button
-          type="button"
-          onClick={() => navigate("/dataaset", { replace: true })}
-          className="mb-3"
-        >
-          &lt; Back
-        </button>
+        <ButtonBackComp onClick={() => navigate("/dataaset", { replace: true })}/>
         <h1 className="text-2xl montserrat-bold">Detail Asset</h1>
       </div>
 

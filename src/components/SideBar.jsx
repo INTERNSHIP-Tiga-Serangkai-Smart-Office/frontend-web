@@ -10,6 +10,7 @@ import { LuFolderInput, LuFolderOutput } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { RiDashboardFill } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
+import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch } from 'react-redux';
 import { LogOut, getMe, getToken, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
@@ -67,10 +68,10 @@ const SideBar = ({ children, isHidden }) => {
     { name: "Data Asset", link: "/dataaset", icon: FaFolder },
     { name: "Role", link: "/role", icon: FaUsers },
     { name: "Relokasi", link: "/relocation", icon: BiSolidEditLocation },
-    { name: "Asset Masuk", link: "/master", icon: LuFolderInput },
+    // { name: "Asset Masuk", link: "/master", icon: LuFolderInput },
     // { name: "Asset Keluar", link: "#", icon: LuFolderOutput },
     // { name: "Laporan", link: "#", icon: TbReportAnalytics },
-    { name: "Settings", link: "#", icon: IoSettingsOutline, margin: true },
+    // { name: "Settings", link: "#", icon: IoSettingsOutline, margin: true },
     { name: "LogOut", link: "#", icon: MdLogout, onClick: () => setShowLogoutAlert(true) },
   ];
 
@@ -80,36 +81,41 @@ const SideBar = ({ children, isHidden }) => {
         <Hamburger toggle={setIsMobileOpen} toggled={isMobileOpen} size={25} />
       </button>
       <aside
-        className={`flex h-screen overflow-y-auto overflow-x-hidden bg-clr-bg-sd transition-transform transform 
+        className={`flex h-screen overflow-y-auto overflow-x-hidden bg-wenge-500 transition-transform transform 
           ${isMobileOpen ? "-translate-y-px-" : "-translate-x-full"} md:translate-x-0`}
-        style={{ borderRadius: "0px 20px 20px 0px" }}
+        style={{ borderRadius: "0px 30px 30px 0px" }}
       >
-        <div className={`p-5 pt-8 ${sidebarToggle ? "w-72" : "w-20"} duration-300 relative`}>
-          <div className="flex justify-around">
-            <img
+        <div className={`p-5 ${sidebarToggle ? "w-72" : "w-20"} duration-300 relative`}>
+          <div className="flex justify-around items-center">
+            {/* <img
               src={process.env.PUBLIC_URL + "/arrow_sb.svg"}
               alt="icon"
-              className={`hidden md:block bg-white text-purple-950 text-3xl rounded-full border border-black cursor-pointer 
-                ${!sidebarToggle && "rotate-180"} ${sidebarToggle ? "absolute -right-0 top-5" : "absolute justify-center mb-2 "}`}
+              className={`hidden md:block bg-wenge-700 text-white text-3xl rounded-full cursor-pointer 
+                ${!sidebarToggle && "rotate-180"} ${sidebarToggle ? "absolute right-3 top-5" : "absolute justify-center mb-2 "}`}
+              onClick={() => setSidebarToggle(!sidebarToggle)}
+            /> */}
+            <IoIosArrowBack 
+              className={`hidden md:block bg-wenge-700 text-white text-3xl rounded-full cursor-pointer p-1
+                ${!sidebarToggle && "rotate-180"} ${sidebarToggle ? "absolute right-3 top-5" : "absolute justify-center mb-2 "}`}
               onClick={() => setSidebarToggle(!sidebarToggle)}
             />
-            <div className="mb-5">
-              <div className={`flex flex-col mx-auto items-center justify-center ${!sidebarToggle && `invisible`}`}>
-                {role && <h3 className="inline-flex items-center text-xs text-white px-2 bg-[#2C449B] rounded-xl truncate">{role}</h3>}
-              </div>
+            <div className="mb-2 items-center">
+              <h1 className={`text-xl font-semibold text-white ${!sidebarToggle && `invisible`}`}>Logo</h1>
             </div>
           </div>
-          <div className={`mt-5 mb-5 flex flex-row ${sidebarToggle && `p-5 bg-slate-100 rounded-xl`} hover:bg-light-white`}>
+          <div className={`my-3 flex flex-row items-center ${sidebarToggle && `p-3 bg-slate-100 rounded-xl`} hover:bg-light-white`}>
             <img src={process.env.PUBLIC_URL + "profile-avatar.svg"} alt="profile" className="w-[40px] h-[40px]" />
-            <div className={`flex flex-col mx-auto items-center justify-center ${!sidebarToggle && `invisible`}`}>{username && <h2 className="text-xl font-bold">{username}</h2>}</div>
+            <div className={`flex flex-col mx-3 ${!sidebarToggle && `invisible`}`}>
+              {username && <h2 className="text-xl font-bold">{username}</h2>}
+              {role && <h3 className="text-xs text-grey truncate">{role}</h3>}
+            </div>
           </div>
           <div className="flex flex-col gap-4 relative">
             {menus.map((menu, i) => (
               <Link
                 to={menu?.link}
                 key={i}
-                className={`${menu?.margin && "mt-5"} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md 
-                  hover:bg-gray-200 hover:text-gray-800 ${activeIndex === i ? "bg-gray-200 text-red-600" : ""}`}
+                className={`${menu?.margin && "mt-5"} flex items-center text-sm gap-3.5 font-medium p-2 rounded-md  ${activeIndex === i ? "bg-gray-200 text-wenge" : "text-wenge-900 hover:bg-gray-200 hover:text-wenge"} ${menu.name === "LogOut" && `bottom-3`}`}
                 onClick={() => {
                   handleItemClick(i);
                   if (menu?.onClick) {
@@ -120,9 +126,9 @@ const SideBar = ({ children, isHidden }) => {
               >
                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                 <h2
-                  style={{ transitionDelay: `${i + 3}00ms` }}
-                  className={`xl:whitespace-pre duration-500 ${!sidebarToggle && "opacity-0 translate-x-28 overflow-hidden"}
-                  md: duration-500 ${!sidebarToggle && "opacity-0 translate-x-28 "} `}
+                  // style={{ transitionDelay: `${i + 3}00ms` }}
+                  className={` ${!sidebarToggle && "opacity-0 overflow-hidden"}
+                   ${!sidebarToggle && "opacity-0 "} `}
                 >
                   {menu?.name}
                 </h2>
@@ -131,7 +137,7 @@ const SideBar = ({ children, isHidden }) => {
           </div>
         </div>
       </aside>
-      <main className="p-7 w-full h-screen overflow-auto">{children}</main>
+      <main className="p-3 w-full h-screen overflow-auto">{children}</main>
       <AlertLogout show={showLogoutAlert} onConfirm={logout} onCancel={() => setShowLogoutAlert(false)} />
     </div>
   );

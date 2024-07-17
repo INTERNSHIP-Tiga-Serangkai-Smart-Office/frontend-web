@@ -118,10 +118,11 @@ function Userlist() {
         <button
           onClick={() => navigate("/users/add")}
           type="button"
-          className="p-2 bg-green-300 rounded-md"
+          className="p-2 bg-byzantium-600 rounded-md text-white font-medium"
         >
           Add New
         </button>
+       
       </div>
 
       <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">

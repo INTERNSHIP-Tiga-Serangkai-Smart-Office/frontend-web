@@ -220,7 +220,7 @@ const RoleList = () => {
         <button
           onClick={() => navigate("/role/add")}
           type="button"
-          className="p-2 bg-green-300 rounded-md"
+          className="p-2 bg-byzantium-600 rounded-md text-white font-medium"
         >
           Add New
         </button>

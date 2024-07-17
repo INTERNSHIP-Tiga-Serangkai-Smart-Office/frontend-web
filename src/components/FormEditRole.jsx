@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
+import ButtonBackComp from "./ButtonBackComp";
 
 const FormEditRole = () => {
   const [name, setName] = useState("");
@@ -51,13 +52,7 @@ const FormEditRole = () => {
 
   return (
     <div className="bg-white border rounded-xl p-5">
-      <button
-        type="button"
-        onClick={() => navigate("/role", { replace: true })}
-        className="m-3"
-      >
-        &lt; Back
-      </button>
+      <ButtonBackComp onClick={() => navigate("/role", { replace: true })}/>
       <h1 className="mb-3 text-2xl montserrat-bold">Edit Role</h1>
       <div>
         <form onSubmit={saveRole}>
@@ -86,7 +81,7 @@ const FormEditRole = () => {
           <div className="flex xl:justify-end mt-5 md:justify-center">
             <button
               type="submit"
-              className="text-2xl montserrat-bold bg-green-300 p-3 rounded-xl shadow-lg hover:bg-green-400"
+              className="text-2xl montserrat-bold p-3 rounded-xl shadow-lg  text-white bg-pink_lavender-400 hover:bg-pink_lavender-300"
             >
               Submit
             </button>

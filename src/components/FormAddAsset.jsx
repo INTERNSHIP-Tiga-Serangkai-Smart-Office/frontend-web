@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getToken } from "../features/authSlice";
 import DropdownComp from "./DropdownComp";
+import ButtonBackComp from "./ButtonBackComp";
 
 const FormAddAsset = () => {
   const [msg, setMsg] = useState("");
@@ -396,13 +397,7 @@ const FormAddAsset = () => {
 
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
-      <button
-        type="button"
-        onClick={() => navigate("/dataaset", { replace: true })}
-        className="mb-3"
-      >
-        &lt; Back
-      </button>
+      <ButtonBackComp onClick={() => navigate("/dataaset", { replace: true })}/>
       <h2 className="text-2xl montserrat-bold">Add New Asset</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 w-full">
@@ -422,7 +417,7 @@ const FormAddAsset = () => {
             <div
               className={
                 toggleState === 1
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(1)}
@@ -432,7 +427,7 @@ const FormAddAsset = () => {
             <div
               className={
                 toggleState === 2
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(2)}
@@ -529,18 +524,12 @@ const FormAddAsset = () => {
                     className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
-                {/* <button
-                      onClick={() => handleAddDocs}
-                      className={`justify-end bold-16 bg-green-300 p-3 m-2 w-[10%] rounded-xl shadow-lg hover:bg-green-400`}
-                    >
-                      Add docs
-                    </button> */}
                 <button
                   type="button"
                   onClick={handleAddDocs}
-                  className="p-2 rounded-md bg-green-300"
+                  className="p-2 rounded-md text-white bg-pink_lavender-400"
                 >
-                  add docs
+                  Add
                 </button>
               </div>
               {/* <div className="flex w-full justify-end ">
@@ -553,7 +542,7 @@ const FormAddAsset = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bold-20 bg-green-300 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-green-400"
+            className="bold-20 text-white bg-pink_lavender-400 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-pink_lavender-300"
           >
             Add New Asset
           </button>

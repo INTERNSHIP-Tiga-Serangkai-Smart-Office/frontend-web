@@ -13,21 +13,21 @@ const Dashboard = () => {
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset Master'}
               number={580}
-              bgColor={'#8196CE'}
+              bgColor={'bg-byzantium'}
             />
 
             <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset TSPM'}
               number={444}
-              bgColor={'#2A4876'}
+              bgColor={'bg-byzantium-600'}
             />
 
             <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset TSPM'}
               number={444}
-              bgColor={'#2A4876'}
+              bgColor={'bg-pink_lavender-500'}
             />
 
             
@@ -35,7 +35,7 @@ const Dashboard = () => {
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
               title={'Asset TSPM'}
               number={444}
-              bgColor={'#2A4876'}
+              bgColor={'bg-wenge'}
             />
           </div>
           

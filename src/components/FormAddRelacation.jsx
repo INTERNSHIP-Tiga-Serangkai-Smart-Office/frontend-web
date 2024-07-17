@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getToken } from "../features/authSlice";
 import DropdownComp from "./DropdownComp";
+import ButtonBackComp from "./ButtonBackComp";
 
 const FormAddRelacation = () => {
   const {id} = useParams();
@@ -176,13 +177,7 @@ const FormAddRelacation = () => {
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className=" justify-between items-center">
-        <button
-          type="button"
-          onClick={() => navigate("/relocation", { replace: true })}
-          className=""
-        >
-          &lt; Back
-        </button>
+        <ButtonBackComp onClick={() => navigate("/relocation", { replace: true })}/>
         <h2 className="bold-20 mb-3">Relocate</h2>
       </div>
       <form onSubmit={handleSubmit}>
@@ -245,14 +240,14 @@ const FormAddRelacation = () => {
             <button
               type="button"
               onClick={handleAddItem}
-              className="p-3 bg-green-200 rounded-md"
+              className="p-2  text-white bg-pink_lavender-400 hover:bg-pink_lavender-300 rounded-md"
             >
               Add item
             </button>
           </div>
         </div>
         <div className="flex w-full justify-end">
-          <button type="submit" className="bg-green-300 p-3 rounded-md">
+          <button type="submit" className=" text-white bg-pink_lavender-400 hover:bg-pink_lavender-300 bold-20 py-3 px-10 my-5 rounded-xl shadow-lg">
             Submit
           </button>
         </div>

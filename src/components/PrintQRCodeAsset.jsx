@@ -5,6 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { getToken } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 import QrPrintLayout from "./QrPrintLayout";
+import ButtonBackComp from "./ButtonBackComp";
 
 const PrintQRCodeAsset = () => {
   const [fixeds, setFixed] = useState([]);
@@ -68,7 +69,7 @@ const PrintQRCodeAsset = () => {
   return (
     <div className="w-full m-3 p-3 px-5 bg-white rounded-xl min-h-full">
       <div className=" justify-between items-center">
-        <button type='button' onClick={() => navigate('/dataaset', {replace: true})} className=''>&lt; Back</button>
+       <ButtonBackComp onClick={() => navigate("/dataaset", { replace: true })}/>
         <h2 className="bold-20 mb-3">Print QR Code</h2>
       </div>
       <div>
@@ -167,7 +168,7 @@ const PrintQRCodeAsset = () => {
           <button onClick={handleNextPage} disabled={page === totalPage}>Next</button>
         </div>
         <button
-          className="flex items-center h-10 px-3 bg-green-300 rounded-md"
+          className="flex items-center h-10 px-3  text-white bg-pink_lavender-400 hover:bg-pink_lavender-300 rounded-md"
           onClick={handlePrint}
         >
           Print

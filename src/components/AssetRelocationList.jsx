@@ -144,13 +144,13 @@ const AssetRelocationItems = () => {
     <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className="flex w-full justify-between items-center">
         <h1 className="text-2xl montserrat-bold">Asset Relocation Table</h1>
-        <button type="button" onClick={() => navigate('/relocation/add')} className="p-3 bg-green-300 rounded-md">Add</button>
+        <button type="button" onClick={() => navigate('/relocation/add')} className="p-2 bg-byzantium-600 rounded-md text-white font-medium">Add New</button>
       </div>
       <input type="text" placeholder="Search..." value={search} onChange={handleSearch} className="search-input" />
-      <table className="table">
-        <thead>
-          <tr>
-            <th onClick={() => handleSort("ID")}>ID</th>
+      <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr >
+            <th className="px-6 py-3" onClick={() => handleSort("ID")}>ID</th>
             <th onClick={() => handleSort("TransNo")}>Transaction No</th>
             <th onClick={() => handleSort("TransDate")}>Transaction Date</th>
             <th onClick={() => handleSort("TransDesc")}>Description</th>
@@ -161,8 +161,8 @@ const AssetRelocationItems = () => {
         <tbody>
           {data && data.map((item) => (
             <React.Fragment key={item.ID}>
-              <tr>
-                <td>{item.ID}</td>
+              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <td className="px-6 py-3">{item.ID}</td>
                 <td>{item.TransNo}</td>
                 <td>{new Date(item.TransDate).toLocaleString()}</td>
                 <td>{item.TransDesc}</td>
@@ -176,8 +176,9 @@ const AssetRelocationItems = () => {
               {expandedRows.includes(item.ID) &&
                 item.details &&
                 item.details.map((detail) => (
-                  <tr key={detail.RelocationID} className="detail-row">
-                    <td colSpan="6">
+                  <tr key={detail.RelocationID}>
+                    <td></td>
+                    <td colSpan="5">
                       {editItem && editItem.RelocationID === detail.RelocationID ? (
                         <form onSubmit={handleFormSubmit} className="edit-form">
                           <div className="form-group">

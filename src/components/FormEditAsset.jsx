@@ -4,6 +4,7 @@ import axios from "axios";
 import { getToken } from "../features/authSlice";
 import DatePicker from "react-datepicker";
 import DropdownComp from "./DropdownComp";
+import ButtonBackComp from "./ButtonBackComp";
 
 const FormEditAsset = () => {
   const [msg, setMsg] = useState("");
@@ -13,12 +14,18 @@ const FormEditAsset = () => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // const [docData, setDocData] = useState({ NoDocument: '', ExpiredDate: ''});
-  // const [docsArray, setDocsArray] = useState([]);
+  const [formData, setFormData] = useState({
+    NoDocument: "",
+    ExpiredDate: "",
+    DocumentType: "",
+  });
+  const [dataArray, setDataArray] = useState([]);
 
   useEffect(() => {
     axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
+      setDataArray(res.data.FixedDocuments);
+      console.log(dataArray);
     });
     console.log(asset);
   }, [id]);
@@ -75,6 +82,12 @@ const FormEditAsset = () => {
           GuaranteeDate: asset.GuaranteeDate,
           EmpID: asset.EmpID,
           UserID: asset.UserID,
+          documentData: dataArray.filter(
+            (doc) =>
+              doc.NoDocument !== "" &&
+              doc.ExpiredDate !== "" &&
+              doc.DocumentType !== ""
+          ),
         },
         getToken()
       );
@@ -200,6 +213,29 @@ const FormEditAsset = () => {
 
   const handleDropdownChange = (name, value) => {
     setAsset((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  //handle docs
+  const handleAddDocs = () => {
+    setDataArray((prevArray) => [
+      ...prevArray,
+      {
+        NoDocument: formData.NoDocument,
+        ExpiredDate: formData.ExpiredDate,
+        DocumentType: formData.DocumentType,
+      },
+    ]);
+    setFormData({ NoDocument: "", ExpiredDate: "", DocumentType: "" }); // Reset form
+    console.log(dataArray);
+  };
+  const handleDelDocs = (index, key, value) => {
+    setDataArray((prevArray) => prevArray.filter((_, i) => i !== index));
+  };
+  const handleDocsChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
       return { ...prev, [name]: value };
     });
   };
@@ -333,13 +369,7 @@ const FormEditAsset = () => {
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
       <div className="w-full items-baseline m-3">
-        <button
-          type="button"
-          onClick={() => navigate("/dataaset", { replace: true })}
-          className="mb-3"
-        >
-          &lt; Back
-        </button>
+        <ButtonBackComp onClick={() => navigate("/dataaset", { replace: true })}/>
         <h1 className="text-2xl montserrat-bold">Edit Asset</h1>
       </div>
       <form onSubmit={handleSubmit}>
@@ -360,7 +390,7 @@ const FormEditAsset = () => {
             <div
               className={
                 toggleState === 1
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(1)}
@@ -370,7 +400,7 @@ const FormEditAsset = () => {
             <div
               className={
                 toggleState === 2
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(2)}
@@ -380,7 +410,7 @@ const FormEditAsset = () => {
             <div
               className={
                 toggleState === 3
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(3)}
@@ -390,7 +420,7 @@ const FormEditAsset = () => {
             <div
               className={
                 toggleState === 4
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(4)}
@@ -400,7 +430,7 @@ const FormEditAsset = () => {
             <div
               className={
                 toggleState === 5
-                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-blue-400 border-blue-400"
+                  ? "inline-block px-4 pb-2 border-b-2 rounded-t-lg text-pink_lavender-400 border-pink_lavender-400"
                   : "inline-block px-4 pb-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               }
               onClick={() => toggleTab(5)}
@@ -440,7 +470,7 @@ const FormEditAsset = () => {
             {/* document */}
             <div className={toggleState === 3 ? "" : "hidden"}>
               <div>
-                {asset.FixedDocuments && asset.FixedDocuments.length ? (
+                {dataArray && dataArray.length ? (
                   <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
@@ -452,7 +482,7 @@ const FormEditAsset = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {asset.FixedDocuments.map((doc, i) => (
+                      {dataArray.map((doc, i) => (
                         <tr
                           key={i}
                           className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
@@ -462,9 +492,9 @@ const FormEditAsset = () => {
                           <td>{doc.DocumentType}</td>
                           <td>{doc.ExpiredDate}</td>
                           <td>
-                            {/* <button onClick={() => handleDelDocs(i)}>
+                            <button type="button" onClick={() => handleDelDocs(i)}>
                               Delete
-                            </button> */}
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -479,9 +509,9 @@ const FormEditAsset = () => {
                   <label htmlFor="">No Document</label>
                   <input
                     name="NoDocument"
-                    // value={formData.NoDocument}
+                    value={formData.NoDocument}
                     type="text"
-                    // onChange={handleDocsChange}
+                    onChange={handleDocsChange}
                     className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
@@ -489,9 +519,9 @@ const FormEditAsset = () => {
                   <label htmlFor="">Document Type</label>
                   <input
                     name="DocumentType"
-                    // value={formData.DocumentType}
+                    value={formData.DocumentType}
                     type="text"
-                    // onChange={handleDocsChange}
+                    onChange={handleDocsChange}
                     className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
@@ -499,16 +529,16 @@ const FormEditAsset = () => {
                   <label htmlFor="">Expired Date</label>
                   <input
                     name="ExpiredDate"
-                    // value={formData.ExpiredDate}
+                    value={formData.ExpiredDate}
                     type="text"
-                    // onChange={handleDocsChange}
+                    onChange={handleDocsChange}
                     className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
                 <button
                   type="button"
-                  // onClick={handleAddDocs}
-                  className="p-2 rounded-md bg-green-300"
+                  onClick={handleAddDocs}
+                  className="p-2 rounded-md text-white bg-pink_lavender-400"
                 >
                   Add
                 </button>
@@ -538,7 +568,7 @@ const FormEditAsset = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className={`bold-20 bg-green-300 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-green-400`}
+            className={`bold-20 py-3 px-10 my-5 rounded-xl shadow-lg text-white bg-pink_lavender-400 hover:bg-pink_lavender-300`}
           >
             Submit
           </button>
