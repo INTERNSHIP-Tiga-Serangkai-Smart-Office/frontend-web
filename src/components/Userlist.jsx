@@ -92,8 +92,9 @@ function Userlist() {
 
   const deleteRole = async (userId, roleId) => {
     try {
-      await axios.delete(`${apiUrl}/user-role`, getToken(), {
-        data: { userId, roleId },
+      await axios.delete(`${apiUrl}/user-role`, {
+        ...getToken(), 
+        data: { userId: userId, roleId: roleId },
       });
       // Update user data after role deletion
       await getUserRoles();

@@ -82,12 +82,7 @@ const FormEditAsset = () => {
           GuaranteeDate: asset.GuaranteeDate,
           EmpID: asset.EmpID,
           UserID: asset.UserID,
-          documentData: dataArray.filter(
-            (doc) =>
-              doc.NoDocument !== "" &&
-              doc.ExpiredDate !== "" &&
-              doc.DocumentType !== ""
-          ),
+          documentData: dataArray.filter(item1 => !asset.FixedDocuments.some(item2 => item1.NoDocument === item2.NoDocument)),
         },
         getToken()
       );
@@ -201,6 +196,9 @@ const FormEditAsset = () => {
 
   const handleDateChange = (date, fieldName) => {
     setAsset({ ...asset, [fieldName]: date });
+  };
+  const handleDocsDateChange = (date) => {
+    setFormData({ ...formData, ExpiredDate: date });
   };
 
   const handleInputChange = (e) => {
@@ -527,12 +525,10 @@ const FormEditAsset = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between w-[45%]">
                   <label htmlFor="">Expired Date</label>
-                  <input
-                    name="ExpiredDate"
-                    value={formData.ExpiredDate}
-                    type="text"
-                    onChange={handleDocsChange}
-                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  <DatePicker
+                    selected={formData.ExpiredDate}
+                    onChange={(date) => handleDocsDateChange(date.toLocaleDateString('en-US'))}
+                    className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
                 <button

@@ -5,11 +5,13 @@ import QRCode from "react-qr-code";
 import { getToken } from "../features/authSlice";
 import { BiSolidEditLocation } from "react-icons/bi";
 import ButtonBackComp from "./ButtonBackComp";
+import { format } from 'date-fns';
 
 const DetailAsset = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const [asset, setAsset] = useState([]);
+  const [history, setHistory] = useState([]);
   const { id } = useParams();
   const ref = useRef([]);
 
@@ -36,7 +38,16 @@ const DetailAsset = () => {
       console.log(res.data);
     });
     console.log(asset);
+    getRelocationHistory(id);
   }, [id]);
+
+  const getRelocationHistory = async(id) => {
+    const response = await axios.get(`${apiUrl}/asset-relocation-item/fixed/${id}`, getToken());
+    const result = response.data.data;
+    const invertedData = result.reverse();
+    setHistory(invertedData);
+    console.log(response);
+  }
 
   const [toggleState, setToggleState] = useState(1);
   const toggleTab = (index) => {
@@ -145,6 +156,12 @@ const DetailAsset = () => {
       <h1 className="overflow-hidden">{value}</h1>
     </div>
   );
+
+  const formatDate = (dateString) => {
+    const formattedDate = format(new Date(dateString), 'MM/dd/yyyy');
+
+    return formattedDate;
+  };
 
   return (
     <div className="bg-white border rounded-xl p-5 min-h-full">
@@ -259,7 +276,7 @@ const DetailAsset = () => {
                         <td>{index + 1}</td>
                         <td className="px-6 py-3">{data.NoDocument}</td>
                         <td>{data.DocumentType}</td>
-                        <td>{data.ExpiredDate}</td>
+                        <td>{formatDate(data.ExpiredDate)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -279,14 +296,37 @@ const DetailAsset = () => {
               aperiam saepe distinctio exercitationem.
             </p>
           </div>
+
+          {/* history */}
           <div className={toggleState === 5 ? "" : "hidden"}>
-            <h1>Content 5</h1>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Architecto beatae quod perspiciatis excepturi fugit soluta natus,
-              sunt odio impedit ipsum culpa deserunt nihil nobis tenetur veniam
-              aperiam saepe distinctio exercitationem.
-            </p>
+            <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
+              {history && history.length > 0 ? (
+                <table  className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
+                  <thead  className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <td className="px-6 py-3">No</td>
+                      <td>Transaction No</td>
+                      <td>New Location</td>
+                      <td>New Employee</td>
+                      <td>Relocation Date</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {history.map((data, index) => (
+                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td>{index + 1}</td>
+                        <td className="px-6 py-3">{data.AssetRelocation.TransNo}</td>
+                        <td>{data.Fixed.Location.LocationName}</td>
+                        <td>{data.NewEmployeeResponsible}</td>
+                        <td>{formatDate(data.RelocationDate)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div>Document not found</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
