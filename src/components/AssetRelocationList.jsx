@@ -146,9 +146,9 @@ const AssetRelocationItems = () => {
         <h1 className="text-2xl montserrat-bold">Asset Relocation Table</h1>
         <button type="button" onClick={() => navigate('/relocation/add')} className="p-2 bg-byzantium-600 rounded-md text-white font-medium">Add New</button>
       </div>
-      <input type="text" placeholder="Search..." value={search} onChange={handleSearch} className="search-input" />
-      <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <input type="text" placeholder="Search..." value={search} onChange={handleSearch} className="block w-full my-3 p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" />
+      <table className="w-full h-full text-sm text-center  text-gray-500 ">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
           <tr >
             <th className="px-6 py-3" onClick={() => handleSort("ID")}>ID</th>
             <th onClick={() => handleSort("TransNo")}>Transaction No</th>
@@ -161,7 +161,7 @@ const AssetRelocationItems = () => {
         <tbody>
           {data && data.map((item) => (
             <React.Fragment key={item.ID}>
-              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              <tr className="odd:bg-white even:bg-gray-50 border-b">
                 <td className="px-6 py-3">{item.ID}</td>
                 <td>{item.TransNo}</td>
                 <td>{new Date(item.TransDate).toLocaleString()}</td>
@@ -211,7 +211,7 @@ const AssetRelocationItems = () => {
                           <td colSpan={6} className="flex-col">
                             <div className="max-h-64 overflow-y-auto">
                               <table className="min-w-full table-auto border-collapse p-2 w-full ">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                                     <tr className="text-center">
                                     <th class="px-2 py-3 ">Relocation ID</th>
                                     <th class="px-2 py-3 ">Previous Location</th>

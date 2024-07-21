@@ -226,8 +226,8 @@ const RoleList = () => {
         </button>
       </div>
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg container mt-5">
-        <table class="min-w-full  h-full text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table class="min-w-full  h-full text-sm text-center  text-gray-500  table-fixed">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="px-2 ">No</th>
               <th>Role Name</th>
@@ -239,7 +239,7 @@ const RoleList = () => {
             {roles.map((role, i) => (
               <>
                 <tr
-                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-t dark:border-gray-700"
+                  className="odd:bg-white even:bg-gray-50"
                   key={role.id}
                 >
                   <td className="px-2">{i + 1}</td>
@@ -290,7 +290,7 @@ const RoleList = () => {
                       <div className="relative overflow-x-auto shadow-md p-3 m-3 border sm:rounded-md">
                         <div className="max-h-64 overflow-y-auto">
                           <table className="min-w-full table-auto border-collapse p-2 w-full">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                               <tr>
                                 <th class="px-2 py-3 ">Resource</th>
                                 <th class="px-2 py-3 ">Create</th>
@@ -368,7 +368,7 @@ const RoleList = () => {
                             </tbody>
                           </table>
                           <button
-                            className="bold-16 bg-green-300 p-3 w-auto m-3 rounded-xl shadow-lg hover:bg-green-400"
+                            className="bold-16 text-white bg-pink_lavender-400 py-3 px-10 my-5 rounded-xl shadow-lg hover:bg-pink_lavender-300"
                             onClick={handleSave}
                           >
                             Save Permissions

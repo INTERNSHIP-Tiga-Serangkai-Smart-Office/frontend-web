@@ -19,7 +19,7 @@ const FormAddAsset = () => {
   ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
     now.getSeconds()
   ).padStart(2, "0")}`;
-  const currDate = new Date().toISOString();
+  const currDate = new Date().toISOString().split('T')[0];
   const currTime = new Date().toLocaleTimeString();
   const reg = currDate + " " + currTime;
 
@@ -30,15 +30,6 @@ const FormAddAsset = () => {
     DocumentType: "",
   });
   const [dataArray, setDataArray] = useState([]);
-
-  // var date;
-  //     date = new Date();
-  //     date = date.getUTCFullYear() + '-' +
-  //         ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
-  //         ('00' + date.getUTCDate()).slice(-2) + 'T' +
-  //         ('00' + date.getUTCHours()).slice(-2) + ':' +
-  //         ('00' + date.getUTCMinutes()).slice(-2) + ':' +
-  //         ('00' + date.getUTCSeconds()).slice(-2);
 
   const [asset, setAsset] = useState([]);
 
@@ -326,6 +317,9 @@ const FormAddAsset = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log('Asset:', asset);
+  console.log('DataArray:', dataArray);
     try {
       const response = await axios.post(
         `${apiUrl}/fixed`,
@@ -339,7 +333,7 @@ const FormAddAsset = () => {
             Qty: asset.Qty,
             SalVageValue: asset.SalVageValue,
             Status: asset.Status,
-            // RegDate: currDate,
+            RegDate: currDate,
             // DateAq: asset.DateAq,
             // DateDisp: asset.DateDisp,
             CostCenterNo: asset.CostCenterNo,

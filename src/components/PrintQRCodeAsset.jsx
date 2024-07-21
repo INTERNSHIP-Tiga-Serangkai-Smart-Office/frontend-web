@@ -26,7 +26,7 @@ const PrintQRCodeAsset = () => {
         getToken()
       );
       setFixed(response.data.data);
-      setTotalPage(response.totalPages);
+      setTotalPage(response.data.totalPages);
       console.log(fixeds);
     } catch (error) {
       console.log("Failed to fetch fixed assets");
@@ -165,7 +165,7 @@ const PrintQRCodeAsset = () => {
         <div className="flex items-center py-4 px-2 right-3 ">
           <button onClick={handlePrevPage} disabled={page === 1}>Prev</button>
           <h2 className="p-5">{page}</h2>
-          <button onClick={handleNextPage} disabled={page === totalPage}>Next</button>
+          <button onClick={handleNextPage} disabled={page === totalPage-1}>Next</button>
         </div>
         <button
           className="flex items-center h-10 px-3  text-white bg-pink_lavender-400 hover:bg-pink_lavender-300 rounded-md"

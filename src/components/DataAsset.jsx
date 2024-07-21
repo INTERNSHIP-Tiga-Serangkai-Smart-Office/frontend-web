@@ -44,7 +44,8 @@ const DataAsset = () => {
         `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`, getToken()
       );
       setFixed(response.data.data);
-      setTotalPage(response.totalPages)
+      setTotalPage(response.data.totalPages)
+      console.log(response)
       console.log(totalPage);
       console.log(fixeds);
     } catch (error) {
@@ -143,7 +144,7 @@ const DataAsset = () => {
                 <input
                   type="search"
                   id="default-search"
-                  className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search name or AIN..."
                   onChange={handleSearchChange}
                   value={search}
@@ -171,8 +172,8 @@ const DataAsset = () => {
           {/* {!isLoading && !error  && <p>No assets found.</p>} */}
           {!isLoading && !error && fixeds.length > 0 && (
             <>
-              <table className="flex-row  overflow-y-auto w-full text-sm text-center  text-gray-500 dark:text-gray-400  table-auto">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <table className="flex-row  overflow-y-auto w-full text-sm text-center  text-gray-500   table-auto">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                   <tr>
                     <th className="px-6 py-3">No</th>
                     <th>Asset Name</th>
@@ -188,7 +189,7 @@ const DataAsset = () => {
                   {fixeds &&
                     fixeds.map((d, i) => (
                       <tr
-                        className=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        className=" odd:bg-white even:bg-gray-50 border-b "
                         key={d.FixedIDNo}
                       >
                         <td className=" ">{(page - 1) * pageSize + i + 1}</td>
@@ -270,7 +271,7 @@ const DataAsset = () => {
         <div className="flex justify-end items-baseline px-2 pt-3">
           <button onClick={handlePrevPage} disabled={page === 1}>Prev</button>
           <h2 className="px-5 ">{page}</h2>
-          <button onClick={handleNextPage} disabled={page === totalPage}>Next</button>
+          <button onClick={handleNextPage} disabled={page === totalPage-1}>Next</button>
         </div>
       </div>
       

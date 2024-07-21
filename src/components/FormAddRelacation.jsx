@@ -11,7 +11,7 @@ const FormAddRelacation = () => {
   const [location, setLocation] = useState([]);
   const [header, setHeader] = useState([]);
   const [item, setItem] = useState({
-    FixedIDNo: "",
+    FixedIDNo: 0,
     NewLocation: "",
     NewEmployeeResponsible: "",
   });
@@ -49,14 +49,15 @@ const FormAddRelacation = () => {
       console.log(id)
       setItem((prevItems) => ({
         ...prevItems,
-        FixedIDNo: id,
+        FixedIDNo: parseInt(id),
       }));
+      console.log(item.FixedIDNo)
     }
   }, [search, id]);
 
   useEffect(() => {
-      console.log(item.FixedIDNo)
-  }, [item.FixedIDNo]);
+      console.log(item)
+  }, [item]);
 
   const handleHeaderChange = (e) => {
     const { name, value } = e.target;
@@ -76,7 +77,7 @@ const FormAddRelacation = () => {
 
   const handleAddItem = () => {
     setItems((prevArray) => [...prevArray, item]);
-    setItem({ FixedIDNo: "", NewLocation: "", NewEmployeeResponsible: "" });
+    setItem({ FixedIDNo: 0, NewLocation: "", NewEmployeeResponsible: "" });
     console.log(items);
   };
   const handleDelDocs = (index) => {
@@ -98,12 +99,12 @@ const FormAddRelacation = () => {
   };
 
   const handleSelectOption = (name, value) => {
-    setItem((prevItems) => ({
-      ...prevItems,
-      [name]: value,
-    }));
+    setItem((prev) => {
+      return { ...prev, [name]: value };
+    });
     setSearch("");
     setIsOpen(false);
+    console.log(item);
   };
 
   const handleSelectLoc = (option) => {
