@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
@@ -13,8 +13,10 @@ import AlertComp from "./AlertComp";
 import { getToken } from "../features/authSlice";
 import GenerateAIN from "./GenerateAIN";
 import QrPrintLayout from "./QrPrintLayout";
+import AxiosContext from "../features/AxiosProvider";
 
 const DataAsset = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [fixeds, setFixed] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,7 +42,7 @@ const DataAsset = () => {
 
   const getFixed = async (page, pageSize, search) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`, getToken()
       );
       setFixed(response.data.data);
@@ -54,7 +56,7 @@ const DataAsset = () => {
   };
 
   const deleteFixed = async (FixedIDNo) => {
-    await axios.delete(`${apiUrl}/fixed/${FixedIDNo}`, getToken());
+    await axiosInstance.delete(`${apiUrl}/fixed/${FixedIDNo}`, getToken());
     getFixed(page, pageSize);
   };
 
@@ -65,13 +67,6 @@ const DataAsset = () => {
   const handlePrevPage = () => {
     setPage((prevState) => prevState - 1);
   };
-
-  const barcodes = (value, index) => (
-    <div className="p-5" ref={(el) => (multiRef.current[index] = el)}>
-      <QRCode value={value} size={200} />
-      <h1>{value}</h1>
-    </div>
-  );
 
   const handlePageSize = (e) => {
     const value = e.target.value;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import QRCode from "react-qr-code";
@@ -6,8 +6,10 @@ import { getToken } from "../features/authSlice";
 import { BiSolidEditLocation } from "react-icons/bi";
 import ButtonBackComp from "./ButtonBackComp";
 import { format } from "date-fns";
+import AxiosContext from "../features/AxiosProvider";
 
 const DetailAsset = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const [asset, setAsset] = useState([]);
@@ -33,7 +35,7 @@ const DetailAsset = () => {
     //   };
     //   getFixedById();
     // }
-    axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
+    axiosInstance.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
       console.log(res.data);
     });
@@ -43,7 +45,7 @@ const DetailAsset = () => {
 
   const getRelocationHistory = async (id) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${apiUrl}/asset-relocation-item/fixed/${id}`,
         getToken()
       );
@@ -276,8 +278,8 @@ const DetailAsset = () => {
           <div className={toggleState === 3 ? "" : "hidden"}>
             <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
               {asset.FixedDocuments && asset.FixedDocuments.length > 0 ? (
-                <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table className="w-full h-full text-sm text-center  text-gray-500">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                       <td>No</td>
                       <td className="px-6 py-3">No Document</td>
@@ -287,7 +289,7 @@ const DetailAsset = () => {
                   </thead>
                   <tbody>
                     {asset.FixedDocuments.map((data, index) => (
-                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                      <tr className="odd:bg-white even:bg-gray-50 border-b">
                         <td>{index + 1}</td>
                         <td className="px-6 py-3">{data.NoDocument}</td>
                         <td>{data.DocumentType}</td>
@@ -316,8 +318,8 @@ const DetailAsset = () => {
           <div className={toggleState === 5 ? "" : "hidden"}>
             <div className=" overflow-x-auto shadow-md sm:rounded-lg container mt-5 w-full">
               {history && history.length > 0 ? (
-                <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table className="w-full h-full text-sm text-center  text-gray-500">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                       <td className="px-6 py-3">No</td>
                       <td>Transaction No</td>
@@ -328,7 +330,7 @@ const DetailAsset = () => {
                   </thead>
                   <tbody>
                     {history.map((data, index) => (
-                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                      <tr className="odd:bg-white even:bg-gray-50">
                         <td>{index + 1}</td>
                         <td className="px-6 py-3">
                           {data.AssetRelocation.TransNo}

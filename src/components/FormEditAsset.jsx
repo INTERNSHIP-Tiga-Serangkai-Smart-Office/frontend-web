@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import DatePicker from "react-datepicker";
 import DropdownComp from "./DropdownComp";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormEditAsset = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const [asset, setAsset] = useState([]);
@@ -22,7 +24,7 @@ const FormEditAsset = () => {
   const [dataArray, setDataArray] = useState([]);
 
   useEffect(() => {
-    axios.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
+    axiosInstance.get(`${apiUrl}/fixed/${id}`, getToken()).then((res) => {
       setAsset(res.data);
       setDataArray(res.data.FixedDocuments);
       console.log(dataArray);
@@ -34,7 +36,7 @@ const FormEditAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
+      await axiosInstance.put(
         `${apiUrl}/fixed/${id}`,
         {
           // fixedData: {
@@ -46,7 +48,7 @@ const FormEditAsset = () => {
           Qty: asset.Qty,
           SalVageValue: asset.SalVageValue,
           Status: asset.Status,
-          // RegDate: currDate,
+          // RegDate: asset.RegDate,
           // },
           // DateAq: asset.DateAq,
           // DateDisp: asset.DateDisp,
@@ -164,7 +166,7 @@ const FormEditAsset = () => {
       name: "Unit",
       value: asset.Unit,
       displayKey: "Unit",
-      valueKey: "IDNo",
+      valueKey: "Unit",
     },
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
@@ -258,23 +260,23 @@ const FormEditAsset = () => {
   const [unit, setUnit] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
-      const res = await axios.get(`${apiUrl}/entity`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/entity`, getToken());
       setEntity(res.data);
     };
     const fetchGroup = async () => {
-      const res = await axios.get(`${apiUrl}/fixed-group`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/fixed-group`, getToken());
       setGroup(res.data);
     };
     const fetchEB = async () => {
-      const res = await axios.get(`${apiUrl}/entitas-bisnis`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/entitas-bisnis`, getToken());
       setEntitasBisnis(res.data);
     };
     const fetchLoc = async () => {
-      const res = await axios.get(`${apiUrl}/location`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/location`, getToken());
       setLocation(res.data);
     };
     const fetchUnit = async () => {
-      const res = await axios.get(`${apiUrl}/unit`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/unit`, getToken());
       setUnit(res.data);
     };
     fetchEntity();
@@ -323,7 +325,7 @@ const FormEditAsset = () => {
           </label>
           <DatePicker
             selected={value}
-            onChange={(date) => handleDateChange(date, fieldName)}
+            onChange={(date) => handleDateChange(date.toLocaleDateString('en-US'), fieldName)}
             className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           />
         </div>
@@ -469,8 +471,8 @@ const FormEditAsset = () => {
             <div className={toggleState === 3 ? "" : "hidden"}>
               <div>
                 {dataArray && dataArray.length ? (
-                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <table className="w-full h-full text-sm text-center  text-gray-500">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
                         <th>No</th>
                         <th className="px-6 py-3">No Document</th>
@@ -483,7 +485,7 @@ const FormEditAsset = () => {
                       {dataArray.map((doc, i) => (
                         <tr
                           key={i}
-                          className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                          className="odd:bg-white even:bg-gray-50"
                         >
                           <td>{i + 1}</td>
                           <td className="px-6 py-3">{doc.NoDocument}</td>

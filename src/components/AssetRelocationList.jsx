@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../assets/relocation.css";
 import { useNavigate } from "react-router-dom";
 import { getToken } from "../features/authSlice";
+import AxiosContext from "../features/AxiosProvider";
 
 const AssetRelocationItems = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [data, setData] = useState([]);
+  const [location, setLocation] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -27,26 +30,39 @@ const AssetRelocationItems = () => {
 
   useEffect(() => {
     fetchData();
+    fetchLocation();
   }, [page, pageSize, search, sortField, sortOrder]);
 
   const fetchData = async () => {
     let query = `${apiUrl}/asset-relocation?page=${page}&pageSize=${pageSize}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}`;
-    const response = await fetch(query, getToken());
-    const result = await response.json();
-    setData(result.data);
-    console.log(result.data)
-    setTotalPages(result.totalPages);
+    // const response = await fetch(query, getToken());
+    // const result = await response.json();
+    const response = await axiosInstance.get(query, getToken());
+    setData(response.data.data);
+    console.log(response.data)
+    setTotalPages(response.data.totalPages);
   };
 
   const fetchDetails = async (id) => {
     try {
       const response = await fetch(`${apiUrl}/asset-relocation/${id}`, getToken());
       const result = await response.json();
+      console.log(result);
       return result.AssetRelocationItems;
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchLocation = async () => {
+    try {
+      const response = await axiosInstance.get(`${apiUrl}/location`, getToken());
+      setLocation(response.data);
+      console.log(location)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleExpandRow = async (id) => {
     const currentExpandedRows = [...expandedRows];
@@ -159,7 +175,7 @@ const AssetRelocationItems = () => {
           </tr>
         </thead>
         <tbody>
-          {data && data.map((item) => (
+          {data.length > 0 && data.map((item) => (
             <React.Fragment key={item.ID}>
               <tr className="odd:bg-white even:bg-gray-50 border-b">
                 <td className="px-6 py-3">{item.ID}</td>
@@ -178,36 +194,34 @@ const AssetRelocationItems = () => {
                 item.details.map((detail) => (
                   <tr key={detail.RelocationID}>
                     <td></td>
-                    <td colSpan="5">
-                      {editItem && editItem.RelocationID === detail.RelocationID ? (
-                        <form onSubmit={handleFormSubmit} className="edit-form">
-                          <div className="form-group">
-                            <label>Previous Location:</label>
-                            <input type="text" name="PreviousLocation" value={formData.PreviousLocation} onChange={handleFormChange} />
-                          </div>
-                          <div className="form-group">
-                            <label>New Location:</label>
-                            <input type="text" name="NewLocation" value={formData.NewLocation} onChange={handleFormChange} />
-                          </div>
-                          <div className="form-group">
-                            <label>Previous Employee Responsible:</label>
-                            <input type="text" name="PreviousEmployeeResponsible" value={formData.PreviousEmployeeResponsible} onChange={handleFormChange} />
-                          </div>
-                          <div className="form-group">
-                            <label>New Employee Responsible:</label>
-                            <input type="text" name="NewEmployeeResponsible" value={formData.NewEmployeeResponsible} onChange={handleFormChange} />
-                          </div>
-                          <div className="form-actions">
-                            <button type="submit" className="save-button">
-                              Save
-                            </button>
-                            <button type="button" className="cancel-button" onClick={handleFormCancel}>
-                              Cancel
-                            </button>
-                          </div>
-                        </form>
-                      ) : (
-                        <tr className="border-none">
+                    <td colSpan="5" className="px-5">
+                      <div className="w-full p-2 m-2 mr-5 border-b-2 grid gap-4 grid-rows-3 grid-flow-col">
+                        <div className=" flex justify-between">
+                          <p className="font-semibold">Relocation ID</p>
+                          <p>{detail.RelocationID}</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="font-semibold">Previous Location</p>
+                          <p>{location.filter(item => item.LocID === detail.PreviousLocation).map(item => item.LocationName)}</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="font-semibold">New Location</p>
+                          <p>{location.filter(item => item.LocID === detail.NewLocation).map(item => item.LocationName)}</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="font-semibold">Previous Employee Responsible</p>
+                          <p>{detail.PreviousEmployeeResponsible}</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="font-semibold">New Employee Responsible</p>
+                          <p>{detail.NewEmployeeResponsible}</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="font-semibold">Relocation Date</p>
+                          <p>{new Date(detail.RelocationDate).toLocaleString()}</p>
+                        </div>
+                      </div>
+                      {/* <tr className="border-none">
                           <td colSpan={6} className="flex-col">
                             <div className="max-h-64 overflow-y-auto">
                               <table className="min-w-full table-auto border-collapse p-2 w-full ">
@@ -219,7 +233,6 @@ const AssetRelocationItems = () => {
                                     <th class="px-2 py-3 ">Previous Employee Responsible</th>
                                     <th class="px-2 py-3 ">New Employee Responsible</th>
                                     <th class="px-2 py-3 ">Relocation Date</th>
-                                    {/* <th class="px-2 py-3 ">actions</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -230,21 +243,12 @@ const AssetRelocationItems = () => {
                                       <td>{detail.PreviousEmployeeResponsible || "N/A"}</td>
                                       <td>{detail.NewEmployeeResponsible || "N/A"}</td>
                                       <td>{new Date(detail.RelocationDate).toLocaleString()}</td>
-                                      {/* <td className="actions">
-                                      <button onClick={() => handleEdit(detail)} className="edit-button">
-                                          Edit
-                                      </button>
-                                      <button onClick={() => handleDelete(detail.RelocationID)} className="delete-button">
-                                          Delete
-                                      </button>
-                                      </td> */}
                                     </tr>
                                 </tbody>
                               </table>
                             </div>
                           </td>
-                        </tr>
-                      )}
+                        </tr> */}
                     </td>
                   </tr>
                 ))}

@@ -18,27 +18,26 @@ const Dashboard = () => {
 
             <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
-              title={'Asset TSPM'}
-              number={444}
+              title={'Relocation'}
+              number={464}
               bgColor={'bg-byzantium-600'}
             />
 
             <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
-              title={'Asset TSPM'}
-              number={444}
+              title={'Asset Active'}
+              number={890}
               bgColor={'bg-pink_lavender-500'}
             />
 
             
           <Card 
               imgSrc={process.env.PUBLIC_URL + '/building-icon.svg'}
-              title={'Asset TSPM'}
-              number={444}
+              title={'Asset Inactive'}
+              number={237}
               bgColor={'bg-wenge'}
             />
           </div>
-          
         </div>
   )
 }

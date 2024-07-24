@@ -1,14 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import { Button } from 'bootstrap';
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import AlertComp from "./AlertComp";
 import { getToken } from "../features/authSlice";
+import AxiosContext from "../features/AxiosProvider";
 
 function Userlist() {
+  const axiosInstance = useContext(AxiosContext);
   const [data, setdata] = useState([]);
   const [roles, setRoles] = useState([]);
   const [showAlert, setShowAlert] = useState(null);
@@ -24,18 +26,25 @@ function Userlist() {
   }, []);
 
   const getRoles = async () => {
-    const response = await axios.get(`${apiUrl}/role`, accessToken);
-    setRoles(response.data);
+    try {
+      const response = await axiosInstance.get(`${apiUrl}/role`, accessToken);
+      setRoles(response.data);
+    } catch (error) {
+      console.error("Error fetching user roles:", error);
+      if(error.isForbidden){
+        console.log("you're not allowed to access this data")
+      }
+    }
   };
 
   const getUserRoles = async () => {
     try {
-      const userResponse = await axios.get(`${apiUrl}/users`, accessToken);
+      const userResponse = await axiosInstance.get(`${apiUrl}/users`, accessToken);
       const userRolesResponse = await axios.get(
         `${apiUrl}/user-role`,
         accessToken
       );
-      const rolesResponse = await axios.get(`${apiUrl}/role`, accessToken);
+      const rolesResponse = await axiosInstance.get(`${apiUrl}/role`, accessToken);
 
       const users = userResponse.data;
       const userRoles = userRolesResponse.data.userRoles;
@@ -63,18 +72,21 @@ function Userlist() {
       console.log(data);
     } catch (error) {
       console.error("Error fetching user roles:", error);
+      if(error.isForbidden){
+        console.log("you're not allowed to access this data")
+      }
     }
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`${apiUrl}/users/${userId}`, accessToken);
+    await axiosInstance.delete(`${apiUrl}/users/${userId}`, accessToken);
     setShowAlert(false);
     getUserRoles(); // Update users after deletion
   };
 
   const addRole = async (userId, roleId) => {
     try {
-      await axios.post(
+      await axiosInstance.post(
         `${apiUrl}/user-role`,
         {
           userId: userId,
@@ -92,7 +104,7 @@ function Userlist() {
 
   const deleteRole = async (userId, roleId) => {
     try {
-      await axios.delete(`${apiUrl}/user-role`, {
+      await axiosInstance.delete(`${apiUrl}/user-role`, {
         ...getToken(), 
         data: { userId: userId, roleId: roleId },
       });

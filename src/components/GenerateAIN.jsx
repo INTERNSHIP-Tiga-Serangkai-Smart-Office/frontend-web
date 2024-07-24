@@ -1,19 +1,21 @@
+import AxiosContext from "../features/AxiosProvider";
 import { getToken } from "../features/authSlice";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const GenerateAIN = ({ show, onClosed }) => {
+  const axiosInstance = useContext(AxiosContext);
   const [fixeds, setFixed] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const ref = useRef([]);
   const [page, setPage] = useState(1);
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchFixedAssets = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/fixed?page=${page}`, getToken());
+        const res = await axiosInstance.get(`${apiUrl}/fixed?page=${page}`, getToken());
         const filteredData = res.data.data.filter((d) => !d.FixedNo || d.FixedNo.trim() === "");
         setFixed(filteredData);
       } catch (error) {
@@ -46,7 +48,7 @@ const GenerateAIN = ({ show, onClosed }) => {
   const handleGenerate = async () => {
     const fixedIds = selectedItems.map((item) => item.FixedIDNo);
     try {
-      await axios.post(`${apiUrl}/generateFixedNoAndInvNo`, { fixedIds });
+      await axiosInstance.post(`${apiUrl}/generateFixedNoAndInvNo`, { fixedIds }, getToken());
       alert("FixedNo and InvNo generated successfully!");
       onClosed(); // Close the modal after generating FixedNo and InvNo
     } catch (error) {
@@ -68,8 +70,8 @@ const GenerateAIN = ({ show, onClosed }) => {
             X
           </button>
         </div>
-        <table className="flex-row w-full overflow-y-auto text-sm text-center text-gray-500 dark:text-gray-400 table-fixed mb-3">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="flex-row w-full overflow-y-auto text-sm text-center text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th>No</th>
               <th>Name</th>
@@ -86,7 +88,7 @@ const GenerateAIN = ({ show, onClosed }) => {
               </tr>
             )}
             {fixeds.map((d, i) => (
-              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" key={d.FixedIDNo}>
+              <tr className="odd:bg-white even:bg-gray-50" key={d.FixedIDNo}>
                 <td>{i + 1}</td>
                 <td>{d.FixedAssetName}</td>
                 <td>{d.FixedNo}</td>

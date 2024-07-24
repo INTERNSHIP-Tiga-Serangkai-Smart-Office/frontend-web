@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
@@ -6,8 +6,10 @@ import { getToken } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 import QrPrintLayout from "./QrPrintLayout";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const PrintQRCodeAsset = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [fixeds, setFixed] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const ref = useRef([]);
@@ -21,7 +23,7 @@ const PrintQRCodeAsset = () => {
 
   const getAsset = async (page, pageSize, search) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${apiUrl}/fixed?page=${page}&pageSize=${pageSize}&search=${search}`,
         getToken()
       );
@@ -76,14 +78,14 @@ const PrintQRCodeAsset = () => {
         <form class="xl:w-full mx-auto mb-5 ">
           <label
             for="default-search"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only"
           >
             Search
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
-                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                class="w-4 h-4 text-gray-500 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -101,7 +103,7 @@ const PrintQRCodeAsset = () => {
             <input
               type="search"
               id="default-search"
-              class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search name or AIN..."
               onChange={handleChange}
               value={search}
@@ -109,8 +111,8 @@ const PrintQRCodeAsset = () => {
           </div>
         </form>
       </div>
-      <table class="flex-row w-full overflow-y-auto text-sm text-center  text-gray-500 dark:text-gray-400  table-fixed mb-3">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <table class="flex-row w-full overflow-y-auto text-sm text-center  text-gray-500 table-fixed mb-3">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
           <tr>
             <th>No</th>
             <th>Name</th>
@@ -124,7 +126,7 @@ const PrintQRCodeAsset = () => {
           {fixeds &&
             fixeds.map((d, i) => (
               <tr
-                class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                class=" odd:bg-white even:bg-gray-50"
                 key={d.FixedIDNo}
               >
                 <td class=" ">{(page - 1) * pageSize + i + 1}</td>
@@ -145,7 +147,7 @@ const PrintQRCodeAsset = () => {
             ))}
         </tbody>
       </table>
-      <div className="">
+      <div className="hidden">
         <div ref={ref} className="flex flex-row flex-wrap">
           {selectedItems.map((data, index) => (
             <div

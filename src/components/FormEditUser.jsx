@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormEditUser = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +21,7 @@ const FormEditUser = () => {
     if (id) {
       const getUserById = async () => {
         try {
-          const response = await axios.get(`${apiUrl}/users/${id}`, getToken());
+          const response = await axiosInstance.get(`${apiUrl}/users/${id}`, getToken());
           setName(response.data.name);
           setEmail(response.data.email);
         } catch (error) {
@@ -35,7 +37,7 @@ const FormEditUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
+      await axiosInstance.put(
         `${apiUrl}/users/${id}`,
         {
           name: name,

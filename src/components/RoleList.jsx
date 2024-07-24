@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import AlertComp from "./AlertComp";
 import { getToken } from "../features/authSlice";
+import AxiosContext from "../features/AxiosProvider";
+import { toast } from "react-toastify";
 
 const RoleList = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [roles, setRoles] = useState([]);
   const [permissions, setPermissions] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
@@ -19,18 +22,14 @@ const RoleList = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const getRoles = async () => {
-    const response = await axios.get(`${apiUrl}/role`, getToken());
+    const response = await axiosInstance.get(`${apiUrl}/role`, getToken());
     setRoles(response.data);
   };
   useEffect(() => {
-    // Fetch roles
-    // axios.get("http://localhost:5000/role").then((response) => {
-    //   setRoles(response.data);
-    // });
     getRoles();
 
     //Fetch permissions
-    axios.get(`${apiUrl}/permissions`, getToken()).then((response) => {
+    axiosInstance.get(`${apiUrl}/permissions`, getToken()).then((response) => {
       const organizedPermissions = organizePermissionsByResource(response.data);
       setPermissions(organizedPermissions);
     });
@@ -38,7 +37,7 @@ const RoleList = () => {
 
   useEffect(() => {
     if (selectedRole) {
-      axios
+      axiosInstance
         .get(`${apiUrl}/role-permissions/${selectedRole}`, getToken())
         .then((response) => {
           updateSelectedPermission(response.data);
@@ -150,7 +149,7 @@ const RoleList = () => {
 
         if (addedPermissions.length > 0) {
           promises.push(
-            axios.post(
+            axiosInstance.post(
               `${apiUrl}/role-permissions`,
               {
                 roleId: selectedRole,
@@ -163,7 +162,7 @@ const RoleList = () => {
 
         if (removedPermissions.length > 0) {
           promises.push(
-            axios.delete(
+            axiosInstance.delete(
               `${apiUrl}/role-permissions`,
               {
                 data: {
@@ -192,7 +191,16 @@ const RoleList = () => {
         setSelectedPermissions(updatedPermissions);
         setSelectedRole("");
 
-        alert("Permissions updated successfully");
+        toast.success("Permission has been updated", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } catch (error) {
         console.error("Error saving role permissions:", error);
         alert("Error saving role permissions");
@@ -203,7 +211,7 @@ const RoleList = () => {
   };
 
   const deleteRole = async (roleId) => {
-    await axios.delete(`${apiUrl}/role/${roleId}`, getToken());
+    await axiosInstance.delete(`${apiUrl}/role/${roleId}`, getToken());
     setShowAlert(!showAlert);
     getRoles();
   };

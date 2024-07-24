@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormAddUser = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ const FormAddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
+      await axiosInstance.post(
         `${apiUrl}/users`,
         {
           name: name,

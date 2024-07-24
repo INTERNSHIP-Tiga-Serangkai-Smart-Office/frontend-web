@@ -1,7 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { Axios } from "axios";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import AxiosContext from "./AxiosProvider";
 
 const apiUrl = process.env.REACT_APP_API_URL;
+// const axiosInstance = useContext(AxiosContext);
 
 const initialState = {
   user: null,
@@ -38,7 +42,7 @@ export const LoginAuth = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${apiUrl}/me`, getToken());
+    const response = await axiosInstance.get(`${apiUrl}/me`, getToken());
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -58,7 +62,13 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: (state) => {
+      state.user = null;
+      state.isError = false;
+      state.isSuccess = false;
+      state.isLoading = false;
+      state.message = "";
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(LoginAuth.pending, (state) => {
@@ -92,6 +102,9 @@ export const authSlice = createSlice({
   },
 });
 
+export const { reset } = authSlice.actions;
+export default authSlice.reducer;
+
 export const getToken = () => {
   const accessToken = localStorage.getItem("accessToken");
   return {
@@ -101,5 +114,21 @@ export const getToken = () => {
   };
 };
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+export const axiosInstance = axios.create({
+  baseURL: apiUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const { status } = error.response;
+
+    if (status === 403) {
+      console.error("Token expired or invalid");
+      LogOut();
+    }
+  }
+);

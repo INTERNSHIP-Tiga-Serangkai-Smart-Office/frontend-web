@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormAddRole = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [, setMsg] = useState("");
@@ -15,7 +17,7 @@ const FormAddRole = () => {
   const saveRole = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
+      await axiosInstance.post(
         `${apiUrl}/role`,
         {
           name: name,

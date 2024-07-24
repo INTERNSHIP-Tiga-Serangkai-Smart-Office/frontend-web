@@ -1,11 +1,13 @@
 import axios from "axios";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getToken } from "../features/authSlice";
 import DropdownComp from "./DropdownComp";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormAddRelacation = () => {
+  const axiosInstance = useContext(AxiosContext);
   const {id} = useParams();
   const [asset, setAsset] = useState([]);
   const [location, setLocation] = useState([]);
@@ -25,7 +27,7 @@ const FormAddRelacation = () => {
 
   const getAsset = async (search) => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${apiUrl}/fixed?search=${search}`,
         getToken()
       );
@@ -37,7 +39,7 @@ const FormAddRelacation = () => {
   };
 
   const getLocation = async () => {
-    const res = await axios.get(`${apiUrl}/location`, getToken());
+    const res = await axiosInstance.get(`${apiUrl}/location`, getToken());
     setLocation(res.data);
   };
 
@@ -191,8 +193,8 @@ const FormAddRelacation = () => {
         </div>
         <div className="p-3 border rounded-md my-3">
           {items.length > 0 && (
-            <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full h-full text-sm text-center  text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <td>No</td>
                   <td className="px-6 py-3">Asset ID</td>
@@ -203,7 +205,7 @@ const FormAddRelacation = () => {
               <tbody>
                 {items &&
                   items.map((data, index) => (
-                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                    <tr className="odd:bg-white even:bg-gray-50">
                       <td>{index + 1}</td>
                       <td className="px-6 py-3">{displayDataName(asset, data.FixedIDNo, "FixedNo", "FixedIDNo")}</td>
                       <td>{displayDataName(location, data.NewLocation, "LocationName", "LocID")}</td>

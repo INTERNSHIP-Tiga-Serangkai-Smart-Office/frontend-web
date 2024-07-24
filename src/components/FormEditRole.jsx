@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../features/authSlice";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormEditRole = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [, setMsg] = useState("");
@@ -18,7 +20,7 @@ const FormEditRole = () => {
     if (id) {
       const getRoleById = async () => {
         try {
-          const response = await axios.get(`${apiUrl}/role/${id}`, getToken());
+          const response = await axiosInstance.get(`${apiUrl}/role/${id}`, getToken());
           setName(response.data.name);
           setSlug(response.data.slug);
         } catch (error) {
@@ -34,7 +36,7 @@ const FormEditRole = () => {
   const saveRole = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
+      await axiosInstance.put(
         `${apiUrl}/role/${id}`,
         {
           name: name,

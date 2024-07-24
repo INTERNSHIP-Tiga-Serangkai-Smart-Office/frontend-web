@@ -19,6 +19,7 @@ import Users from "./pages/Users";
 import AddRelocation from "./pages/AddRelocation";
 import PrintQRCode from "./pages/PrintQRCode";
 import Detail from "./pages/Detail";
+import { AxiosProvider } from "./features/AxiosProvider";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,36 +41,38 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="*"
-          element={
-            <SideBar isHidden={hideSidebar}>
-              <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/dataaset" element={<DataAset />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/users/add" element={<AddUser />} />
-                <Route path="/users/edit/:id" element={<EditUser />} />
-                <Route path="/role" element={<Roles />} />
-                <Route path="/relocation" element={<Relocation />} />
-                <Route
-                  path="/relocation/add/:id?"
-                  element={<AddRelocation />}
-                />
-                <Route path="/role/add/" element={<AddRole />} />
-                <Route path="/role/edit/:id" element={<EditRole />} />
-                <Route path="/dataaset/detail/:id" element={<Detail />} />
-                <Route path="/dataaset/add" element={<AddAssets />} />
-                <Route path="/dataaset/edit/:id" element={<EditAssets />} />
-                <Route path="/dataaset/printqr" element={<PrintQRCode />} />
-                <Route path="/master" element={<Master />} />
-              </Routes>
-            </SideBar>
-          }
-        />
-      </Routes>
+      <AxiosProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route
+            path="*"
+            element={
+              <SideBar isHidden={hideSidebar}>
+                <Routes>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dataaset" element={<DataAset />} />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/users/add" element={<AddUser />} />
+                  <Route path="/users/edit/:id" element={<EditUser />} />
+                  <Route path="/role" element={<Roles />} />
+                  <Route path="/relocation" element={<Relocation />} />
+                  <Route
+                    path="/relocation/add/:id?"
+                    element={<AddRelocation />}
+                  />
+                  <Route path="/role/add/" element={<AddRole />} />
+                  <Route path="/role/edit/:id" element={<EditRole />} />
+                  <Route path="/dataaset/detail/:id" element={<Detail />} />
+                  <Route path="/dataaset/add" element={<AddAssets />} />
+                  <Route path="/dataaset/edit/:id" element={<EditAssets />} />
+                  <Route path="/dataaset/printqr" element={<PrintQRCode />} />
+                  <Route path="/master" element={<Master />} />
+                </Routes>
+              </SideBar>
+            }
+          />
+        </Routes>
+      </AxiosProvider>
     </BrowserRouter>
   );
 }

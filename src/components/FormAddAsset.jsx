@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getToken } from "../features/authSlice";
 import DropdownComp from "./DropdownComp";
 import ButtonBackComp from "./ButtonBackComp";
+import AxiosContext from "../features/AxiosProvider";
 
 const FormAddAsset = () => {
+  const axiosInstance = useContext(AxiosContext);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const now = new Date();
-  const formattedDatetime = `${now.getFullYear()}-${String(
-    now.getMonth() + 1
-  ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
-    now.getHours()
-  ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
-    now.getSeconds()
-  ).padStart(2, "0")}`;
   const currDate = new Date().toISOString().split('T')[0];
   const currTime = new Date().toLocaleTimeString();
-  const reg = currDate + " " + currTime;
 
   //add docs
   const [formData, setFormData] = useState({
@@ -59,6 +52,9 @@ const FormAddAsset = () => {
       return { ...prev, [name]: value };
     });
   };
+  const handleDocsDateChange = (date) => {
+    setFormData({ ...formData, ExpiredDate: date });
+  };
 
   //tab layout
   const mainData = [
@@ -66,6 +62,7 @@ const FormAddAsset = () => {
       label: "Nama Asset",
       name: "FixedAssetName",
       value: asset.FixedAssetName,
+      notNull: true,
     },
     {
       label: "Status",
@@ -73,6 +70,7 @@ const FormAddAsset = () => {
       value: asset.Status,
       displayKey: "Name",
       valueKey: "value",
+      notNull: true,
     },
     {
       label: "Entity",
@@ -80,6 +78,7 @@ const FormAddAsset = () => {
       value: asset.Entity,
       displayKey: "EntityName",
       valueKey: "Entity",
+      notNull: true,
     },
     {
       label: "Entitas Bisnis",
@@ -87,6 +86,7 @@ const FormAddAsset = () => {
       value: asset.IDNoEB,
       displayKey: "EBName",
       valueKey: "IDNo",
+      notNull: true,
     },
     {
       label: "Group",
@@ -94,12 +94,13 @@ const FormAddAsset = () => {
       value: asset.IDNoGR,
       displayKey: "Name",
       valueKey: "IDNo",
+      notNull: true,
     },
     // { name: "RegDate", value: asset.RegDate},
   ];
 
   const generalInfo = [
-    { label: "Akun Asset", name: "AccNo", value: asset.AccNo },
+    { label: "Akun Asset", name: "AccNo", value: asset.AccNo, notNull: true, },
     { label: "Akun Penyusutan", name: "AccDep", value: asset.AccDep },
     { label: "Tgl Akuisisi", name: "DateAq", value: asset.DateAq },
     { label: "Tgl Penyusutan", name: "DateDisp", value: asset.DateDisp },
@@ -123,7 +124,7 @@ const FormAddAsset = () => {
     { label: "Order No", name: "OrderNo", value: asset.OrderNo },
     { label: "Pick Bill", name: "PickBill", value: asset.PickBill },
     { label: "Supplier", name: "SupplierId", value: asset.SupplierId },
-    { label: "Jumlah", name: "Qty", value: asset.Qty },
+    { label: "Jumlah", name: "Qty", value: asset.Qty, notNull: true, },
     { label: "Pick", name: "Pick", value: asset.Pick },
     { label: "Pick Group", name: "PickGR", value: asset.PickGR },
     { label: "Nomer Group", name: "GRNo", value: asset.GRNo },
@@ -132,11 +133,11 @@ const FormAddAsset = () => {
       name: "Unit",
       value: asset.Unit,
       displayKey: "Unit",
-      valueKey: "IDNo",
+      valueKey: "Unit",
     },
     { label: "Cost", name: "Cost", value: asset.Cost },
     { label: "S Unit", name: "SUnit", value: asset.SUnit },
-    { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue },
+    { label: "Salvage Value", name: "SalVageValue", value: asset.SalVageValue, notNull: true, },
     {
       label: "Salvage Value Original",
       name: "SalVageValueORG",
@@ -165,23 +166,23 @@ const FormAddAsset = () => {
   const [unit, setUnit] = useState([]);
   useEffect(() => {
     const fetchEntity = async () => {
-      const res = await axios.get(`${apiUrl}/entity`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/entity`, getToken());
       setEntity(res.data);
     };
     const fetchGroup = async () => {
-      const res = await axios.get(`${apiUrl}/fixed-group`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/fixed-group`, getToken());
       setGroup(res.data);
     };
     const fetchEB = async () => {
-      const res = await axios.get(`${apiUrl}/entitas-bisnis`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/entitas-bisnis`, getToken());
       setEntitasBisnis(res.data);
     };
     const fetchLoc = async () => {
-      const res = await axios.get(`${apiUrl}/location`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/location`, getToken());
       setLocation(res.data);
     };
     const fetchUnit = async () => {
-      const res = await axios.get(`${apiUrl}/unit`, getToken());
+      const res = await axiosInstance.get(`${apiUrl}/unit`, getToken());
       setUnit(res.data);
     };
     fetchEntity();
@@ -198,7 +199,7 @@ const FormAddAsset = () => {
 
   // Form component logic for each field (replace with your actual components)
 
-  const renderForm = (label, fieldName, value, displayKey, valueKey) => {
+  const renderForm = (label, fieldName, value, displayKey, valueKey, notNull) => {
     const inputType = typeof value === "number" ? "number" : "text";
 
     const options = (() => {
@@ -229,11 +230,11 @@ const FormAddAsset = () => {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
           <label htmlFor={fieldName} className="label w-[45%]">
-            {label}
+            {label}<span className={` ${notNull ? 'text-red-500' : 'hidden'}`}>*</span>
           </label>
           <DatePicker
             selected={value}
-            onChange={(date) => handleDateChange(date, fieldName)}
+            onChange={(date) => handleDateChange(date.toLocaleDateString('en-US'), fieldName)}
             className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
           />
         </div>
@@ -251,6 +252,7 @@ const FormAddAsset = () => {
             displayKey={displayKey}
             valueKey={valueKey}
             enableSearch={false}
+            notNull={true}
           />
         </div>
       );
@@ -258,7 +260,7 @@ const FormAddAsset = () => {
       return (
         <div key={fieldName} className="flex flex-row items-center mx-3">
           <label htmlFor={fieldName} className="label w-[45%]">
-            {label}
+            {label}<span className={` ${notNull ? 'text-red-500' : 'hidden'}`}>*</span>
           </label>
           {/* {isOptional ? (
                     <input
@@ -321,7 +323,7 @@ const FormAddAsset = () => {
     console.log('Asset:', asset);
   console.log('DataArray:', dataArray);
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${apiUrl}/fixed`,
         {
           fixedData: {
@@ -334,8 +336,8 @@ const FormAddAsset = () => {
             SalVageValue: asset.SalVageValue,
             Status: asset.Status,
             RegDate: currDate,
-            // DateAq: asset.DateAq,
-            // DateDisp: asset.DateDisp,
+            DateAq: asset.DateAq,
+            DateDisp: asset.DateDisp,
             CostCenterNo: asset.CostCenterNo,
             ProfitCenterNo: asset.ProfitCenterNo,
             LocId: asset.LocId,
@@ -401,7 +403,8 @@ const FormAddAsset = () => {
               data.name,
               data.value,
               data.displayKey,
-              data.valueKey
+              data.valueKey,
+              data.notNull
             )
           )}
         </div>
@@ -446,7 +449,8 @@ const FormAddAsset = () => {
                     data.name,
                     data.value,
                     data.displayKey,
-                    data.valueKey
+                    data.valueKey,
+                    data.notNull
                   )
                 )}
               </div>
@@ -456,8 +460,8 @@ const FormAddAsset = () => {
             <div className={toggleState === 2 ? "" : "hidden"}>
               <div>
                 {dataArray.length > 0 && (
-                  <table className="w-full h-full text-sm text-center  text-gray-500 dark:text-gray-400 ">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <table className="w-full h-full text-sm text-center  text-gray-500">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
                         <th>No</th>
                         <th className="px-6 py-3">No Document</th>
@@ -470,7 +474,7 @@ const FormAddAsset = () => {
                       {dataArray.map((doc, i) => (
                         <tr
                           key={i}
-                          className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                          className="odd:bg-white even:bg-gray-50"
                         >
                           <td>{i + 1}</td>
                           <td className="px-6 py-3">{doc.NoDocument}</td>
@@ -510,12 +514,10 @@ const FormAddAsset = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between w-[45%]">
                   <label htmlFor="">Expired Date</label>
-                  <input
-                    name="ExpiredDate"
-                    value={formData.ExpiredDate}
-                    type="text"
-                    onChange={handleDocsChange}
-                    className="input p-1 mx-3 w-[65%] shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
+                  <DatePicker
+                    selected={formData.ExpiredDate}
+                    onChange={(date) => handleDocsDateChange(date.toLocaleDateString('en-US'))}
+                    className="w-[55%] input p-1 shadow appearance-none border rounded focus:outline-none focus:shadow-outline my-2"
                   />
                 </div>
                 <button

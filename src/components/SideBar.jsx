@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BsArrowLeftShort } from "react-icons/bs";
 // import { GiHamburgerMenu } from "react-icons/gi";
@@ -12,11 +12,13 @@ import { RiDashboardFill } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch } from 'react-redux';
-import { LogOut, getMe, getToken, reset } from "../features/authSlice";
+import { LogOut, axiosInstance, getMe, getToken, reset } from "../features/authSlice";
 import AlertLogout from './AlertLogout';
 import axios from 'axios';
+import AxiosContext from '../features/AxiosProvider';
 
 const SideBar = ({ children, isHidden }) => {
+  const axiosInstance = useContext(AxiosContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ const SideBar = ({ children, isHidden }) => {
     // setUsername(res.name);
     // setRole(res.email);
 
-    axios.get(`${apiUrl}/me`,  getToken() ).then(res => {
+    axiosInstance.get(`${apiUrl}/me`,  getToken() ).then(res => {
       setUsername(res.data.User.name);
       setRole(res.data.role.name);
       console.log(res);

@@ -10,6 +10,7 @@ const DropdownComp = ({
   displayKey,
   valueKey,
   enableSearch,
+  notNull,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +53,7 @@ const DropdownComp = ({
 
   return (
     <div className="items-center flex my-3 w-full"> 
-      <div className="label w-[50%]">{label}</div>
+      <div className="label w-[50%]">{label}<span className={` ${notNull ? 'text-red-500' : 'hidden'}`}>*</span></div>
       <div className="relative inline-block w-full sm:w-64" ref={dropdownRef}>
         <div className="bg-gray-200 p-1 cursor-pointer border border-gray-300 rounded" onClick={toggleDropdown}>
           {selectedOption ? selectedValue : placeholder}
