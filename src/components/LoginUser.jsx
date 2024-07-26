@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginAuth, reset } from "../features/authSlice.js";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 function LoginUser() {
   const [email, setEmail] = useState("");
@@ -14,11 +13,12 @@ function LoginUser() {
 
   useEffect(() => {
     if (user || isSuccess) {
+      toast.success("LoginSuccess!")
       navigate("/dashboard");
     }
 
     if (isError) {
-      toast.error(message);
+      toast.error("Username or Password is not correct");
     }
 
     dispatch(reset());
@@ -112,18 +112,6 @@ function LoginUser() {
           </div>
         </div>
       </div>
-      <ToastContainer 
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-
-      />
     </main>
   );
 }
